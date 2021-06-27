@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_main_admin_departments"
+        android:enabled="true"
+        android:icon="@drawable/departments"
+        android:title="@string/menu_main_admin_departments" />
+    <item
+        android:id="@+id/menu_main_admin_dept_admins"
+        android:enabled="true"
+        android:icon="@drawable/dept_admins"
+        android:title="@string/menu_main_admin_dept_admins"/>
+    <item
+        android:id="@+id/menu_main_admin_lecturers"
+        android:enabled="true"
+        android:icon="@drawable/lecturers"
+        android:title="@string/menu_main_admin_lecturers"/>
+    <item
+        android:id="@+id/menu_main_admin_students"
+        android:enabled="true"
+        android:icon="@drawable/students"
+        android:title="@string/menu_main_admin_students"/>
+    <item
+        android:id="@+id/menu_main_admin_semesters"
+        android:enabled="true"
+        android:icon="@drawable/semesters"
+        android:title="@string/menu_main_admin_semesters"/>
+</menu>

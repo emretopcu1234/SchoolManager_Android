@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">School Manager</string>
+    <string name="menu_main_admin_departments">Departments</string>
+    <string name="menu_main_admin_dept_admins">Department Admins</string>
+    <string name="menu_main_admin_lecturers">Lecturers</string>
+    <string name="menu_main_admin_students">Students</string>
+    <string name="menu_main_admin_semesters">Semesters</string>
+    <string name="menu_dept_admin_courses">Courses</string>
+    <string name="menu_dept_admin_lecturers">Lecturers</string>
+    <string name="menu_dept_admin_students">Students</string>
+    <string name="menu_lecturer_course_notes">Course Notes</string>
+    <string name="menu_lecturer_grades">Grades</string>
+    <string name="menu_lecturer_announcements">Announcements</string>
+    <string name="menu_lecturer_participants">Participants</string>
+    <string name="menu_lecturer_weekly_schedule_and_appointments">Weekly Schedule and Appointments</string>
+    <string name="menu_student_course_notes">Course Notes</string>
+    <string name="menu_student_grades">Grades</string>
+    <string name="menu_student_announcements">Announcements</string>
+    <string name="menu_student_weekly_schedule">Weekly Schedule</string>
+    <string name="menu_student_appointments">Appointments</string>
+    <string name="fragment_user_and_semester_spinner_label">Semester</string>
+    <string name="button_indicator_select">Select</string>
+    <string name="button_indicator_cancel">Cancel</string>
+    <string name="button_indicator_delete">Delete</string>
+    <string name="button_indicator_add">Add</string>
+    <string name="main_admin_departments_dept_name">Name</string>
+    <string name="main_admin_departments_dept_id">ID</string>
+    <string name="main_admin_departments_opened">Opened</string>
+    <string name="main_admin_departments_closed">Closed</string>
+    <string name="main_admin_dept_admins_id">ID</string>
+    <string name="main_admin_dept_admins_name">Name</string>
+    <string name="main_admin_dept_admins_surname">Surname</string>
+    <string name="main_admin_dept_admins_dept_name">Dept.</string>
+
+</resources>

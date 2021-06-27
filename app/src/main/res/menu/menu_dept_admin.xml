@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_dept_admin_courses"
+        android:enabled="true"
+        android:icon="@drawable/courses"
+        android:title="@string/menu_dept_admin_courses" />
+    <item
+        android:id="@+id/menu_dept_admin_lecturers"
+        android:enabled="true"
+        android:icon="@drawable/lecturers"
+        android:title="@string/menu_dept_admin_lecturers"/>
+    <item
+        android:id="@+id/menu_dept_admin_students"
+        android:enabled="true"
+        android:icon="@drawable/students"
+        android:title="@string/menu_dept_admin_students"/>
+</menu>

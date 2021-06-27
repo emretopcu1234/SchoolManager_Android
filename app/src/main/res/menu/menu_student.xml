@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_student_course_notes"
+        android:enabled="true"
+        android:icon="@drawable/course_notes"
+        android:title="@string/menu_student_course_notes" />
+    <item
+        android:id="@+id/menu_student_grades"
+        android:enabled="true"
+        android:icon="@drawable/grades"
+        android:title="@string/menu_student_grades"/>
+    <item
+        android:id="@+id/menu_student_announcements"
+        android:enabled="true"
+        android:icon="@drawable/announcements"
+        android:title="@string/menu_student_announcements"/>
+    <item
+        android:id="@+id/menu_student_weekly_schedule"
+        android:enabled="true"
+        android:icon="@drawable/weekly_schedule"
+        android:title="@string/menu_student_weekly_schedule"/>
+    <item
+        android:id="@+id/menu_student_appointments"
+        android:enabled="true"
+        android:icon="@drawable/appointments"
+        android:title="@string/menu_student_appointments"/>
+</menu>
