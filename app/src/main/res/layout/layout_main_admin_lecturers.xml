@@ -15,6 +15,34 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.92"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.06" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.83" />
+
     <fragment
         android:id="@+id/fragment_main_admin_user_and_semester"
         android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
@@ -73,6 +101,143 @@
         app:layout_constraintTop_toBottomOf="@id/separator2"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"/>
+
+    <Button
+        android:id="@+id/button_search_id"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/search"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V0" />
+
+    <Button
+        android:id="@+id/button_cancel_search_id"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V0"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/textView_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_admin_lecturers_id"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
+        app:layout_constraintStart_toEndOf="@id/button_search_id"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/button_search_name"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/search"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"/>
+
+    <Button
+        android:id="@+id/button_cancel_search_name"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_admin_lecturers_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toEndOf="@id/button_search_name"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/button_search_surname"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/search"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2" />
+
+    <Button
+        android:id="@+id/button_cancel_search_surname"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/textView_surname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_admin_lecturers_surname"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toEndOf="@id/button_search_surname"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/button_filter_empty_closed"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/filter_empty"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3" />
+
+    <Button
+        android:id="@+id/button_filter_full_closed"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/filter_full"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/textView_dept_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_admin_lecturers_dept_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toEndOf="@id/button_filter_empty_closed"
+        android:layout_marginLeft="5dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintTop_toBottomOf="@id/textView_id"
+        app:layout_constraintBottom_toTopOf="@id/separator3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"/>
+
 
     <View
         android:id="@+id/separator3"

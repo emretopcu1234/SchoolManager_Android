@@ -20,14 +20,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.07" />
+        app:layout_constraintGuide_percent="0.06" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_V1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.27" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_V2"
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.83" />
 
     <fragment
         android:id="@+id/fragment_main_admin_user_and_semester"
@@ -102,6 +102,25 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"/>
 
+    <Button
+        android:id="@+id/button_search_id"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/search"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V0" />
+
+    <Button
+        android:id="@+id/button_cancel_search_id"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V0"
+        android:visibility="invisible"/>
+
     <TextView
         android:id="@+id/textView_id"
         android:layout_width="0dp"
@@ -110,19 +129,28 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
-        app:layout_constraintStart_toStartOf="@id/guideline_V0"
+        app:layout_constraintStart_toEndOf="@id/button_search_id"
         android:layout_marginTop="30dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginLeft="5dp"/>
 
     <Button
-        android:id="@+id/button_search_id"
+        android:id="@+id/button_search_name"
         android:layout_width="20dp"
         android:layout_height="25dp"
         android:background="@drawable/search"
         app:backgroundTint="@color/black"
         app:layout_constraintTop_toTopOf="@id/textView_id"
-        app:layout_constraintStart_toEndOf="@id/textView_id"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"/>
+
+    <Button
+        android:id="@+id/button_cancel_search_name"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/textView_name"
@@ -133,18 +161,27 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/textView_id"
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
-        app:layout_constraintStart_toStartOf="@id/guideline_V1"
-        android:layout_marginStart="5dp"/>
+        app:layout_constraintStart_toEndOf="@id/button_search_name"
+        android:layout_marginLeft="5dp"/>
 
     <Button
-        android:id="@+id/button_search_name"
+        android:id="@+id/button_search_surname"
         android:layout_width="20dp"
         android:layout_height="25dp"
         android:background="@drawable/search"
         app:backgroundTint="@color/black"
         app:layout_constraintTop_toTopOf="@id/textView_id"
-        app:layout_constraintStart_toEndOf="@id/textView_name"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V2" />
+
+    <Button
+        android:id="@+id/button_cancel_search_surname"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/textView_surname"
@@ -155,17 +192,27 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/textView_id"
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
-        app:layout_constraintStart_toStartOf="@id/guideline_V2"/>
+        app:layout_constraintStart_toEndOf="@id/button_search_surname"
+        android:layout_marginLeft="5dp"/>
 
     <Button
-        android:id="@+id/button_search_surname"
+        android:id="@+id/button_filter_empty_closed"
         android:layout_width="20dp"
         android:layout_height="25dp"
-        android:background="@drawable/search"
+        android:background="@drawable/filter_empty"
         app:backgroundTint="@color/black"
-        app:layout_constraintTop_toTopOf="@id/textView_id"
-        app:layout_constraintStart_toEndOf="@id/textView_surname"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3" />
+
+    <Button
+        android:id="@+id/button_filter_full_closed"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/filter_full"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/textView_dept_name"
@@ -176,29 +223,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/textView_id"
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
-        app:layout_constraintStart_toStartOf="@id/guideline_V3"/>
-
-    <Button
-        android:id="@+id/button_filter_empty_closed"
-        android:layout_width="20dp"
-        android:layout_height="25dp"
-        android:background="@drawable/filter_empty"
-        app:backgroundTint="@color/black"
-        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
-        app:layout_constraintStart_toEndOf="@id/textView_dept_name"
+        app:layout_constraintStart_toEndOf="@id/button_filter_empty_closed"
         android:layout_marginLeft="5dp"/>
-
-    <Button
-        android:id="@+id/button_filter_full_closed"
-        android:layout_width="20dp"
-        android:layout_height="25dp"
-        android:background="@drawable/filter_full"
-        app:backgroundTint="@color/black"
-        app:layout_constraintTop_toTopOf="@id/textView_dept_name"
-        app:layout_constraintStart_toEndOf="@id/textView_dept_name"
-        android:layout_marginLeft="5dp"
-        android:visibility="invisible"/>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

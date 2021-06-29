@@ -50,8 +50,6 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
             holder.checkBox.setChecked(false);
             holder.textViewDeptName.setText("Electrical and Electronics Engineering");
             holder.textViewDeptId.setText("EEE");
-            holder.textViewOpened.setText("2017-2018 Summer");
-            holder.textViewClosed.setText("2020-2021 Summer");
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' onBindViewHolder method.");
@@ -91,8 +89,6 @@ class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {
     public CheckBox checkBox;
     public TextView textViewDeptName;
     public TextView textViewDeptId;
-    public TextView textViewOpened;
-    public TextView textViewClosed;
 
     public ViewHolder_Main_Admin_Departments(View view) {
         super(view);
@@ -100,8 +96,6 @@ class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {
             checkBox = view.findViewById(R.id.checkBox);
             textViewDeptName = view.findViewById(R.id.textView_dept_name);
             textViewDeptId = view.findViewById(R.id.textView_dept_id);
-            textViewOpened = view.findViewById(R.id.textView_opened);
-            textViewClosed = view.findViewById(R.id.textView_closed);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on ViewHolder_Main_Admin_Departments class' constructor method.");

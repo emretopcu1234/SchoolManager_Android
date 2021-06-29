@@ -23,7 +23,7 @@
     <string name="button_indicator_cancel">Cancel</string>
     <string name="button_indicator_delete">Delete</string>
     <string name="button_indicator_add">Add</string>
-    <string name="main_admin_departments_dept_name">Name</string>
+    <string name="main_admin_departments_dept_name">Department Name</string>
     <string name="main_admin_departments_dept_id">ID</string>
     <string name="main_admin_departments_opened">Opened</string>
     <string name="main_admin_departments_closed">Closed</string>
@@ -31,5 +31,16 @@
     <string name="main_admin_dept_admins_name">Name</string>
     <string name="main_admin_dept_admins_surname">Surname</string>
     <string name="main_admin_dept_admins_dept_name">Dept.</string>
+    <string name="main_admin_lecturers_id">ID</string>
+    <string name="main_admin_lecturers_name">Name</string>
+    <string name="main_admin_lecturers_surname">Surname</string>
+    <string name="main_admin_lecturers_dept_name">Dept.</string>
+    <string name="main_admin_students_id">ID</string>
+    <string name="main_admin_students_name">Name</string>
+    <string name="main_admin_students_surname">Surname</string>
+    <string name="main_admin_students_dept_name">Dept.</string>
+    <string name="main_admin_semester">Semester</string>
+    <string name="main_admin_semester_start">Start</string>
+    <string name="main_admin_semester_end">End</string>
 
 </resources>

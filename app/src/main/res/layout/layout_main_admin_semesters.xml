@@ -15,6 +15,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.92"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.62" />
+
     <fragment
         android:id="@+id/fragment_main_admin_user_and_semester"
         android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
@@ -48,31 +62,56 @@
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@id/textView_menu_indicator"/>
 
-    <Button
-        android:id="@+id/button_select_cancel"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView_semester"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_indicator_select"
-        android:textColor="@color/light_black"
-        android:textSize="20sp"
-        android:background="@android:color/transparent"
+        android:text="@string/main_admin_semester"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="40dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"/>
 
-    <Button
-        android:id="@+id/button_add_delete"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView_start"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_indicator_add"
-        android:textColor="@color/light_black"
-        android:textSize="20sp"
-        android:background="@android:color/transparent"
+        android:text="@string/main_admin_semester_start"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_semester"
+        app:layout_constraintBottom_toBottomOf="@id/textView_semester"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/textView_end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_admin_semester_end"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_semester"
+        app:layout_constraintBottom_toBottomOf="@id/textView_semester"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        android:layout_marginLeft="5dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintTop_toBottomOf="@id/textView_semester"
+        app:layout_constraintBottom_toTopOf="@id/separator3"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="40dp"/>
 
     <View
         android:id="@+id/separator3"

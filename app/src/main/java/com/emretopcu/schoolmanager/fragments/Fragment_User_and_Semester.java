@@ -44,7 +44,6 @@ public class Fragment_User_and_Semester extends Fragment {
             view = inflater.inflate(R.layout.fragment_user_and_semester, container, false);
 
             ArrayList<String> semesters = new ArrayList<>();
-            semesters.add("All Semesters");
             semesters.add("2017-2018 Fall");
             semesters.add("2017-2018 Spring");
             semesters.add("2017-2018 Summer");
