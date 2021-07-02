@@ -42,5 +42,17 @@
     <string name="main_admin_semester">Semester</string>
     <string name="main_admin_semester_start">Start</string>
     <string name="main_admin_semester_end">End</string>
+    <string name="dept_admin_courses_id">ID</string>
+    <string name="dept_admin_courses_name">Course Name</string>
+    <string name="dept_admin_courses_sections">Sections</string>
+    <string name="dept_admin_courses_lecturer">Lecturer</string>
+    <string name="dept_admin_lecturers_id">ID</string>
+    <string name="dept_admin_lecturers_name">Name</string>
+    <string name="dept_admin_lecturers_surname">Surname</string>
+    <string name="dept_admin_lecturers_dept_name">Dept.</string>
+    <string name="dept_admin_students_id">ID</string>
+    <string name="dept_admin_students_name">Name</string>
+    <string name="dept_admin_students_surname">Surname</string>
+    <string name="dept_admin_students_dept_name">Dept.</string>
 
 </resources>

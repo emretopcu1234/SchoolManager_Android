@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_indicator_select"
         android:textColor="@color/light_black"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_indicator_add"
         android:textColor="@color/light_black"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
@@ -237,7 +237,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"/>
-
 
     <View
         android:id="@+id/separator3"
