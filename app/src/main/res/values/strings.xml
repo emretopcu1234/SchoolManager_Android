@@ -54,5 +54,13 @@
     <string name="dept_admin_students_name">Name</string>
     <string name="dept_admin_students_surname">Surname</string>
     <string name="dept_admin_students_dept_name">Dept.</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+    <string name="grade_weight">Weight</string>
+    <string name="grade_average_result">Average Result</string>
+    <string name="grade_average_point">Average Point</string>
+    <string name="grade_result">Result</string>
+    <string name="grade_point">Point</string>
+    <string name="grade_total">TOTAL</string>
 
 </resources>

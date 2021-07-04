@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolManager">
-        <activity android:name=".activities.Activity_Dept_Admin_Specific_Course">
+        <activity android:name=".activities.Activity_Student_Grades">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +33,12 @@
         <activity android:name=".activities.Activity_Dept_Admin_Lecturers"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Dept_Admin_Students"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Dept_Admin_Specific_Course"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Lecturer_Announcements"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Student_Announcements"
             android:screenOrientation="portrait"/>
     </application>
 
