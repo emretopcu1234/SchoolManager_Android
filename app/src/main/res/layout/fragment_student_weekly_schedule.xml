@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_gray">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9"/>
+
+    <View
+        android:id="@+id/separator_V1"
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"/>
+
+    <View
+        android:id="@+id/separator_V2"
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"/>
+
+    <View
+        android:id="@+id/separator_H0"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:id="@+id/separator_H1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H1"/>
+
+    <View
+        android:id="@+id/separator_H2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H2"/>
+
+    <View
+        android:id="@+id/separator_H3"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H3"/>
+
+    <View
+        android:id="@+id/separator_H4"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H4"/>
+
+    <View
+        android:id="@+id/separator_H5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H5"/>
+
+    <View
+        android:id="@+id/separator_H6"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H6"/>
+
+    <View
+        android:id="@+id/separator_H7"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H7"/>
+
+    <View
+        android:id="@+id/separator_H8"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H8"/>
+
+    <View
+        android:id="@+id/separator_H9"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_H9"/>
+
+    <View
+        android:id="@+id/separator_H10"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView_dummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="@id/separator_H0"
+        app:layout_constraintBottom_toTopOf="@id/separator_H1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="08:00-08:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H1"
+        app:layout_constraintBottom_toTopOf="@id/separator_H2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="09:00-09:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H2"
+        app:layout_constraintBottom_toTopOf="@id/separator_H3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="10:00-10:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H3"
+        app:layout_constraintBottom_toTopOf="@id/separator_H4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="11:00-11:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H4"
+        app:layout_constraintBottom_toTopOf="@id/separator_H5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="12:00-12:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H5"
+        app:layout_constraintBottom_toTopOf="@id/separator_H6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="13:00-13:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H6"
+        app:layout_constraintBottom_toTopOf="@id/separator_H7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="14:00-14:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H7"
+        app:layout_constraintBottom_toTopOf="@id/separator_H8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="15:00-15:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H8"
+        app:layout_constraintBottom_toTopOf="@id/separator_H9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_hour9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="16:00-16:50"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator_H9"
+        app:layout_constraintBottom_toTopOf="@id/separator_H10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/separator_V1" />
+
+    <TextView
+        android:id="@+id/textView_day1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="MONDAY"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="@id/separator_H0"
+        app:layout_constraintBottom_toTopOf="@id/separator_H1"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H1"
+        app:layout_constraintBottom_toTopOf="@id/separator_H2"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H2"
+        app:layout_constraintBottom_toTopOf="@id/separator_H3"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H3"
+        app:layout_constraintBottom_toTopOf="@id/separator_H4"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H4"
+        app:layout_constraintBottom_toTopOf="@id/separator_H5"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H5"
+        app:layout_constraintBottom_toTopOf="@id/separator_H6"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H6"
+        app:layout_constraintBottom_toTopOf="@id/separator_H7"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H7"
+        app:layout_constraintBottom_toTopOf="@id/separator_H8"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H8"
+        app:layout_constraintBottom_toTopOf="@id/separator_H9"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day1_hour9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H9"
+        app:layout_constraintBottom_toTopOf="@id/separator_H10"
+        app:layout_constraintStart_toStartOf="@id/separator_V1"
+        app:layout_constraintEnd_toStartOf="@id/separator_V2" />
+
+    <TextView
+        android:id="@+id/textView_day2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="TUESDAY"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="@id/separator_H0"
+        app:layout_constraintBottom_toTopOf="@id/separator_H1"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H1"
+        app:layout_constraintBottom_toTopOf="@id/separator_H2"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H2"
+        app:layout_constraintBottom_toTopOf="@id/separator_H3"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H3"
+        app:layout_constraintBottom_toTopOf="@id/separator_H4"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H4"
+        app:layout_constraintBottom_toTopOf="@id/separator_H5"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H5"
+        app:layout_constraintBottom_toTopOf="@id/separator_H6"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H6"
+        app:layout_constraintBottom_toTopOf="@id/separator_H7"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H7"
+        app:layout_constraintBottom_toTopOf="@id/separator_H8"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_day2_hour8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H8"
+        app:layout_constraintBottom_toTopOf="@id/separator_H9"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView_day2_hour9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="IE 251 - Section 5"
+        android:textColor="@color/light_black"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/separator_H9"
+        app:layout_constraintBottom_toTopOf="@id/separator_H10"
+        app:layout_constraintStart_toStartOf="@id/separator_V2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
