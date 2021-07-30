@@ -18,8 +18,8 @@ public class Fragment_Student_Weekly_Schedule extends Fragment {
     View view;
     TextView textViewDay1;
     TextView textViewDay2;
-    TextView[] textViewDay1Hours = new TextView[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS];
-    TextView[] textViewDay2Hours = new TextView[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS];
+    TextView[] textViewDay1Hours = new TextView[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
+    TextView[] textViewDay2Hours = new TextView[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
 
 
     public Fragment_Student_Weekly_Schedule() {

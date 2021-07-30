@@ -47,10 +47,225 @@
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@id/textView_menu_indicator"/>
 
+    <Button
+        android:id="@+id/button_this_week"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/arrow_previous"
+        app:backgroundTint="@color/light_black"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_next_week"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/arrow_next"
+        app:backgroundTint="@color/light_black"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"/>
+
+    <TextView
+        android:id="@+id/textView_this_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_this_week"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintStart_toEndOf="@id/button_this_week"/>
+
+    <TextView
+        android:id="@+id/textView_next_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_next_week"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintEnd_toStartOf="@id/button_next_week"/>
+
+    <TextView
+        android:id="@+id/textView_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="05.02.2020 - 11.02.2020"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintStart_toEndOf="@id/textView_this_week"
+        app:layout_constraintEnd_toStartOf="@id/textView_next_week"
+        android:padding="5dp"/>
+
     <View
         android:id="@+id/separator3"
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textView_date"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="3"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_constraintBottom_toTopOf="@id/separator4">
+
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <fragment
+            android:id="@+id/fragment2"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <fragment
+            android:id="@+id/fragment3"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator4"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/button_available"/>
+
+    <Button
+        android:id="@+id/button_available"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/light_gray_for_appointment"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_not_available"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_available"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_available"
+        app:layout_constraintBottom_toBottomOf="@id/button_available"
+        app:layout_constraintStart_toEndOf="@id/button_available"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_accepted"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/green"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_not_available"
+        app:layout_constraintStart_toEndOf="@id/textView_available"/>
+
+    <TextView
+        android:id="@+id/textView_accepted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_accepted"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_accepted"
+        app:layout_constraintBottom_toBottomOf="@id/button_accepted"
+        app:layout_constraintStart_toEndOf="@id/button_accepted"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_requested"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/yellow"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_not_available"
+        app:layout_constraintStart_toEndOf="@id/textView_accepted"/>
+
+    <TextView
+        android:id="@+id/textView_requested"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_requested"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_accepted"
+        app:layout_constraintBottom_toBottomOf="@id/button_accepted"
+        app:layout_constraintStart_toEndOf="@id/button_requested"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_not_available"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/gray"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/separator5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView_not_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_not_available"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_not_available"
+        app:layout_constraintBottom_toBottomOf="@id/button_not_available"
+        app:layout_constraintStart_toEndOf="@id/button_not_available"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_rejected_cancelled"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/red"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/separator5"
+        app:layout_constraintStart_toEndOf="@id/textView_not_available"/>
+
+    <TextView
+        android:id="@+id/textView_rejected_cancelled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_appointments_rejected_cancelled"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_rejected_cancelled"
+        app:layout_constraintBottom_toBottomOf="@id/button_rejected_cancelled"
+        app:layout_constraintStart_toEndOf="@id/button_rejected_cancelled"
+        android:layout_marginStart="5dp"/>
+
+    <View
+        android:id="@+id/separator5"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
         android:background="@color/black"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_student"/>
 

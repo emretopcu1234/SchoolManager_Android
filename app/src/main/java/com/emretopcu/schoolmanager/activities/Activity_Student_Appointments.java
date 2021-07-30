@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import com.emretopcu.schoolmanager.R;
 
-public class Activity_Student_Weekly_Schedule extends AppCompatActivity {
+public class Activity_Student_Appointments extends AppCompatActivity {
 
 
 
@@ -14,17 +14,14 @@ public class Activity_Student_Weekly_Schedule extends AppCompatActivity {
 
         try{
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.layout_student_weekly_schedule);
+            setContentView(R.layout.layout_student_appointments);
 
 
         }
         catch(Exception e){
-            Log.d("Exception", "Exception on Activity_Student_Weekly_Schedule class' onCreate method.");
+            Log.d("Exception", "Exception on Activity_Student_Appointments class' onCreate method.");
         }
 
 
     }
 }
-
-
-

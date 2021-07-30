@@ -328,11 +328,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour1"
+    <Button
+        android:id="@+id/button_day1_hour1"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -342,11 +342,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour2"
+    <Button
+        android:id="@+id/button_day1_hour2"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -356,11 +356,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour3"
+    <Button
+        android:id="@+id/button_day1_hour3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -370,11 +370,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour4"
+    <Button
+        android:id="@+id/button_day1_hour4"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -384,11 +384,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour5"
+    <Button
+        android:id="@+id/button_day1_hour5"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -398,11 +398,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour6"
+    <Button
+        android:id="@+id/button_day1_hour6"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -412,11 +412,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour7"
+    <Button
+        android:id="@+id/button_day1_hour7"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -426,11 +426,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour8"
+    <Button
+        android:id="@+id/button_day1_hour8"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -440,11 +440,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V1"
         app:layout_constraintEnd_toStartOf="@id/separator_V2" />
 
-    <TextView
-        android:id="@+id/textView_day1_hour9"
+    <Button
+        android:id="@+id/button_day1_hour9"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -468,11 +468,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour1"
+    <Button
+        android:id="@+id/button_day2_hour1"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -482,11 +482,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour2"
+    <Button
+        android:id="@+id/button_day2_hour2"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -496,11 +496,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour3"
+    <Button
+        android:id="@+id/button_day2_hour3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -510,11 +510,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour4"
+    <Button
+        android:id="@+id/button_day2_hour4"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -524,11 +524,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour5"
+    <Button
+        android:id="@+id/button_day2_hour5"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -538,11 +538,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour6"
+    <Button
+        android:id="@+id/button_day2_hour6"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -552,11 +552,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour7"
+    <Button
+        android:id="@+id/button_day2_hour7"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -566,11 +566,11 @@
         app:layout_constraintStart_toStartOf="@id/separator_V2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour8"
+    <Button
+        android:id="@+id/button_day2_hour8"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"
@@ -578,13 +578,13 @@
         app:layout_constraintTop_toBottomOf="@id/separator_H8"
         app:layout_constraintBottom_toTopOf="@id/separator_H9"
         app:layout_constraintStart_toStartOf="@id/separator_V2"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_day2_hour9"
+    <Button
+        android:id="@+id/button_day2_hour9"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="IE 251 - Section 5"
+        android:layout_height="wrap_content"
+        android:text="IE 251 - A.YILMAZ"
         android:textColor="@color/light_black"
         android:textSize="15sp"
         android:gravity="center"

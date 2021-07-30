@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolManager">
-        <activity android:name=".activities.Activity_Student_Weekly_Schedule">
+        <activity android:name=".activities.Activity_Student_Appointments">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,6 +41,8 @@
         <activity android:name=".activities.Activity_Student_Announcements"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Student_Grades"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Student_Weekly_Schedule"
             android:screenOrientation="portrait"/>
     </application>
 

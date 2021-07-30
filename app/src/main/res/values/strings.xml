@@ -62,5 +62,11 @@
     <string name="grade_result">Result</string>
     <string name="grade_point">Point</string>
     <string name="grade_total">TOTAL</string>
-
+    <string name="student_appointments_this_week">This Week</string>
+    <string name="student_appointments_next_week">Next Week</string>
+    <string name="student_appointments_available">Available</string>
+    <string name="student_appointments_requested">Requested</string>
+    <string name="student_appointments_accepted">Accepted</string>
+    <string name="student_appointments_not_available">Not Available</string>
+    <string name="student_appointments_rejected_cancelled">Rejected/Cancelled</string>
 </resources>

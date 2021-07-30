@@ -10,4 +10,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#707070</color>
     <color name="light_gray">#B0B0B0</color>
+    <color name="light_gray_for_appointment">#999999</color>
+    <color name="green">#006600</color>
+    <color name="red">#990000</color>
+    <color name="yellow">#CCCC00</color>
 </resources>
