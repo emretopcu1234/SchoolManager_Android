@@ -14,6 +14,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.92"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55"/>
+
     <fragment
         android:id="@+id/fragment_lecturer_user_and_semester"
         android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
@@ -47,13 +61,157 @@
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@id/textView_menu_indicator"/>
 
+    <Button
+        android:id="@+id/button_this_week"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/arrow_previous"
+        app:backgroundTint="@color/light_black"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="5dp"/>
 
+    <Button
+        android:id="@+id/button_next_week"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/arrow_next"
+        app:backgroundTint="@color/light_black"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"/>
 
+    <TextView
+        android:id="@+id/textView_this_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_weekly_schedule_and_appointments_this_week"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintStart_toEndOf="@id/button_this_week"/>
 
+    <TextView
+        android:id="@+id/textView_next_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_weekly_schedule_and_appointments_next_week"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/textView_date"
+        app:layout_constraintBottom_toBottomOf="@id/textView_date"
+        app:layout_constraintEnd_toStartOf="@id/button_next_week"/>
 
+    <TextView
+        android:id="@+id/textView_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="05.02.2020 - 11.02.2020"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintStart_toEndOf="@id/textView_this_week"
+        app:layout_constraintEnd_toStartOf="@id/textView_next_week"
+        android:padding="5dp"/>
 
     <View
         android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textView_date"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="3"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_constraintBottom_toTopOf="@id/separator4">
+
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Lecturer_Weekly_Schedule_and_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <fragment
+            android:id="@+id/fragment2"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Lecturer_Weekly_Schedule_and_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <fragment
+            android:id="@+id/fragment3"
+            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Lecturer_Weekly_Schedule_and_Appointments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator4"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/button_course_hour"/>
+
+    <Button
+        android:id="@+id/button_course_hour"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/gray"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/separator5"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"/>
+
+    <TextView
+        android:id="@+id/textView_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_weekly_schedule_and_appointments_course_hour"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_course_hour"
+        app:layout_constraintBottom_toBottomOf="@id/button_course_hour"
+        app:layout_constraintStart_toEndOf="@id/button_course_hour"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_appointment_hour"
+        android:layout_width="15dp"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/light_gray_for_appointment"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/separator5"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"/>
+
+    <TextView
+        android:id="@+id/textView_appointment_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_weekly_schedule_and_appointments_appointment_hour"
+        android:textSize="15sp"
+        android:textColor="@color/light_black"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/button_appointment_hour"
+        app:layout_constraintBottom_toBottomOf="@id/button_appointment_hour"
+        app:layout_constraintStart_toEndOf="@id/button_appointment_hour"
+        android:layout_marginStart="5dp"/>
+
+    <View
+        android:id="@+id/separator5"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"

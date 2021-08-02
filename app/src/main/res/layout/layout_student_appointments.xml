@@ -14,6 +14,41 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.92"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"/>
+
     <fragment
         android:id="@+id/fragment_user_and_semester"
         android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
@@ -159,7 +194,7 @@
         android:backgroundTint="@color/light_gray_for_appointment"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/button_not_available"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"/>
 
     <TextView
         android:id="@+id/textView_available"
@@ -181,7 +216,7 @@
         android:backgroundTint="@color/green"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/button_not_available"
-        app:layout_constraintStart_toEndOf="@id/textView_available"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V3"/>
 
     <TextView
         android:id="@+id/textView_accepted"
@@ -203,7 +238,7 @@
         android:backgroundTint="@color/yellow"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/button_not_available"
-        app:layout_constraintStart_toEndOf="@id/textView_accepted"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V5"/>
 
     <TextView
         android:id="@+id/textView_requested"
@@ -225,7 +260,7 @@
         android:backgroundTint="@color/gray"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/separator5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"/>
 
     <TextView
         android:id="@+id/textView_not_available"
@@ -247,7 +282,7 @@
         android:backgroundTint="@color/red"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/separator5"
-        app:layout_constraintStart_toEndOf="@id/textView_not_available"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_V4"/>
 
     <TextView
         android:id="@+id/textView_rejected_cancelled"

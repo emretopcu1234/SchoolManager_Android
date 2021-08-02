@@ -38,7 +38,7 @@
         android:id="@+id/textView_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="30001"
+        android:text="10001"
         android:textSize="20sp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"

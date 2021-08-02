@@ -19,10 +19,10 @@
     <string name="menu_student_weekly_schedule">Weekly Schedule</string>
     <string name="menu_student_appointments">Appointments</string>
     <string name="fragment_user_and_semester_spinner_label">Semester</string>
-    <string name="button_indicator_select">Select</string>
-    <string name="button_indicator_cancel">Cancel</string>
-    <string name="button_indicator_delete">Delete</string>
-    <string name="button_indicator_add">Add</string>
+    <string name="button_indicator_select">SELECT</string>
+    <string name="button_indicator_cancel">CANCEL</string>
+    <string name="button_indicator_delete">DELETE</string>
+    <string name="button_indicator_add">ADD</string>
     <string name="main_admin_departments_dept_name">Department Name</string>
     <string name="main_admin_departments_dept_id">ID</string>
     <string name="main_admin_departments_opened">Opened</string>
@@ -69,4 +69,12 @@
     <string name="student_appointments_accepted">Accepted</string>
     <string name="student_appointments_not_available">Not Available</string>
     <string name="student_appointments_rejected_cancelled">Rejected/Cancelled</string>
+    <string name="lecturer_participants_id">ID</string>
+    <string name="lecturer_participants_name">Name</string>
+    <string name="lecturer_participants_surname">Surname</string>
+    <string name="lecturer_participants_dept_name">Dept.</string>
+    <string name="lecturer_weekly_schedule_and_appointments_this_week">This Week</string>
+    <string name="lecturer_weekly_schedule_and_appointments_next_week">Next Week</string>
+    <string name="lecturer_weekly_schedule_and_appointments_course_hour">Course Hour</string>
+    <string name="lecturer_weekly_schedule_and_appointments_appointment_hour">Appointment Hour</string>
 </resources>
