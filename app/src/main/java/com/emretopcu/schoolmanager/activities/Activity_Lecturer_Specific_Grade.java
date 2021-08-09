@@ -15,17 +15,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Dialog_Lecturer_Participants;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Lecturer_Participants;
+import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Dept_Admin_Specific_Course_Students;
 import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Lecturer_Specific_Grade_Students;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
 
 import java.util.ArrayList;
 
-public class Activity_Lecturer_Participants extends AppCompatActivity {
+public class Activity_Lecturer_Specific_Grade extends AppCompatActivity {
 
-    private RecyclerViewAdapter_Lecturer_Participants adapter;
-    private RecyclerView recyclerViewLecturerParticipants;
+    private RecyclerViewAdapter_Lecturer_Specific_Grade_Students adapter;
+    private RecyclerView recyclerViewLecturerSpecificGradeStudents;
     private LinearLayoutManager layoutManager;
 
     private AlertDialog.Builder builder;
@@ -33,26 +31,25 @@ public class Activity_Lecturer_Participants extends AppCompatActivity {
     private AlertDialog alertDialog;
     private Button button;
 
-    private RecyclerViewAdapter_Dialog_Lecturer_Participants adapterDialog;
-    private RecyclerView recyclerViewDialogLecturerParticipants;
-    private LinearLayoutManager layoutManagerDialog;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         try{
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.layout_lecturer_participants);
+            setContentView(R.layout.layout_lecturer_specific_grade);
 
-            recyclerViewLecturerParticipants = findViewById(R.id.recyclerView);
+
+            recyclerViewLecturerSpecificGradeStudents = findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
 
-            adapter = new RecyclerViewAdapter_Lecturer_Participants(this);
-            recyclerViewLecturerParticipants.setLayoutManager(layoutManager);
-            recyclerViewLecturerParticipants.setAdapter(adapter);
+            adapter = new RecyclerViewAdapter_Lecturer_Specific_Grade_Students(this);
+            recyclerViewLecturerSpecificGradeStudents.setLayoutManager(layoutManager);
+            recyclerViewLecturerSpecificGradeStudents.setAdapter(adapter);
 
-            button = (Button) findViewById(R.id.button_search_id);
+
+
+
+            button = (Button) findViewById(R.id.button_add_delete);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,11 +58,13 @@ public class Activity_Lecturer_Participants extends AppCompatActivity {
             });
 
             builder = new AlertDialog.Builder(this);
-            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_lecturer_participants, null);
+            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_lecturer_specific_grade, null);
             builder.setView(viewDialog);
             alertDialog = builder.create();
             alertDialog.setCancelable(false);
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
 
             ArrayList<String> students = new ArrayList<>();
             students.add("1938794 - Emre Mehmet DENKGENCER");
@@ -93,25 +92,15 @@ public class Activity_Lecturer_Participants extends AppCompatActivity {
 
 
 
-
-
-
-
-            recyclerViewDialogLecturerParticipants = viewDialog.findViewById(R.id.recyclerView);
-            layoutManagerDialog = new LinearLayoutManager(this);
-
-            adapterDialog = new RecyclerViewAdapter_Dialog_Lecturer_Participants(this);
-            recyclerViewDialogLecturerParticipants.setLayoutManager(layoutManagerDialog);
-            recyclerViewDialogLecturerParticipants.setAdapter(adapterDialog);
-
-
         }
         catch(Exception e){
-            Log.d("Exception", "Exception on Activity_Lecturer_Participants class' onCreate method.");
+            Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' onCreate method.");
         }
 
 
     }
 }
+
+
 
 

@@ -33,10 +33,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.82" />
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
 
     <fragment
-        android:id="@+id/fragment_dept_admin_user_and_semester"
+        android:id="@+id/fragment_lecturer_user_and_semester"
         android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,13 +55,13 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/fragment_dept_admin_user_and_semester"/>
+        app:layout_constraintTop_toBottomOf="@id/fragment_lecturer_user_and_semester"/>
 
     <TextView
-        android:id="@+id/textView_menu_indicator"
+        android:id="@+id/textView_courses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/menu_dept_admin_courses"
+        android:text="@string/menu_lecturer_grades"
         android:textSize="35sp"
         android:textColor="@color/light_black"
         android:gravity="center_horizontal"
@@ -66,7 +73,58 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/textView_menu_indicator"/>
+        app:layout_constraintTop_toBottomOf="@id/textView_courses"/>
+
+    <View
+        android:id="@+id/dummy_background"
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/separator2"/>
+
+    <TextView
+        android:id="@+id/textView_course_code_and_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IE 265 - Section 3"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_course_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Introduction to Economics"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        app:layout_constraintTop_toBottomOf="@id/textView_course_code_and_section"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_exam_type_and_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz 2 (15%)"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        app:layout_constraintTop_toBottomOf="@id/textView_course_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/dummy_background"/>
 
     <Button
         android:id="@+id/button_select_cancel"
@@ -77,7 +135,7 @@
         android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
         android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"/>
 
@@ -90,7 +148,7 @@
         android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"/>
 
@@ -117,7 +175,7 @@
         android:id="@+id/textView_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/dept_admin_courses_id"
+        android:text="@string/lecturer_students_id"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
@@ -148,7 +206,7 @@
         android:id="@+id/textView_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/dept_admin_courses_name"
+        android:text="@string/lecturer_students_name"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/textView_id"
@@ -156,16 +214,47 @@
         app:layout_constraintStart_toEndOf="@id/button_search_name"
         android:layout_marginLeft="5dp"/>
 
+    <Button
+        android:id="@+id/button_search_surname"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/search"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2" />
+
+    <Button
+        android:id="@+id/button_cancel_search_surname"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:background="@drawable/cancel"
+        app:backgroundTint="@color/black"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        android:visibility="invisible"/>
+
     <TextView
-        android:id="@+id/textView_section"
+        android:id="@+id/textView_surname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/dept_admin_courses_sections"
+        android:text="@string/lecturer_students_surname"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/textView_id"
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
-        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        app:layout_constraintStart_toEndOf="@id/button_search_surname"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/textView_grade"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_students_grade"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3"
         android:layout_marginLeft="5dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -175,20 +264,20 @@
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
         app:layout_constraintTop_toBottomOf="@id/textView_id"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
+        app:layout_constraintBottom_toTopOf="@id/separator4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"/>
 
     <View
-        android:id="@+id/separator3"
+        android:id="@+id/separator4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_dept_admin"/>
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_lecturer"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_dept_admin"
+        android:id="@+id/bottom_navigation_lecturer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/gray"
@@ -197,7 +286,7 @@
         app:layout_constraintTop_toTopOf="@id/guideline_H1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_dept_admin"
+        app:menu="@menu/menu_lecturer"
         app:labelVisibilityMode="unlabeled"
         app:itemIconSize="50dp"
         app:itemIconTint="@drawable/background_menu">

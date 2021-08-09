@@ -25,7 +25,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.57" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.87" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -45,7 +52,7 @@
         android:id="@+id/textView_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="IE 265"
+        android:text="30001"
         android:textSize="20sp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +66,7 @@
         android:id="@+id/textView_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Introduction to Economics"
+        android:text="Ahmet"
         android:textSize="20sp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
@@ -70,19 +77,33 @@
         android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:id="@+id/textView_sections"
+        android:id="@+id/textView_surname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="5"
+        android:text="Yılmaz"
         android:textSize="20sp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        app:layout_constraintEnd_toStartOf="@id/guideline_V3"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_grade"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="35"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_V3"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginStart="5dp"/>
 
     <View
         android:id="@+id/separator"

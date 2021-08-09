@@ -4,17 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
+
+import java.util.ArrayList;
 
 public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
 
     private RecyclerViewAdapter_Main_Admin_Lecturers adapter;
     private RecyclerView recyclerViewMainAdminLecturers;
     private LinearLayoutManager layoutManager;
+
+    private AlertDialog.Builder builder;
+    private View viewDialog;
+    private AlertDialog alertDialog;
+    private Button button;
 
 
     @Override
@@ -30,6 +44,59 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
             adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this);
             recyclerViewMainAdminLecturers.setLayoutManager(layoutManager);
             recyclerViewMainAdminLecturers.setAdapter(adapter);
+
+
+
+
+
+
+
+            button = (Button) findViewById(R.id.button_add_delete);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.show();
+                }
+            });
+
+            builder = new AlertDialog.Builder(this);
+            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_students_lecturers_dept_admins, null);
+            builder.setView(viewDialog);
+            alertDialog = builder.create();
+            alertDialog.setCancelable(false);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            ArrayList<String> semesters = new ArrayList<>();
+            semesters.add("2017-2018 Spring");
+            semesters.add("2017-2018 Fall ayni hhgfgdf");
+            semesters.add("2017-2018 Summer");
+            semesters.add("2018-2019 Fall");
+            semesters.add("2018-2019 Spring");
+            semesters.add("2018-2019 Summer");
+            semesters.add("2019-2020 Fall");
+            semesters.add("2019-2020 Spring");
+            semesters.add("2019-2020 Summer");
+            semesters.add("2020-2021 Fall");
+            semesters.add("2020-2021 Spring");
+            semesters.add("2020-2021 Summer");
+            // TODO input olarak gelecek.
+
+            Spinner spinner = (Spinner) viewDialog.findViewById(R.id.spinner);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(arrayAdapter);
 
 
         }

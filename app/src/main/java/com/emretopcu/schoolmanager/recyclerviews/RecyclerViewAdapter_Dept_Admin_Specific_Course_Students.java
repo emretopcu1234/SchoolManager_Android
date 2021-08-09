@@ -45,6 +45,7 @@ public class RecyclerViewAdapter_Dept_Admin_Specific_Course_Students extends Rec
     public void onBindViewHolder(ViewHolder_DASCS viewHolder, int position) {
         try{
             final ViewHolder_Dept_Admin_Specific_Course_Students holder = (ViewHolder_Dept_Admin_Specific_Course_Students) viewHolder;
+            holder.checkBox.setChecked(false);
             holder.textViewId.setText("30016");
             holder.textViewName.setText("Ahmet Mehmet");
             holder.textViewSurname.setText("KAYIŞOĞLU");
@@ -85,6 +86,7 @@ class ViewHolder_DASCS extends RecyclerView.ViewHolder {
 
 class ViewHolder_Dept_Admin_Specific_Course_Students extends ViewHolder_DASCS {
 
+    public CheckBox checkBox;
     public TextView textViewId;
     public TextView textViewName;
     public TextView textViewSurname;
@@ -93,6 +95,7 @@ class ViewHolder_Dept_Admin_Specific_Course_Students extends ViewHolder_DASCS {
     public ViewHolder_Dept_Admin_Specific_Course_Students(View view) {
         super(view);
         try{
+            checkBox = view.findViewById(R.id.checkBox);
             textViewId = view.findViewById(R.id.textView_id);
             textViewName = view.findViewById(R.id.textView_name);
             textViewSurname = view.findViewById(R.id.textView_surname);

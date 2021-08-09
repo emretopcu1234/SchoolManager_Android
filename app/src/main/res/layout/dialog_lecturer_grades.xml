@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/background_dialog"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginLeft="110dp"
+        android:layout_marginRight="110dp">
+
+        <EditText
+            android:id="@+id/editText_exam_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/hint_exam_type"
+            android:maxLength="20"
+            android:textSize="25sp"
+            app:backgroundTint="@color/light_gray"
+            android:gravity="left"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editText_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:digits="1234567890."
+            android:hint="@string/hint_weight"
+            android:maxLength="5"
+            android:textSize="25sp"
+            app:backgroundTint="@color/light_gray"
+            android:gravity="left"
+            android:layout_margin="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <Button
+                android:id="@+id/button_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="@string/dialog_cancel"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <Button
+                android:id="@+id/button_ok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="@string/dialog_ok"
+                android:textColor="@color/light_black"
+                android:textSize="24sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
