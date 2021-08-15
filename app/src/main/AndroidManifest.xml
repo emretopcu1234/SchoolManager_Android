@@ -11,10 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolManager">
-        <activity android:name=".activities.Activity_Lecturer_Participants">
+        <activity android:name=".activities.Activity_Initial">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -32,9 +31,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Dept_Admin_Students"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Activity_Dept_Admin_Specific_Course"
-            android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Dept_Admin_Courses"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Dept_Admin_Specific_Course"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Lecturer_Specific_Grade"
             android:screenOrientation="portrait"/>
@@ -44,11 +43,19 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Lecturer_Grades"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Lecturer_Participants"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Lecturer_Course_Notes"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Lecturer_Specific_Appointment"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Student_Announcements"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Student_Grades"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Student_Weekly_Schedule"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Activity_Student_Course_Notes"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Student_Appointments"
             android:screenOrientation="portrait"/>

@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_menu_indicator"/>
 
     <Button
-        android:id="@+id/button_this_week"
+        android:id="@+id/button_this_week_image"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:background="@drawable/arrow_previous"
@@ -95,7 +95,21 @@
         android:layout_marginStart="5dp"/>
 
     <Button
-        android:id="@+id/button_next_week"
+        android:id="@+id/button_this_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="This Week"
+        android:textSize="17sp"
+        android:textColor="@color/light_black"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintTop_toTopOf="@id/button_this_week_image"
+        app:layout_constraintBottom_toBottomOf="@id/button_this_week_image"
+        app:layout_constraintStart_toStartOf="@id/button_this_week_image" />
+
+    <Button
+        android:id="@+id/button_next_week_image"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:background="@drawable/arrow_next"
@@ -106,29 +120,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="5dp"/>
 
-    <TextView
-        android:id="@+id/textView_this_week"
+    <Button
+        android:id="@+id/button_next_week"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/student_appointments_this_week"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="Next Week"
         android:textSize="17sp"
         android:textColor="@color/light_black"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="@id/textView_date"
-        app:layout_constraintBottom_toBottomOf="@id/textView_date"
-        app:layout_constraintStart_toEndOf="@id/button_this_week"/>
-
-    <TextView
-        android:id="@+id/textView_next_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/student_appointments_next_week"
-        android:textSize="17sp"
-        android:textColor="@color/light_black"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="@id/textView_date"
-        app:layout_constraintBottom_toBottomOf="@id/textView_date"
-        app:layout_constraintEnd_toStartOf="@id/button_next_week"/>
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintTop_toTopOf="@id/button_next_week_image"
+        app:layout_constraintBottom_toBottomOf="@id/button_next_week_image"
+        app:layout_constraintEnd_toEndOf="@id/button_next_week_image" />
 
     <TextView
         android:id="@+id/textView_date"
@@ -137,10 +141,10 @@
         android:text="05.02.2020 - 11.02.2020"
         android:textSize="17sp"
         android:textColor="@color/light_black"
-        android:gravity="center"
+        android:gravity="right"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        app:layout_constraintStart_toEndOf="@id/textView_this_week"
-        app:layout_constraintEnd_toStartOf="@id/textView_next_week"
+        app:layout_constraintStart_toEndOf="@id/button_this_week"
+        app:layout_constraintEnd_toStartOf="@id/button_next_week"
         android:padding="5dp"/>
 
     <View

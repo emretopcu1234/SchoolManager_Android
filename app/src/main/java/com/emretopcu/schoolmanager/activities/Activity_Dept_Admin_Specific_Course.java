@@ -30,10 +30,15 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
     private RecyclerView recyclerViewDeptAdminSpecificCourseStudents;
     private LinearLayoutManager layoutManager;
 
-    private AlertDialog.Builder builder;
-    private View viewDialog;
-    private AlertDialog alertDialog;
-    private Button button;
+    private AlertDialog.Builder builderStudent;
+    private View viewDialogStudent;
+    private AlertDialog alertDialogStudent;
+    private Button buttonStudent;
+
+    private AlertDialog.Builder builderHour;
+    private View viewDialogHour;
+    private AlertDialog alertDialogHour;
+    private Button buttonHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,29 +113,28 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
 
 
-            button = (Button) findViewById(R.id.button_add_delete);
-            button.setOnClickListener(new View.OnClickListener() {
+            buttonStudent = (Button) findViewById(R.id.button_add_delete);
+            buttonStudent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    alertDialog.show();
+                    alertDialogStudent.show();
                 }
             });
 
-            builder = new AlertDialog.Builder(this);
-            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course, null);
-            builder.setView(viewDialog);
-            alertDialog = builder.create();
-            alertDialog.setCancelable(false);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            builderStudent = new AlertDialog.Builder(this);
+            viewDialogStudent = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_student, null);
+            builderStudent.setView(viewDialogStudent);
+            alertDialogStudent = builderStudent.create();
+            alertDialogStudent.setCancelable(false);
+            alertDialogStudent.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
             ArrayList<String> semesters = new ArrayList<>();
             semesters.add("Electrical and Electronics Engineeering");
             semesters.add("Civil Engineering");
             semesters.add("Mathematical Engineering");
-            semesters.add("Computer Engineering");
             // TODO input olarak gelecek.
 
-            Spinner spinnerDept = (Spinner) viewDialog.findViewById(R.id.spinner_dept);
+            Spinner spinnerDept = (Spinner) viewDialogStudent.findViewById(R.id.spinner_dept);
             spinnerDept.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -155,7 +159,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             students.add("1919230 - Adım Işıklı");
             // TODO input olarak gelecek.
 
-            Spinner spinnerStudent= (Spinner) viewDialog.findViewById(R.id.spinner_student);
+            Spinner spinnerStudent= (Spinner) viewDialogStudent.findViewById(R.id.spinner_student);
             spinnerStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -171,6 +175,104 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             ArrayAdapter arrayAdapterStudent = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, students);
             arrayAdapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerStudent.setAdapter(arrayAdapterStudent);
+
+
+
+
+
+
+
+            buttonHour = (Button) findViewById(R.id.button_add_course_hour);
+            buttonHour.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialogHour.show();
+                }
+            });
+
+            builderHour = new AlertDialog.Builder(this);
+            viewDialogHour = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_hour, null);
+            builderHour.setView(viewDialogHour);
+            alertDialogHour = builderHour.create();
+            alertDialogHour.setCancelable(false);
+            alertDialogHour.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            ArrayList<String> semesters1 = new ArrayList<>();
+            semesters1.add("Monday");
+            semesters1.add("Tuesday");
+            semesters1.add("Friday");
+            semesters1.add("Saturday");
+            // TODO input olarak gelecek.
+
+            Spinner spinnerDay = (Spinner) viewDialogHour.findViewById(R.id.spinner_day);
+            spinnerDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            ArrayAdapter arrayAdapterDay = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters1);
+            arrayAdapterDay.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDay.setAdapter(arrayAdapterDay);
+
+
+            ArrayList<String> startHour = new ArrayList<>();
+            startHour.add("09:00");
+            startHour.add("10:00");
+            startHour.add("11:00");
+            startHour.add("12:00");
+            // TODO input olarak gelecek.
+
+            Spinner spinnerStartHour = (Spinner) viewDialogHour.findViewById(R.id.spinner_start_hour);
+            spinnerStartHour.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            ArrayAdapter arrayAdapterStartHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, startHour);
+            arrayAdapterStartHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerStartHour.setAdapter(arrayAdapterStartHour);
+
+            ArrayList<String> endHour = new ArrayList<>();
+            endHour.add("09:50");
+            endHour.add("10:50");
+            endHour.add("11:50");
+            endHour.add("12:50");
+            // TODO input olarak gelecek.
+
+            Spinner spinnerEndHour = (Spinner) viewDialogHour.findViewById(R.id.spinner_end_hour);
+            spinnerEndHour.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            ArrayAdapter arrayAdapterEndHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, endHour);
+            arrayAdapterEndHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerEndHour.setAdapter(arrayAdapterEndHour);
+
+
+
+
 
 
 

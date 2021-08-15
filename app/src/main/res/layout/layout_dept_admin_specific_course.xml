@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92"/>
+        app:layout_constraintGuide_percent="0.9"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_V0"
@@ -42,45 +42,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.8" />
 
-    <fragment
-        android:id="@+id/fragment_dept_admin_user_and_semester"
-        android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_user_and_semester" />
-
-    <View
-        android:id="@+id/separator1"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/fragment_dept_admin_user_and_semester"/>
-
-    <TextView
-        android:id="@+id/textView_courses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/menu_dept_admin_courses"
-        android:textSize="35sp"
-        android:textColor="@color/light_black"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/separator1"
-        android:padding="5dp"/>
-
-    <View
-        android:id="@+id/separator2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/textView_courses"/>
-
     <View
         android:id="@+id/dummy_background"
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="0dp"
         android:background="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/separator2"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/button_reset_course_hour"/>
 
     <TextView
         android:id="@+id/textView_course_code"
@@ -90,7 +58,7 @@
         android:textSize="25sp"
         android:textColor="@color/light_black"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"/>
@@ -101,7 +69,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_spinner_dept_admin_specific_course"
         app:layout_constraintStart_toEndOf="@id/textView_course_code"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toTopOf="parent"
         android:popupBackground="@color/light_gray"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
@@ -145,10 +113,46 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"/>
 
+    <TextView
+        android:id="@+id/textView_course_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday 11:00-12:50\nWednesday 14:00-14:50"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        app:layout_constraintTop_toBottomOf="@id/textView_lecturer"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/button_add_course_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dept_admin_courses_add_course_hour"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/light_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_course_hours"
+        android:layout_marginStart="25dp"/>
+
+    <Button
+        android:id="@+id/button_reset_course_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dept_admin_courses_reset_course_hour"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/light_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_add_course_hour"
+        android:layout_marginStart="25dp"/>
+
     <View
-        android:id="@+id/separator3"
+        android:id="@+id/separator1"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@id/dummy_background"/>
 
@@ -161,8 +165,8 @@
         android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator3"
-        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/separator1"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="40dp"/>
 
     <Button
@@ -174,8 +178,8 @@
         android:textSize="25sp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator3"
-        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/separator1"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"/>
 
     <Button
@@ -206,8 +210,23 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
         app:layout_constraintStart_toEndOf="@id/button_search_id"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"/>
+
+    <EditText
+        android:id="@+id/editText_id"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="5"
+        android:textSize="20sp"
+        android:textCursorDrawable="@null"
+        android:gravity="left"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
+        app:layout_constraintStart_toEndOf="@id/button_search_id"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_search_name"
@@ -240,6 +259,22 @@
         app:layout_constraintStart_toEndOf="@id/button_search_name"
         android:layout_marginLeft="5dp"/>
 
+    <EditText
+        android:id="@+id/editText_name"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textSize="20sp"
+        android:textCursorDrawable="@null"
+        android:gravity="left"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toEndOf="@id/button_search_name"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"/>
+
     <Button
         android:id="@+id/button_search_surname"
         android:layout_width="20dp"
@@ -270,6 +305,22 @@
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
         app:layout_constraintStart_toEndOf="@id/button_search_surname"
         android:layout_marginLeft="5dp"/>
+
+    <EditText
+        android:id="@+id/editText_surname"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textSize="20sp"
+        android:textCursorDrawable="@null"
+        android:gravity="left"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
+        app:layout_constraintStart_toEndOf="@id/button_search_surname"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_filter_empty_closed"
@@ -309,32 +360,51 @@
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
         app:layout_constraintTop_toBottomOf="@id/textView_id"
-        app:layout_constraintBottom_toTopOf="@id/separator4"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"/>
 
     <View
-        android:id="@+id/separator4"
+        android:id="@+id/separator2"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_dept_admin"/>
+        app:layout_constraintTop_toBottomOf="@id/guideline_H1"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_dept_admin"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_H1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_dept_admin"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconSize="50dp"
-        app:itemIconTint="@drawable/background_menu">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/dialog_cancel"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <Button
+            android:id="@+id/button_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/dialog_ok"
+            android:textColor="@color/light_black"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

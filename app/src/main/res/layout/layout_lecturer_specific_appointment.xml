@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_H2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9"/>
+
+    <View
+        android:id="@+id/dummy_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/textView_add_each_week"/>
+
+    <TextView
+        android:id="@+id/textView_weekday_and_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday 11:00-11:50"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/button_remove_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_remove_hour"
+        android:textColor="@color/light_gray"
+        android:textSize="20sp"
+        android:backgroundTint="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_spinner_department_student_and_hour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_weekday_and_hour"
+        android:popupBackground="@color/light_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_num_of_stu_allowed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_num_of_stu_allowed"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/editText_num_of_stu_allowed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textSize="25sp"
+        android:text="10"
+        app:backgroundTint="@color/light_gray"
+        app:layout_constraintStart_toEndOf="@id/textView_num_of_stu_allowed"
+        app:layout_constraintTop_toBottomOf="@id/spinner"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_accept_automatically"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_accept_automatically"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/textView_num_of_stu_allowed"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"/>
+
+    <Switch
+        android:id="@+id/switch_accept_automatically"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/textView_num_of_stu_allowed"
+        app:layout_constraintStart_toEndOf="@id/textView_accept_automatically"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/textView_add_each_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_add_each_week"
+        android:textSize="25sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/textView_accept_automatically"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <Switch
+        android:id="@+id/switch_add_each_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/textView_accept_automatically"
+        app:layout_constraintStart_toEndOf="@id/textView_add_each_week"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"/>
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/dummy_background"/>
+
+    <TextView
+        android:id="@+id/textView_accepted_requests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_accepted_requests"
+        android:textSize="30sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/separator1"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_accepted_requests"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintTop_toBottomOf="@id/textView_accepted_requests"
+        app:layout_constraintBottom_toTopOf="@id/guideline_H1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"/>
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_accepted_requests"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_requests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_requests"
+        android:textSize="30sp"
+        android:textColor="@color/light_black"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_requests"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintTop_toBottomOf="@id/textView_requests"
+        app:layout_constraintBottom_toTopOf="@id/guideline_H2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"/>
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_requests"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/dialog_cancel"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <Button
+            android:id="@+id/button_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/dialog_ok"
+            android:textColor="@color/light_black"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

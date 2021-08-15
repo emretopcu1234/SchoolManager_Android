@@ -13,31 +13,6 @@ import android.widget.Button;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Dept_Admin_Courses;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Dept_Admin_Lecturers;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Dept_Admins;
-import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
-
-
-// TODO filtre ve arama yerlerine edittext kısımları eklenecek.
-// TODO username sembolüne basılınca menü açılacak.
-// TODO dialog kısımlarına error textfieldları eklenecek.
-// TODO dialog kısımlarındaki ok butonları için input validation kısımları yapılacak. ona göre butonun rengi siyahlaşacak.
-// TODO dialog kısımlarındaki edittext kısımlarındaki validationlar yapılacak.
-// (date için ay girilince otomatik " / " karakteri eklenecek, course code için otomatik olarak bölümün kodu başa eklenecek vb)
-
-// TODO dialog kısımlarındaki text'ler için düzenleme yapılacak. (operations research --> Operations Research, emre topcu --> Emre TOPÇU vb)
-
-// TODO eksik layoutlar:
-// student appointment'ın dialog kısmı
-// lecturer appointment (yeni bir layout gerekecek), participants'ta herhangi bir öğrenciye tıklayınca açılacak öğrencinin grades dialog'u
-// student ve lecturer'ın course notes kısmı (hem layout, hem dialog (ya da duruma göre başka bir şey)
-
-// TODO login page!!!
-
-
-
-
 
 
 public class Activity_Dept_Admin_Courses extends AppCompatActivity {

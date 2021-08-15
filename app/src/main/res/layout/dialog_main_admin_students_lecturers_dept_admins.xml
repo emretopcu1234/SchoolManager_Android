@@ -25,6 +25,7 @@
             android:hint="@string/hint_id"
             android:maxLength="5"
             android:textSize="25sp"
+            android:textCursorDrawable="@null"
             app:backgroundTint="@color/light_gray"
             android:gravity="left"
             android:layout_margin="15dp"/>
@@ -37,6 +38,7 @@
             android:hint="@string/hint_name"
             android:maxLength="20"
             android:textSize="25sp"
+            android:textCursorDrawable="@null"
             app:backgroundTint="@color/light_gray"
             android:gravity="left"
             android:layout_margin="15dp"/>
@@ -49,6 +51,7 @@
             android:hint="@string/hint_surname"
             android:maxLength="20"
             android:textSize="25sp"
+            android:textCursorDrawable="@null"
             app:backgroundTint="@color/light_gray"
             android:gravity="left"
             android:layout_margin="15dp"/>
@@ -57,7 +60,7 @@
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner_department_and_student"
+            android:background="@drawable/background_spinner_department_student_and_hour"
             android:popupBackground="@color/light_gray"
             android:layout_margin="15dp"
             android:padding="10dp" />

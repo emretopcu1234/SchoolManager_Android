@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_gray">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_V2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <TextView
+        android:id="@+id/textView_student"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="10001 - Seren USER"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/separator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_V1"
+        />
+
+    <Button
+        android:id="@+id/button_reject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_reject"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/red"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        app:layout_constraintEnd_toStartOf="@id/guideline_V2"
+        app:layout_constraintTop_toTopOf="@id/textView_student"
+        app:layout_constraintBottom_toBottomOf="@id/textView_student"
+        android:layout_marginEnd="5dp"/>
+
+    <Button
+        android:id="@+id/button_accept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_accept"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/green"
+        app:layout_constraintStart_toStartOf="@id/guideline_V2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView_student"
+        app:layout_constraintBottom_toBottomOf="@id/textView_student"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/button_rejected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_rejected"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/red"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView_student"
+        app:layout_constraintBottom_toBottomOf="@id/textView_student"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="55dp"
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/button_accepted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lecturer_accepted"
+        android:textColor="@color/light_gray"
+        android:textSize="15sp"
+        android:backgroundTint="@color/green"
+        app:layout_constraintStart_toStartOf="@id/guideline_V1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView_student"
+        app:layout_constraintBottom_toBottomOf="@id/textView_student"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="55dp"
+        android:enabled="false"/>
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/button_accept"
+        android:layout_marginTop="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

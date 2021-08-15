@@ -52,7 +52,7 @@ public class Activity_Lecturer_Participants extends AppCompatActivity {
             recyclerViewLecturerParticipants.setLayoutManager(layoutManager);
             recyclerViewLecturerParticipants.setAdapter(adapter);
 
-            button = (Button) findViewById(R.id.button_search_id);
+            button = (Button) findViewById(R.id.button_search_id);  // TODO öylesine yapıldı, aslında recyclerview'daki herhangi bir item'a basınca açılacak.
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

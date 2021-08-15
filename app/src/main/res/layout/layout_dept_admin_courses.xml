@@ -123,7 +123,23 @@
         app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
         app:layout_constraintStart_toEndOf="@id/button_search_id"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp" />
+
+    <EditText
+        android:id="@+id/editText_id"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="5"
+        android:textSize="20sp"
+        android:textCursorDrawable="@null"
+        android:gravity="left"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
+        app:layout_constraintStart_toEndOf="@id/button_search_id"
+        android:layout_marginTop ="20dp"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_search_name"
@@ -155,6 +171,22 @@
         app:layout_constraintBottom_toBottomOf="@id/textView_id"
         app:layout_constraintStart_toEndOf="@id/button_search_name"
         android:layout_marginLeft="5dp"/>
+
+    <EditText
+        android:id="@+id/editText_name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="40"
+        android:textSize="20sp"
+        android:textCursorDrawable="@null"
+        android:gravity="left"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/button_select_cancel"
+        app:layout_constraintStart_toEndOf="@id/button_search_name"
+        android:layout_marginTop ="20dp"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/textView_section"
