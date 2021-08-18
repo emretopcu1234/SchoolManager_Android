@@ -20,7 +20,7 @@
             android:id="@+id/spinner_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner_department_student_and_hour"
+            android:background="@drawable/background_spinner_department_lecturer_student_and_hour"
             android:popupBackground="@color/light_gray"
             android:layout_margin="15dp"
             android:padding="10dp" />
@@ -29,7 +29,7 @@
             android:id="@+id/spinner_start_hour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner_department_student_and_hour"
+            android:background="@drawable/background_spinner_department_lecturer_student_and_hour"
             android:popupBackground="@color/light_gray"
             android:layout_margin="15dp"
             android:padding="10dp" />
@@ -38,7 +38,7 @@
             android:id="@+id/spinner_end_hour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner_department_student_and_hour"
+            android:background="@drawable/background_spinner_department_lecturer_student_and_hour"
             android:popupBackground="@color/light_gray"
             android:layout_margin="15dp"
             android:padding="10dp" />

@@ -57,7 +57,7 @@ public class Activity_Main_Admin_Students extends AppCompatActivity {
             });
 
             builder = new AlertDialog.Builder(this);
-            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_students_lecturers_dept_admins, null);
+            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_students, null);
             builder.setView(viewDialog);
             alertDialog = builder.create();
             alertDialog.setCancelable(false);

@@ -14,15 +14,28 @@
         android:background="@drawable/background_dialog"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_marginLeft="110dp"
-        android:layout_marginRight="110dp">
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp">
 
         <EditText
-            android:id="@+id/editText_exam_type"
+            android:id="@+id/editText_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/hint_id"
+            android:maxLength="5"
+            android:textSize="25sp"
+            android:textCursorDrawable="@null"
+            app:backgroundTint="@color/light_gray"
+            android:gravity="left"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editText_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/hint_exam_type"
+            android:hint="@string/hint_name"
             android:maxLength="20"
             android:textSize="25sp"
             android:textCursorDrawable="@null"
@@ -31,18 +44,26 @@
             android:layout_margin="15dp"/>
 
         <EditText
-            android:id="@+id/editText_weight"
+            android:id="@+id/editText_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:digits="1234567890."
-            android:hint="@string/hint_weight"
-            android:maxLength="5"
+            android:hint="@string/hint_surname"
+            android:maxLength="20"
             android:textSize="25sp"
             android:textCursorDrawable="@null"
             app:backgroundTint="@color/light_gray"
             android:gravity="left"
             android:layout_margin="15dp"/>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_spinner_department_lecturer_student_and_hour"
+            android:popupBackground="@color/light_gray"
+            android:layout_margin="15dp"
+            android:padding="10dp" />
 
         <TextView
             android:id="@+id/textView_warning"

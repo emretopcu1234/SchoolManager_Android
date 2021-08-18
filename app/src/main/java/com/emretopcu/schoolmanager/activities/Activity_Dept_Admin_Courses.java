@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Dept_Admin_Courses;
@@ -26,6 +27,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity {
     private View viewDialog;
     private AlertDialog alertDialog;
     private Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Filter_Department;
 import com.emretopcu.schoolmanager.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
 
 import java.util.ArrayList;
@@ -29,6 +30,15 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
     private View viewDialog;
     private AlertDialog alertDialog;
     private Button button;
+
+    private RecyclerViewAdapter_Filter_Department adapterFilter;
+    private RecyclerView recyclerViewFilter;
+    private LinearLayoutManager layoutManagerFilter;
+
+    private AlertDialog.Builder builderFilter;
+    private View viewDialogFilter;
+    private AlertDialog alertDialogFilter;
+    private Button buttonFilter;
 
 
     @Override
@@ -47,10 +57,6 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
 
 
 
-
-
-
-
             button = (Button) findViewById(R.id.button_add_delete);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,7 +66,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
             });
 
             builder = new AlertDialog.Builder(this);
-            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_students_lecturers_dept_admins, null);
+            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_lecturers, null);
             builder.setView(viewDialog);
             alertDialog = builder.create();
             alertDialog.setCancelable(false);
@@ -97,6 +103,31 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity {
             ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(arrayAdapter);
+
+
+
+
+            buttonFilter = (Button) findViewById(R.id.button_filter_empty_closed);
+            buttonFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialogFilter.show();
+                }
+            });
+
+            builderFilter = new AlertDialog.Builder(this);
+            viewDialogFilter = this.getLayoutInflater().inflate(R.layout.dialog_filter_department, null);
+            builderFilter.setView(viewDialogFilter);
+            alertDialogFilter = builderFilter.create();
+            alertDialogFilter.setCancelable(false);
+            alertDialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            recyclerViewFilter = viewDialogFilter.findViewById(R.id.recyclerView);
+            layoutManagerFilter = new LinearLayoutManager(this);
+
+            adapterFilter = new RecyclerViewAdapter_Filter_Department(this);
+            recyclerViewFilter.setLayoutManager(layoutManagerFilter);
+            recyclerViewFilter.setAdapter(adapterFilter);
 
 
         }

@@ -17,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.Activity_Login_Page"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Main_Admin_Departments"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.Activity_Main_Admin_Lecturers"

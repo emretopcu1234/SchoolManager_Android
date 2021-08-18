@@ -94,12 +94,9 @@
     <string name="lecturer_accept">Accept</string>
     <string name="lecturer_rejected">Rejected</string>
     <string name="lecturer_accepted">Accepted</string>
-    <string name="hint_id">ID</string>
-    <string name="hint_name">Name</string>
-    <string name="hint_surname">Surname</string>
-    <string name="hint_department">Department</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">CANCEL</string>
+    <string name="dialog_clear">CLEAR</string>
     <string name="dialog_yes">YES</string>
     <string name="dialog_no">NO</string>
     <string name="hint_dept_id">Dept. ID</string>
@@ -115,4 +112,13 @@
     <string name="hint_exam_type">Exam Name</string>
     <string name="hint_weight">Exam Weight</string>
     <string name="hint_grade">Grade</string>
+    <string name="hint_id">ID</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_department">Department</string>
+    <string name="hint_save_password">Save password</string>
+    <string name="hint_keep_logged_in">Keep logged in</string>
+    <string name="login">LOGIN</string>
+    <string name="warning_login_mismatch">Mismatch on ID and password</string>
 </resources>
