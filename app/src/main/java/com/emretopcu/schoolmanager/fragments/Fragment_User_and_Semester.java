@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,11 +23,11 @@ import java.util.ArrayList;
 
 public class Fragment_User_and_Semester extends Fragment {
 
-    View view;
-    Spinner spinner;
-    ArrayAdapter arrayAdapter;
-    TextView textView;
-    Button button;
+    private View view;
+    private Spinner spinner;
+    private ArrayAdapter arrayAdapter;
+    private TextView textView;
+    private Button button;
 
     public Fragment_User_and_Semester() {
         super(R.layout.fragment_user_and_semester);
@@ -78,6 +80,16 @@ public class Fragment_User_and_Semester extends Fragment {
 
             textView = (TextView) view.findViewById(R.id.textView);
             button = (Button) view.findViewById(R.id.button);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(getActivity(), v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.menu_user, popup.getMenu());
+                    popup.show();
+                }
+            });
 
             return view;
         }

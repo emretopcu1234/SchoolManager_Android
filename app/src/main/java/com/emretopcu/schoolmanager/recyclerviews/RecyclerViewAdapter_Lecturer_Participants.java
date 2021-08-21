@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Lecturer_Participants extends RecyclerView.Adap
     public ViewHolder_LP onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_participants, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_participants, parent, false);
             ViewHolder_LP holder = new ViewHolder_Lecturer_Participants(v);
             return holder;
         }

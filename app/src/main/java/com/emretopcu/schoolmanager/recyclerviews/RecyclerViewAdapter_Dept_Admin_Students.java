@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapte
     public ViewHolder_DASt onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_dept_admin_students, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_dept_admin_students, parent, false);
             ViewHolder_DASt holder = new ViewHolder_Dept_Admin_Students(v);
             return holder;
         }

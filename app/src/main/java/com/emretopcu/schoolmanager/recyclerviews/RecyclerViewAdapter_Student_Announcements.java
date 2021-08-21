@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Student_Announcements extends RecyclerView.Adap
     public ViewHolder_SAn onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_student_announcements, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_student_announcements, parent, false);
             ViewHolder_SAn holder = new ViewHolder_Student_Announcements(v);
             return holder;
         }

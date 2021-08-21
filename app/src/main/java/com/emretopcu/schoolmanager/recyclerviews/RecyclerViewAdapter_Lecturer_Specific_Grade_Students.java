@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Lecturer_Specific_Grade_Students extends Recycl
     public ViewHolder_LSGS onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_specific_grade_students, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_specific_grade_students, parent, false);
             ViewHolder_LSGS holder = new ViewHolder_Lecturer_Specific_Grade_Students(v);
             return holder;
         }

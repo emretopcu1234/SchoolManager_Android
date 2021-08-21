@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Student_Grades extends RecyclerView.Adapter<Vie
     public ViewHolder_SG onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_student_grades, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_student_grades, parent, false);
             ViewHolder_SG holder = new ViewHolder_Student_Grades(v);
             return holder;
         }

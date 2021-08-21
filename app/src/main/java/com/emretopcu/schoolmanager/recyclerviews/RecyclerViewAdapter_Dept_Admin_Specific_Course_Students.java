@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Dept_Admin_Specific_Course_Students extends Rec
     public ViewHolder_DASCS onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_dept_admin_specific_course_students, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_dept_admin_specific_course_students, parent, false);
             ViewHolder_DASCS holder = new ViewHolder_Dept_Admin_Specific_Course_Students(v);
             return holder;
         }

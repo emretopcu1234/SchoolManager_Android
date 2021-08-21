@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Lecturer_Announcements extends RecyclerView.Ada
     public ViewHolder_LAn onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_announcements, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_announcements, parent, false);
             ViewHolder_LAn holder = new ViewHolder_Lecturer_Announcements(v);
             return holder;
         }

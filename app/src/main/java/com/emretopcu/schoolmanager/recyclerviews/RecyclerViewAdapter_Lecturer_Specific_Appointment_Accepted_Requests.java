@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Lecturer_Specific_Appointment_Accepted_Requests
     public ViewHolder_LSAAR onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_specific_appointment_accepted_requests, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_specific_appointment_accepted_requests, parent, false);
             ViewHolder_LSAAR holder = new ViewHolder_Lecturer_Specific_Appointment_Accepted_Requests(v);
             return holder;
         }

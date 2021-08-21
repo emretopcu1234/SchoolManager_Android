@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_main_admin_edit_semester"
+        android:enabled="true"
+        android:title="@string/menu_main_admin_edit_semester" />
+    <item
+        android:id="@+id/menu_main_admin_delete_semester"
+        android:enabled="true"
+        android:title="@string/menu_main_admin_delete_semester"/>
+</menu>

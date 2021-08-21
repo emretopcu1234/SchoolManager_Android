@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
     public ViewHolder_DAC onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_dept_admin_courses, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_dept_admin_courses, parent, false);
             ViewHolder_DAC holder = new ViewHolder_Dept_Admin_Courses(v);
             return holder;
         }

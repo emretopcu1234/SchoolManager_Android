@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
     public ViewHolder_FD onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_filter_department, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_filter_department, parent, false);
             ViewHolder_FD holder = new ViewHolder_Filter_Department(v);
             return holder;
         }

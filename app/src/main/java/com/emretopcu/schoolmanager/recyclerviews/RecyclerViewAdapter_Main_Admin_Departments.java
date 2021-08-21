@@ -3,7 +3,11 @@ package com.emretopcu.schoolmanager.recyclerviews;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -32,7 +36,7 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
     public ViewHolder_MAD onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_main_admin_departments, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_main_admin_departments, parent, false);
             ViewHolder_MAD holder = new ViewHolder_Main_Admin_Departments(v);
             return holder;
         }
@@ -78,10 +82,33 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
     }
 }
 
-class ViewHolder_MAD extends RecyclerView.ViewHolder {
+class ViewHolder_MAD extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     public ViewHolder_MAD(View v) {
         super(v);
+        v.setOnCreateContextMenuListener(this);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuItem edit = menu.add(0, v.getId(), 0, R.string.menu_main_admin_edit_department);
+        MenuItem delete = menu.add(0, v.getId(), 0, R.string.menu_main_admin_delete_department);
+        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return true;
+            }
+        });
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return true;
+            }
+        });
+    }
+
+
 }
 
 class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {

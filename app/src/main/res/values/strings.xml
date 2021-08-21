@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">School Manager</string>
+    <string name="menu_user_change_password">Change password</string>
+    <string name="menu_user_logout">Logout</string>
+    <string name="menu_main_admin_edit_semester">Edit semester</string>
+    <string name="menu_main_admin_delete_semester">Delete semester</string>
+    <string name="menu_main_admin_edit_department">Edit department</string>
+    <string name="menu_main_admin_delete_department">Delete department</string>
+    <string name="menu_main_admin_edit_dept_admin">Edit department</string>
+    <string name="menu_main_admin_delete_dept_admin">Delete department admin</string>
+    <string name="menu_main_admin_edit_lecturer">Edit lecturer</string>
+    <string name="menu_main_admin_delete_lecturer">Delete lecturer</string>
+    <string name="menu_main_admin_edit_student">Edit student</string>
+    <string name="menu_main_admin_delete_student">Delete student</string>
     <string name="menu_main_admin_departments">Departments</string>
     <string name="menu_main_admin_dept_admins">Department Admins</string>
     <string name="menu_main_admin_lecturers">Lecturers</string>
@@ -8,11 +20,15 @@
     <string name="menu_dept_admin_courses">Courses</string>
     <string name="menu_dept_admin_lecturers">Lecturers</string>
     <string name="menu_dept_admin_students">Students</string>
+    <string name="menu_lecturer_add_appointment">Add appointment hour</string>
+    <string name="menu_lecturer_edit_appointment">Edit appointment hour</string>
+    <string name="menu_lecturer_delete_appointment">Delete appointment hour</string>
     <string name="menu_lecturer_course_notes">Course Notes</string>
     <string name="menu_lecturer_grades">Grades</string>
     <string name="menu_lecturer_announcements">Announcements</string>
     <string name="menu_lecturer_participants">Participants</string>
     <string name="menu_lecturer_weekly_schedule_and_appointments">Weekly Schedule and Appointments</string>
+    <string name="menu_student_appointment_request">Make appointment request</string>
     <string name="menu_student_course_notes">Course Notes</string>
     <string name="menu_student_grades">Grades</string>
     <string name="menu_student_announcements">Announcements</string>
@@ -71,7 +87,6 @@
     <string name="student_appointments_accepted">Accepted</string>
     <string name="student_appointments_not_available">Not Available</string>
     <string name="student_appointments_rejected_cancelled">Rejected/Cancelled</string>
-    <string name="student_appointment_confirmation">Do you want to make an appointment request?</string>
     <string name="lecturer_participants_id">ID</string>
     <string name="lecturer_participants_name">Name</string>
     <string name="lecturer_participants_surname">Surname</string>
@@ -99,6 +114,9 @@
     <string name="dialog_clear">CLEAR</string>
     <string name="dialog_yes">YES</string>
     <string name="dialog_no">NO</string>
+    <string name="hint_old_password">Old Password</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="hint_new_password_confirm">New Password (Confirm)</string>
     <string name="hint_dept_id">Dept. ID</string>
     <string name="hint_dept_name">Dept. Name</string>
     <string name="hint_semester">Semester</string>
@@ -121,4 +139,9 @@
     <string name="hint_keep_logged_in">Keep logged in</string>
     <string name="login">LOGIN</string>
     <string name="warning_login_mismatch">Mismatch on ID and password</string>
+    <string name="student_appointment_confirmation">Do you want to make an appointment request?</string>
+    <string name="delete_confirmation_department"> department(s) will be deleted. Are you sure?</string>
+    <string name="delete_confirmation_dept_admin"> department admin(s) will be deleted. Are you sure?</string>
+    <string name="delete_confirmation_lecturer"> lecturer(s) will be deleted. Are you sure?</string>
+    <string name="delete_confirmation_student"> student(s) will be deleted. Are you sure?</string>
 </resources>

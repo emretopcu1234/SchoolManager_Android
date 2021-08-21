@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Dialog_Lecturer_Participants extends RecyclerVi
     public ViewHolder_DLP onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_dialog_lecturer_participants, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_dialog_lecturer_participants, parent, false);
             ViewHolder_DLP holder = new ViewHolder_Dialog_Lecturer_Participants(v);
             return holder;
         }

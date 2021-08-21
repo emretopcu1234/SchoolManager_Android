@@ -2,7 +2,9 @@ package com.emretopcu.schoolmanager.recyclerviews;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -30,7 +32,7 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
     public ViewHolder_MAL onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_main_admin_lecturers, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_main_admin_lecturers, parent, false);
             ViewHolder_MAL holder = new ViewHolder_Main_Admin_Lecturers(v);
             return holder;
         }
@@ -78,9 +80,30 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
     }
 }
 
-class ViewHolder_MAL extends RecyclerView.ViewHolder {
+class ViewHolder_MAL extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     public ViewHolder_MAL(View v) {
         super(v);
+        v.setOnCreateContextMenuListener(this);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuItem edit = menu.add(0, v.getId(), 0, R.string.menu_main_admin_edit_lecturer);
+        MenuItem delete = menu.add(0, v.getId(), 0, R.string.menu_main_admin_delete_lecturer);
+        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return true;
+            }
+        });
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return true;
+            }
+        });
     }
 }
 

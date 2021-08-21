@@ -32,7 +32,7 @@ public class RecyclerViewAdapter_Lecturer_Course_Notes extends RecyclerView.Adap
     public ViewHolder_LCN onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_course_notes, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_course_notes, parent, false);
             ViewHolder_LCN holder = new ViewHolder_Lecturer_Course_Notes(v);
             return holder;
         }

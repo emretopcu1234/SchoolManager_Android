@@ -30,7 +30,7 @@ public class RecyclerViewAdapter_Lecturer_Specific_Appointment_Requests extends 
     public ViewHolder_LSAR onCreateViewHolder(ViewGroup parent, int viewType) {
         try{
             View v;
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_lecturer_specific_appointment_requests, parent, false);
+            v = LayoutInflater.from(context).inflate(R.layout.recyclerview_lecturer_specific_appointment_requests, parent, false);
             ViewHolder_LSAR holder = new ViewHolder_Lecturer_Specific_Appointment_Requests(v);
             return holder;
         }
