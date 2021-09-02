@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/fragment_user_and_semester"
-        android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
+        android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -164,21 +164,21 @@
 
         <fragment
             android:id="@+id/fragment1"
-            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_Student_Appointments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
         <fragment
             android:id="@+id/fragment2"
-            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_Student_Appointments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
         <fragment
             android:id="@+id/fragment3"
-            android:name="com.emretopcu.schoolmanager.fragments.Fragment_Student_Appointments"
+            android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_Student_Appointments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>

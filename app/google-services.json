@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "20774444482",
+    "project_id": "school-manager-d9de9",
+    "storage_bucket": "school-manager-d9de9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20774444482:android:58cdbb103bd186b7dc4a5b",
+        "android_client_info": {
+          "package_name": "com.emretopcu.schoolmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20774444482-cr5fbdp5gucf3edg4tmvjmholabdeolo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy5rS0K0le3mThIuQMwZ48vtz_qpjjZGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20774444482-cr5fbdp5gucf3edg4tmvjmholabdeolo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

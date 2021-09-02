@@ -4,25 +4,30 @@
         android:id="@+id/menu_main_admin_departments"
         android:enabled="true"
         android:icon="@drawable/departments"
-        android:title="@string/menu_main_admin_departments" />
+        android:title="@string/menu_main_admin_departments"
+        android:onClick="goToDepartments"/>
     <item
         android:id="@+id/menu_main_admin_dept_admins"
         android:enabled="true"
         android:icon="@drawable/dept_admins"
-        android:title="@string/menu_main_admin_dept_admins"/>
+        android:title="@string/menu_main_admin_dept_admins"
+        android:onClick="goToDeptAdmins"/>
     <item
         android:id="@+id/menu_main_admin_lecturers"
         android:enabled="true"
         android:icon="@drawable/lecturers"
-        android:title="@string/menu_main_admin_lecturers"/>
+        android:title="@string/menu_main_admin_lecturers"
+        android:onClick="goToLecturers"/>
     <item
         android:id="@+id/menu_main_admin_students"
         android:enabled="true"
         android:icon="@drawable/students"
-        android:title="@string/menu_main_admin_students"/>
+        android:title="@string/menu_main_admin_students"
+        android:onClick="goToStudents"/>
     <item
         android:id="@+id/menu_main_admin_semesters"
         android:enabled="true"
         android:icon="@drawable/semesters"
-        android:title="@string/menu_main_admin_semesters"/>
+        android:title="@string/menu_main_admin_semesters"
+        android:onClick="goToSemesters"/>
 </menu>

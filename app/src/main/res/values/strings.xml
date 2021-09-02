@@ -20,6 +20,7 @@
     <string name="menu_dept_admin_courses">Courses</string>
     <string name="menu_dept_admin_lecturers">Lecturers</string>
     <string name="menu_dept_admin_students">Students</string>
+    <string name="menu_lecturer_view_grades">View grades</string>
     <string name="menu_lecturer_add_appointment">Add appointment hour</string>
     <string name="menu_lecturer_edit_appointment">Edit appointment hour</string>
     <string name="menu_lecturer_delete_appointment">Delete appointment hour</string>

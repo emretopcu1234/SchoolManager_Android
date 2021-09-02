@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/fragment_lecturer_user_and_semester"
-        android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
+        android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

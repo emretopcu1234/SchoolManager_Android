@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/fragment_user_and_semester"
-        android:name="com.emretopcu.schoolmanager.fragments.Fragment_User_and_Semester"
+        android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/fragment_course_code_and_name"
-        android:name="com.emretopcu.schoolmanager.fragments.Fragment_Course_Code_and_Name"
+        android:name="com.emretopcu.schoolmanager.view.fragments.Fragment_Course_Code_and_Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/separator2"

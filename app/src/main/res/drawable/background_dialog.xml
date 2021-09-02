@@ -6,7 +6,7 @@
         android:bottomRightRadius="0dp"
         android:bottomLeftRadius="0dp" />
     <stroke
-        android:width="3dp"
+        android:width="4dp"
         android:color="@android:color/black" />
     <solid
         android:color="@color/gray"/>

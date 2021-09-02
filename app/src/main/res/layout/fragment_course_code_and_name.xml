@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray"
-    tools:context=".fragments.Fragment_Course_Code_and_Name"
+    tools:context=".view.fragments.Fragment_Course_Code_and_Name"
     android:padding="10dp">
 
     <Button
