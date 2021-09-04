@@ -1,6 +1,7 @@
 package com.emretopcu.schoolmanager.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,12 +18,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
+import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
+import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
+import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Dept_Admins;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
+public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implements Interface_General_Activity {
+
+    private Interface_Fragment_User_and_Semester fragmentUserAndSemester;
 
     private RecyclerViewAdapter_Main_Admin_Dept_Admins adapter;
     private RecyclerView recyclerViewMainAdminDeptAdmins;
@@ -43,6 +50,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.layout_main_admin_dept_admins);
 
+            fragmentUserAndSemester = new Fragment_User_and_Semester(this);
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_main_admin_user_and_semester, (Fragment) fragmentUserAndSemester, null)
+                    .commit();
+
             recyclerViewMainAdminDeptAdmins = findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
 
@@ -50,16 +63,13 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
             recyclerViewMainAdminDeptAdmins.setLayoutManager(layoutManager);
             recyclerViewMainAdminDeptAdmins.setAdapter(adapter);
 
-
-
-
-
-
             button = (Button) findViewById(R.id.button_add_delete);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            button.setOnClickListener(v -> {
+                try{
                     alertDialog.show();
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
                 }
             });
 
@@ -70,37 +80,10 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
             alertDialog.setCancelable(false);
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-            ArrayList<String> semesters = new ArrayList<>();
-            semesters.add("2017-2018 Spring");
-            semesters.add("2017-2018 Fall ayni hhgfgdf");
-            semesters.add("2017-2018 Summer");
-            semesters.add("2018-2019 Fall");
-            semesters.add("2018-2019 Spring");
-            semesters.add("2018-2019 Summer");
-            semesters.add("2019-2020 Fall");
-            semesters.add("2019-2020 Spring");
-            semesters.add("2019-2020 Summer");
-            semesters.add("2020-2021 Fall");
-            semesters.add("2020-2021 Spring");
-            semesters.add("2020-2021 Summer");
-            // TODO input olarak gelecek.
 
-            Spinner spinner = (Spinner) viewDialog.findViewById(R.id.spinner);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
-
-            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(arrayAdapter);
 
 
             bottomNavigationView = findViewById(R.id.bottom_navigation_main_admin);
@@ -112,9 +95,25 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onResume method.");
+        }
+    }
+
     public void goToDepartments(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' goToDeptAdmins method.");
+        }
     }
 
     public void goToDeptAdmins(MenuItem item) {
@@ -122,17 +121,62 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity {
     }
 
     public void goToLecturers(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Lecturers.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Lecturers.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' goToLecturers method.");
+        }
     }
 
     public void goToStudents(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Students.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Students.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' goToStudents method.");
+        }
     }
 
     public void goToSemesters(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Semesters.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Semesters.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' goToSemesters method.");
+        }
+    }
+
+    @Override
+    public void onSemesterChanged(String selectedSemester) {
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onSemesterChanged method.");
+        }
+    }
+
+    @Override
+    public void onChangePasswordClicked() {
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onChangePasswordClicked method.");
+        }
+    }
+
+    @Override
+    public void onLogoutClicked() {
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onLogoutClicked method.");
+        }
     }
 }

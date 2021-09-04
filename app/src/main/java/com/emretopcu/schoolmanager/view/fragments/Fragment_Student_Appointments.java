@@ -14,15 +14,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.model.Common_Parameters_and_Variables;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
 
 public class Fragment_Student_Appointments extends Fragment {
 
     private View view;
     private TextView textViewDay1;
     private TextView textViewDay2;
-    private Button[] buttonDay1Hours = new Button[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
-    private Button[] buttonDay2Hours = new Button[Common_Parameters_and_Variables.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
+    private Button[] buttonDay1Hours = new Button[Common_Variables_View.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
+    private Button[] buttonDay2Hours = new Button[Common_Variables_View.NUMBER_OF_LECTURE_HOURS_ON_A_DAY];
 
 
     public Fragment_Student_Appointments() {

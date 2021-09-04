@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 
@@ -45,6 +47,12 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Fragment_User_and_Semester class' onCreate method.");
+        }
     }
 
     @Override
@@ -73,12 +81,18 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString());
+                    try{
+                        Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+                        interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString());
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Fragment_User_and_Semester class' spinner's onItemSelected method.");  // TODO spinnerın adı değişirse güncelle.
+                    }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    // nothing to do
                 }
             });
 
@@ -89,16 +103,39 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
             textView = view.findViewById(R.id.textView);
             button = view.findViewById(R.id.button);
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            button.setOnClickListener(v -> {
+                try{
                     PopupMenu popup = new PopupMenu(getActivity(), v);
-                    MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.menu_user, popup.getMenu());
+                    MenuInflater inflater1 = popup.getMenuInflater();
+                    inflater1.inflate(R.menu.menu_user, popup.getMenu());
                     popup.show();
+                    MenuItem changePassword = popup.getMenu().findItem(R.id.menu_user_change_password);
+                    MenuItem logout = popup.getMenu().findItem(R.id.menu_user_logout);
+                    changePassword.setOnMenuItemClickListener(item -> {
+                        try{
+                            interfaceUserAndSemester.onChangePasswordClicked();
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Fragment_User_and_Semester class' changePassword setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                    logout.setOnMenuItemClickListener(item -> {
+                        try{
+                            interfaceUserAndSemester.onLogoutClicked();
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Fragment_User_and_Semester class' logout setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Fragment_User_and_Semester class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
                 }
             });
-
             return view;
         }
         catch(Exception e){
@@ -108,7 +145,22 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
     }
 
     @Override
+    public void setSpinnerItem(int position) {
+        try{
+            spinner.setSelection(position);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Fragment_User_and_Semester class' setSpinnerItem method.");
+        }
+    }
+
+    @Override
     public void setSpinnerVisibility(int visibility) {
-        spinner.setVisibility(visibility);
+        try{
+            spinner.setVisibility(visibility);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Fragment_User_and_Semester class' setSpinnerVisibility method.");
+        }
     }
 }

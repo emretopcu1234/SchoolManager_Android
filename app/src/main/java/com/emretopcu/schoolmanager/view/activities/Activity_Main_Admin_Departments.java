@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
@@ -60,7 +61,14 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             recyclerViewMainAdminDepartments.setAdapter(adapter);
 
             button = findViewById(R.id.button_add_delete);
-            button.setOnClickListener(v -> alertDialog.show());
+            button.setOnClickListener(v -> {
+                try{
+                    alertDialog.show();
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
+                }
+            });
 
             builder = new AlertDialog.Builder(this);
             viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_departments, null);
@@ -86,37 +94,88 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onResume method.");
+        }
+    }
+
     public void goToDepartments(MenuItem item) {
         // nothing to do
     }
 
     public void goToDeptAdmins(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Dept_Admins.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Dept_Admins.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' goToDeptAdmins method.");
+        }
     }
 
     public void goToLecturers(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Lecturers.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Lecturers.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' goToLecturers method.");
+        }
     }
 
     public void goToStudents(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Students.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Students.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' goToStudents method.");
+        }
     }
 
     public void goToSemesters(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Semesters.class);
-        startActivity(i);
+        try{
+            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Semesters.class);
+            startActivity(i);
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' goToSemesters method.");
+        }
     }
 
     @Override
     public void onSemesterChanged(String selectedSemester) {
-        Log.d("deneme", "sth happened");
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onSemesterChanged method.");
+        }
     }
 
-//    @Override
-//    public void onSemesterChanged(String selectedSemester) {
-//        Log.d("deneme","sth happened");
-//    }
+    @Override
+    public void onChangePasswordClicked() {
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onChangePasswordClicked method.");
+        }
+    }
+
+    @Override
+    public void onLogoutClicked() {
+        try{
+
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onLogoutClicked method.");
+        }
+    }
 }

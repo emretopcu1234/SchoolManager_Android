@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+// TODO UNUTMA!!! ONCREATE'TE SADECE ATAMALAR YAPILIR, ONRESUME'DA SETTINGLER DUZENLENIR (VISIBILITY VB)!!!!!
 
 // TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
-// TODO tüm java classlarda yapılmayan try catchler yapılacak (mesela buttona basınca oluşturulan onclick metodunda ya da overridelarda vb.)
+// TODO tüm java classlarda (recyclerviewadapter'ları unutma!!!) yapılmayan try catchler yapılacak (mesela buttona basınca oluşturulan onclick metodunda ya da overridelarda vb.)
 // TODO user and semester ve/veya course code and name fragmenti içeren tüm aktiviteler Interface_General_Activity'den implemente edilecek.
 
 
