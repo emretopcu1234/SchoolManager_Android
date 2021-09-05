@@ -218,5 +218,10 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onLogoutClicked method.");
         }
     }
+
+    @Override
+    public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
+
+    }
 }
 

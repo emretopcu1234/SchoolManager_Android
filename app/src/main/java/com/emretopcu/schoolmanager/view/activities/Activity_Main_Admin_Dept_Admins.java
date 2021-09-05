@@ -179,4 +179,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onLogoutClicked method.");
         }
     }
+
+    @Override
+    public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
+
+    }
 }

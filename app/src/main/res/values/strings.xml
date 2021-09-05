@@ -140,6 +140,9 @@
     <string name="hint_keep_logged_in">Keep logged in</string>
     <string name="login">LOGIN</string>
     <string name="warning_login_mismatch">Mismatch on ID and password</string>
+    <string name="warning_change_password_wrong_password">Old password is not correct.</string>
+    <string name="warning_change_password_wrong_confirmation">Password confirmation is not correct.</string>
+    <string name="warning_change_password_short_password">Password must be between 8-10 characters.</string>
     <string name="student_appointment_confirmation">Do you want to make an appointment request?</string>
     <string name="delete_confirmation_department"> department(s) will be deleted. Are you sure?</string>
     <string name="delete_confirmation_dept_admin"> department admin(s) will be deleted. Are you sure?</string>

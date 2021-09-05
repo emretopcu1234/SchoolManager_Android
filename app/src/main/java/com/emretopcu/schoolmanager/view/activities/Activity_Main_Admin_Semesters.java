@@ -184,6 +184,11 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
             Log.d("Exception", "Exception on Activity_Main_Admin_Semesters class' onLogoutClicked method.");
         }
     }
+
+    @Override
+    public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
+
+    }
 }
 
 

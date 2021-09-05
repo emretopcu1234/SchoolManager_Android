@@ -73,7 +73,7 @@
         android:id="@+id/editText_password"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="@string/hint_password"
         android:maxLength="10"
         android:textSize="40sp"

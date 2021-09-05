@@ -10,6 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 // TODO UNUTMA!!! ONCREATE'TE SADECE ATAMALAR YAPILIR, ONRESUME'DA SETTINGLER DUZENLENIR (VISIBILITY VB)!!!!!
 
+// TODO progress bar'ı gereken her yere eklemeyi unutma!
+
 // TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
 // TODO tüm java classlarda (recyclerviewadapter'ları unutma!!!) yapılmayan try catchler yapılacak (mesela buttona basınca oluşturulan onclick metodunda ya da overridelarda vb.)

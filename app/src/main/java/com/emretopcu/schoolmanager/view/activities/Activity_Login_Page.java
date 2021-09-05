@@ -2,22 +2,18 @@ package com.emretopcu.schoolmanager.view.activities;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.viewmodel.activities.VM_Activity_Login_Page;
+import com.emretopcu.schoolmanager.viewmodel.VM_Login_Process;
 
 
 public class Activity_Login_Page extends AppCompatActivity {
 
-    private VM_Activity_Login_Page viewModel;
+    private VM_Login_Process viewModel;
     private TextView tv;
     private Button button;
 
