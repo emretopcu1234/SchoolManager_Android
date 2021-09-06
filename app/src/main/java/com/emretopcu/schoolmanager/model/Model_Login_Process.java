@@ -21,6 +21,8 @@ public class Model_Login_Process {
     private static Model_Login_Process INSTANCE;
     private VM_Login_Process vmLoginProcess;
 
+    private static final String FAKE_EMAIL_DOMAIN = "@myfakeschoolmanagerapp.com";
+
     private FirebaseAuth auth;
     private FirebaseUser user;
     private FirebaseFirestore dbRef;
@@ -53,27 +55,28 @@ public class Model_Login_Process {
         }
     }
 
-    public void login(String email, String password){
+    public void login(String id, String password){
         try{
+            String email = id + FAKE_EMAIL_DOMAIN;
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     try {
                         if (task.isSuccessful()) {
                             user = auth.getCurrentUser();
-                            if(email.startsWith("1")){
-                                Model_Dept_Admin.getInstance().setDeptAdminId(email.substring(0,5));
+                            if(id.startsWith("1")){
+                                Model_Dept_Admin.getInstance().setDeptAdminId(id);
                                 // TODO interfaceVMLoginProcess üzerinden activity login page'e hangi tip person olduğu gönderilecek.
                             }
-                            else if(email.startsWith("2")){
-                                Model_Lecturer.getInstance().setLecturerId(email.substring(0,5));
+                            else if(id.startsWith("2")){
+                                Model_Lecturer.getInstance().setLecturerId(id);
                                 // TODO interfaceVMLoginProcess üzerinden activity login page'e hangi tip person olduğu gönderilecek.
                             }
-                            else if(email.startsWith("3")){
-                                Model_Student.getInstance().setStudentId(email.substring(0,5));
+                            else if(id.startsWith("3")){
+                                Model_Student.getInstance().setStudentId(id);
                                 // TODO interfaceVMLoginProcess üzerinden activity login page'e hangi tip person olduğu gönderilecek.
                             }
-                            else if(email.startsWith("ADMIN")){
+                            else if(id.equals("ADMIN")){
                                 // TODO interfaceVMLoginProcess üzerinden activity login page'e hangi tip person olduğu gönderilecek.
                             }
                         } else {

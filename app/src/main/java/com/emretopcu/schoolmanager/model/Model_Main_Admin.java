@@ -45,7 +45,7 @@ public class Model_Main_Admin {
         }
     }
 
-    public void createNewUser(int id){
+    public void createNewUser(String id){
         try{
             String emailAddress = id + FAKE_EMAIL_DOMAIN;
             String password = FAKE_PASSWORD_PREFIX + id;

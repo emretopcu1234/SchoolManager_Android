@@ -184,4 +184,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
 
     }
+
+    @Override
+    public void onChangePasswordRequested(String oldPassword, String newPassword) {
+
+    }
 }

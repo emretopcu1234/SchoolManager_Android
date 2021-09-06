@@ -3,6 +3,7 @@ package com.emretopcu.schoolmanager.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,10 +22,12 @@ import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
+import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
+import com.emretopcu.schoolmanager.viewmodel.VM_Login_Process;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
@@ -56,10 +59,9 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
 
 
 
-
-
     private BottomNavigationView bottomNavigationView;
 
+    private VM_Login_Process vmLoginProcess;
 
     // TODO department name değişirse hem semesterconditions'taki son dönem tablosunda hem de departments collectionında güncelle.
 
@@ -222,12 +224,10 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
 
 
 
-
-
-
             bottomNavigationView = findViewById(R.id.bottom_navigation_main_admin);
             bottomNavigationView.getMenu().findItem(R.id.menu_main_admin_departments).setChecked(true);
 
+            vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onCreate method.");
@@ -325,7 +325,22 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
 
     @Override
     public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
-        textViewDialogChangePassword.setText(R.string.warning_change_password_wrong_confirmation);
-        textViewDialogChangePassword.setVisibility(visibility);
+        try{
+            textViewDialogChangePassword.setText(R.string.warning_change_password_wrong_confirmation);
+            textViewDialogChangePassword.setVisibility(visibility);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' setAndShowWarningOnDialogChangePassword method.");
+        }
+    }
+
+    @Override
+    public void onChangePasswordRequested(String oldPassword, String newPassword) {
+        try{
+            vmLoginProcess.onChangePasswordRequested(oldPassword, newPassword);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onChangePasswordRequested method.");
+        }
     }
 }

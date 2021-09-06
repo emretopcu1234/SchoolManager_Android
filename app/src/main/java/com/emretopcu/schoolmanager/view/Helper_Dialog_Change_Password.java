@@ -1,4 +1,4 @@
-package com.emretopcu.schoolmanager.view.activities;
+package com.emretopcu.schoolmanager.view;
 
 import android.util.Log;
 import android.view.View;
@@ -11,18 +11,17 @@ import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.viewmodel.VM_Login_Process;
 
 
-public class Helper_Dialog_Change_Password extends AppCompatActivity {
+public class Helper_Dialog_Change_Password {
 
     private static final int MINIMUM_PASSWORD_SIZE = 8;
     private String[] passwordFields;
     private Interface_General_Activity interfaceHelperDialogChangePassword;
-    private VM_Login_Process vmLoginProcess;
+
 
     public Helper_Dialog_Change_Password(Interface_General_Activity interfaceHelperDialogChangePassword){
         try{
             this.interfaceHelperDialogChangePassword = interfaceHelperDialogChangePassword;
             passwordFields = new String[3];
-            vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
             resetFields();
         }
         catch (Exception e){
@@ -55,7 +54,7 @@ public class Helper_Dialog_Change_Password extends AppCompatActivity {
                     interfaceHelperDialogChangePassword.setAndShowWarningOnDialogChangePassword(R.string.warning_change_password_short_password, View.INVISIBLE);
                 }
                 else{
-                    vmLoginProcess.onChangePasswordRequested(passwordFields[0],passwordFields[1]);
+                    interfaceHelperDialogChangePassword.onChangePasswordRequested(passwordFields[0],passwordFields[1]);
                 }
             }
             else{

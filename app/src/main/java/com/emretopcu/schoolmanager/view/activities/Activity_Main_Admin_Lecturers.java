@@ -223,5 +223,10 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
 
     }
+
+    @Override
+    public void onChangePasswordRequested(String oldPassword, String newPassword) {
+
+    }
 }
 
