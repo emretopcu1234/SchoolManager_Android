@@ -3,12 +3,8 @@ package com.emretopcu.schoolmanager.view;
 import android.util.Log;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
-import com.emretopcu.schoolmanager.viewmodel.VM_Login_Process;
 
 
 public class Helper_Dialog_Change_Password {

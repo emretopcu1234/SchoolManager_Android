@@ -2,12 +2,13 @@ package com.emretopcu.schoolmanager.model;
 
 import android.util.Log;
 
-import com.emretopcu.schoolmanager.viewmodel.VM_Lecturer;
+import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Lecturer;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Lecturer;
 
 public class Model_Lecturer {
 
     private static Model_Lecturer INSTANCE;
-    private VM_Lecturer vmLecturer;
+    private Interface_Lecturer vmLecturer;
 
     private String lecturerId;
 
@@ -33,7 +34,7 @@ public class Model_Lecturer {
         }
     }
 
-    public void setVmLecturer(VM_Lecturer vmLecturer) {
+    public void setVmLecturer(Interface_Lecturer vmLecturer) {
         this.vmLecturer = vmLecturer;
     }
 

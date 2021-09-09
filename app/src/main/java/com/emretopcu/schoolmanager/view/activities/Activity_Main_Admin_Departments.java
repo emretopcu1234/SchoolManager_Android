@@ -1,5 +1,6 @@
 package com.emretopcu.schoolmanager.view.activities;
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,7 @@ import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
-import com.emretopcu.schoolmanager.viewmodel.VM_Login_Process;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
@@ -228,6 +229,22 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             bottomNavigationView.getMenu().findItem(R.id.menu_main_admin_departments).setChecked(true);
 
             vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
+
+
+            // TODO
+            /**
+             *  bazen eklemeler başarısız olabiliyor, o yüzden tek tek eklenecek, her eklemede
+             *  eğer başarılı olunursa indis 1 artacak, başarısız olursa indis sabit kalacak,
+             *  ta ki o indis eklenene kadar.
+             *  metod buradan çalışmayacak, buradan vmloginprocess ilklendirilecek,
+             *  oradan sürekli model ile vm arasında dönecek.
+             *  for(int i=1;i<=360;i++){
+             *     vmLoginProcess.onCreateNewUserRequested(Integer.toString(30000+i));
+             *  }
+             */
+
+
+
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onCreate method.");

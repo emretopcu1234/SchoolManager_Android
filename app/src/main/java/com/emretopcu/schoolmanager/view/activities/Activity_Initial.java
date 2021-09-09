@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.emretopcu.schoolmanager.model.Shared_Prefs;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 // TODO main admin'de eklenecekler eklendiğinde firestore rule'unu "if auth" olarak değiştir!
-
+// TODO main admin'e bişey eklendiğinde relogin durumunda unsuccessful olursa durumunu unutma!
 
 
 // TODO main admin eğer herhangi bir şeyi (student, dept admin vb) edit etmek isterse, açılacak dialogda id kısmı disabled olacak.
@@ -44,7 +45,9 @@ public class Activity_Initial extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
+        Shared_Prefs.initialize(this);
+
+        Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
         startActivity(i);
 
 

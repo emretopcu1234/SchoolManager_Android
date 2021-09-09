@@ -37,6 +37,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.Activity_Dept_Admin_Specific_Course"
             android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.Activity_Lecturer_Main_Page"
+            android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.Activity_Lecturer_Specific_Grade"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.Activity_Lecturer_Weekly_Schedule_and_Appointments"
@@ -50,6 +52,8 @@
         <activity android:name=".view.activities.Activity_Lecturer_Course_Notes"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.Activity_Lecturer_Specific_Appointment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.Activity_Student_Main_Page"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.Activity_Student_Announcements"
             android:screenOrientation="portrait"/>

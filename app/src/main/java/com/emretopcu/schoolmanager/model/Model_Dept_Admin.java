@@ -2,12 +2,13 @@ package com.emretopcu.schoolmanager.model;
 
 import android.util.Log;
 
-import com.emretopcu.schoolmanager.viewmodel.VM_Dept_Admin;
+import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Dept_Admin;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Dept_Admin;
 
 public class Model_Dept_Admin {
 
     private static Model_Dept_Admin INSTANCE;
-    private VM_Dept_Admin vmDeptAdmin;
+    private Interface_Dept_Admin vmDeptAdmin;
 
     private String deptAdminId;
 
@@ -33,7 +34,7 @@ public class Model_Dept_Admin {
         }
     }
 
-    public void setVmDeptAdmin(VM_Dept_Admin vmDeptAdmin) {
+    public void setVmDeptAdmin(Interface_Dept_Admin vmDeptAdmin) {
         this.vmDeptAdmin = vmDeptAdmin;
     }
 

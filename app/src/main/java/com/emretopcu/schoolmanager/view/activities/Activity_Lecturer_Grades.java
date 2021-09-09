@@ -59,8 +59,6 @@ public class Activity_Lecturer_Grades extends AppCompatActivity {
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Lecturer_Grades class' onCreate method.");
         }
-
-
     }
 }
 
