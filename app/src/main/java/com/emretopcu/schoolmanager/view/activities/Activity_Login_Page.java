@@ -2,6 +2,8 @@ package com.emretopcu.schoolmanager.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,9 @@ import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Login_Successf
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Activity_Login_Page extends AppCompatActivity {
 
@@ -29,10 +34,10 @@ public class Activity_Login_Page extends AppCompatActivity {
     private TextView textViewWarning;
     private Button buttonLogin;
     private VM_Login_Process vmLoginProcess;
+    private boolean loginRequested;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.layout_login_page);
@@ -45,6 +50,9 @@ public class Activity_Login_Page extends AppCompatActivity {
             buttonLogin = findViewById(R.id.button_login);
             buttonLogin.setOnClickListener(v -> {
                 try{
+                    loginRequested = true;
+                    editTextId.clearFocus();
+                    editTextPassword.clearFocus();
                     if(editTextId.getText().toString().length()==0 || editTextPassword.getText().toString().length()==0){
                         textViewWarning.setText(R.string.warning_login_empty_field);
                         textViewWarning.setVisibility(View.VISIBLE);
@@ -84,10 +92,16 @@ public class Activity_Login_Page extends AppCompatActivity {
                         else{
                             Log.d("Exception","Unexpected person type!");
                         }
+                        loginRequested = false;
                     }
                     else if(e_login_successful == E_Login_Successful.UNSUCCESSFUL){
-                        textViewWarning.setText(R.string.warning_login_mismatch);
-                        textViewWarning.setVisibility(View.VISIBLE);
+                        if(loginRequested){
+                            textViewWarning.setText(R.string.warning_login_mismatch);
+                            textViewWarning.setVisibility(View.VISIBLE);
+                        }
+                        editTextId.setText(vmLoginProcess.getId());
+                        editTextPassword.setText(vmLoginProcess.getPassword());
+                        loginRequested = false;
                     }
                 }
                 catch (Exception e){
@@ -98,6 +112,25 @@ public class Activity_Login_Page extends AppCompatActivity {
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Login_Page class' onCreate method.");
         }
+    }
 
+    @Override
+    protected void onResume() {
+        try{
+            super.onResume();
+            loginRequested = false;
+            textViewWarning.setVisibility(View.INVISIBLE);
+            editTextId.setText(vmLoginProcess.getId());
+            if(vmLoginProcess.isSavePassword()){
+                editTextPassword.setText(vmLoginProcess.getPassword());
+                checkBoxSavePassword.setChecked(true);
+            }
+            else{
+                checkBoxSavePassword.setChecked(false);
+            }
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Login_Page class' onResume method.");
+        }
     }
 }

@@ -332,6 +332,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     public void onLogoutClicked() {
         try{
             // TODO sharedprefs'te falan bir yer değiştirilecek. buradan vm'e, oradan da model'a call edilecek.
+            vmLoginProcess.onLogoutRequested();
             Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
             startActivity(i);
         }

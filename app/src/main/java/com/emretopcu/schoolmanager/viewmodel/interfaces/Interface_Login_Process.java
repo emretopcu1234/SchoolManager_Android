@@ -2,6 +2,7 @@ package com.emretopcu.schoolmanager.viewmodel.interfaces;
 
 public interface Interface_Login_Process {
     void onCreateNewUserResulted(boolean isCreateNewUserSuccessful);
+    void onLoginInfoResulted(String id, String password, boolean isSavePassword);
     void onLoginResultedWithMainAdmin();
     void onLoginResultedWithDeptAdmin();
     void onLoginResultedWithLecturer();

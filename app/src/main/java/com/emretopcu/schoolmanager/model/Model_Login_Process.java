@@ -22,7 +22,7 @@ public class Model_Login_Process {
 
     private static Model_Login_Process INSTANCE;
     private Interface_Login_Process vmLoginProcess;
-
+    private Shared_Prefs sharedPrefs;
     private static final String FAKE_EMAIL_DOMAIN = "@myfakeschoolmanagerapp.com";
     private static  final String FAKE_PASSWORD_PREFIX = "PW_";
 
@@ -34,6 +34,7 @@ public class Model_Login_Process {
 
     private Model_Login_Process(){
         try{
+            sharedPrefs = Shared_Prefs.getInstance();
             auth = FirebaseAuth.getInstance();
             dbRef = FirebaseFirestore.getInstance();
             peopleRef = dbRef.collection("people");
@@ -68,7 +69,7 @@ public class Model_Login_Process {
                             Log.d("Exception", "basarili: " + id);
                             Log.d("Exception","before signout: " + auth.getCurrentUser().getEmail());
                             auth.signOut();
-//                            reloginForMainAdmin();
+                            reloginForMainAdmin();
                             vmLoginProcess.onCreateNewUserResulted(true);
                         }
                         else{
@@ -87,6 +88,28 @@ public class Model_Login_Process {
         }
     }
 
+    public void getLoginInfo(){
+        try{
+            if(sharedPrefs.isKeepLoggedIn()){
+                login(sharedPrefs.getId(),sharedPrefs.getPassword(),
+                        sharedPrefs.isSavePassword(),true);
+            }
+            else{
+                if(sharedPrefs.isSavePassword()){
+                    vmLoginProcess.onLoginInfoResulted(sharedPrefs.getId(),
+                            sharedPrefs.getPassword(),true);
+                }
+                else{
+                    vmLoginProcess.onLoginInfoResulted(sharedPrefs.getId(),
+                            "", false);
+                }
+            }
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Login_Process class' getLoginInfo method.");
+        }
+    }
+
     public void login(String id, String password, boolean isSavePassword, boolean isKeepLoggedIn){
         try{
             String email = id + FAKE_EMAIL_DOMAIN;
@@ -95,8 +118,10 @@ public class Model_Login_Process {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     try {
                         if (task.isSuccessful()) {
-                            Shared_Prefs.getInstance().setSavePassword(isSavePassword);
-                            Shared_Prefs.getInstance().setKeepLoggedIn(isKeepLoggedIn);
+                            sharedPrefs.setId(id);
+                            sharedPrefs.setPassword(password);
+                            sharedPrefs.setSavePassword(isSavePassword);
+                            sharedPrefs.setKeepLoggedIn(isKeepLoggedIn);
                             user = auth.getCurrentUser();
                             if(id.startsWith("1")){
                                 Model_Dept_Admin.getInstance().setDeptAdminId(id);
@@ -131,7 +156,7 @@ public class Model_Login_Process {
     public void reloginForMainAdmin(){
         try{
             String email = "ADMIN" + FAKE_EMAIL_DOMAIN;
-            String password = Shared_Prefs.getInstance().getPassword();
+            String password = sharedPrefs.getPassword();
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -187,6 +212,28 @@ public class Model_Login_Process {
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Login_Process class' changePassword method.");
         }
+    }
+
+    public void logout(){
+        try{
+            sharedPrefs.setKeepLoggedIn(false);
+            auth.signOut();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Login_Process class' logout method.");
+        }
+    }
+
+    public String getId(){
+        return sharedPrefs.getId();
+    }
+
+    public String getPassword(){
+        return sharedPrefs.getPassword();
+    }
+
+    public boolean isSavePassword(){
+        return sharedPrefs.isSavePassword();
     }
 
     public void setVmLoginProcess(Interface_Login_Process vmLoginProcess) {

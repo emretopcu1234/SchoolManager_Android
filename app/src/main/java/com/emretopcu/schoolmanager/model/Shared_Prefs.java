@@ -12,7 +12,6 @@ public class Shared_Prefs {
     private static Shared_Prefs INSTANCE = new Shared_Prefs();
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor prefsEditor;
-    private Interface_Login_Process vmLoginProcess;
 
 
     public static void initialize(Activity_Initial activityInitial){
@@ -36,10 +35,6 @@ public class Shared_Prefs {
             Log.d("Exception", "Exception on Shared_Prefs class' getInstance method.");
             return null;
         }
-    }
-
-    public void setVmLoginProcess(Interface_Login_Process vmLoginProcess) {
-        this.vmLoginProcess = vmLoginProcess;
     }
 
     public String getId() {

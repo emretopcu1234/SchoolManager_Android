@@ -2,10 +2,17 @@ package com.emretopcu.schoolmanager.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.model.Shared_Prefs;
+import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Login_Successful;
+import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,14 +48,58 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Activity_Initial extends AppCompatActivity {
 
+    private VM_Login_Process vmLoginProcess;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.layout_initial);
 
-        Shared_Prefs.initialize(this);
+            Shared_Prefs.initialize(this);
+            vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
+            vmLoginProcess.getLoginSuccessful().observe(this, e_login_successful -> {
+                try{
+                    if(e_login_successful == E_Login_Successful.SUCCESSFUL){
+                        if(vmLoginProcess.getPersonType() == E_Person_Type.MAIN_ADMIN){
+                            Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
+                            startActivity(i);
+                        }
+                        else if(vmLoginProcess.getPersonType() == E_Person_Type.DEPT_ADMIN){
+                            Intent i = new Intent(getApplicationContext(), Activity_Dept_Admin_Courses.class);
+                            startActivity(i);
+                        }
+                        else if(vmLoginProcess.getPersonType() == E_Person_Type.LECTURER){
+                            Intent i = new Intent(getApplicationContext(), Activity_Lecturer_Main_Page.class);
+                            startActivity(i);
+                        }
+                        else if(vmLoginProcess.getPersonType() == E_Person_Type.STUDENT){
+                            Intent i = new Intent(getApplicationContext(), Activity_Student_Main_Page.class);
+                            startActivity(i);
+                        }
+                        else{
+                            Log.d("Exception","Unexpected person type!");
+                        }
+                    }
+                    else if(e_login_successful == E_Login_Successful.UNSUCCESSFUL){
+                        Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
+                        startActivity(i);
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Initial class' vmLoginProcess.getLoginSuccessful().observe method.");
+                }
+            });
+            vmLoginProcess.onLoginInfoRequested();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Initial class' onCreate method.");
+        }
 
-        Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
-        startActivity(i);
+
+//        Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
+//        i.putExtra("from","initial");
+//        startActivity(i);
 
 
 
