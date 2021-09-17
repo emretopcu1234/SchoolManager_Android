@@ -2,9 +2,6 @@ package com.emretopcu.schoolmanager.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Login_Successful;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Activity_Login_Page extends AppCompatActivity {
@@ -72,7 +65,7 @@ public class Activity_Login_Page extends AppCompatActivity {
             vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
             vmLoginProcess.getLoginSuccessful().observe(this, e_login_successful -> {
                 try{
-                    if(e_login_successful == E_Login_Successful.SUCCESSFUL){
+                    if(e_login_successful == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         if(vmLoginProcess.getPersonType() == E_Person_Type.MAIN_ADMIN){
                             Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
                             startActivity(i);
@@ -94,7 +87,7 @@ public class Activity_Login_Page extends AppCompatActivity {
                         }
                         loginRequested = false;
                     }
-                    else if(e_login_successful == E_Login_Successful.UNSUCCESSFUL){
+                    else if(e_login_successful == E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL){
                         if(loginRequested){
                             textViewWarning.setText(R.string.warning_login_mismatch);
                             textViewWarning.setVisibility(View.VISIBLE);

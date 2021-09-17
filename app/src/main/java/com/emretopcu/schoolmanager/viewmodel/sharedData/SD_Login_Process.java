@@ -4,47 +4,43 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_Auth_Successful;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_Successful;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Create_New_User_Successful;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Login_Successful;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Relogin_Main_Admin_Successful;
 
 public class SD_Login_Process {
 
     private static SD_Login_Process INSTANCE;
 
-    private MutableLiveData<E_Create_New_User_Successful> createNewUserSuccessful;
-    private MutableLiveData<E_Login_Successful> loginSuccessful;
-    private MutableLiveData<E_Relogin_Main_Admin_Successful> reloginMainAdminSuccessful;
-    private MutableLiveData<E_Change_Password_Successful> changePasswordSuccessful;
-    private MutableLiveData<E_Change_Password_Auth_Successful> changePasswordAuthSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> createNewUserSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> loginSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> reloginMainAdminSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordAuthSuccessful;
     private E_Person_Type personType;
     private String id;
     private String password;
-    private boolean isSavePassword;
+    private boolean savePassword;
 
 
     private SD_Login_Process(){
         try{
             createNewUserSuccessful = new MutableLiveData<>();
-            createNewUserSuccessful.setValue(E_Create_New_User_Successful.NO_STATEMENT);
+            createNewUserSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             loginSuccessful = new MutableLiveData<>();
-            loginSuccessful.setValue(E_Login_Successful.NO_STATEMENT);
+            loginSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             reloginMainAdminSuccessful = new MutableLiveData<>();
-            reloginMainAdminSuccessful.setValue(E_Relogin_Main_Admin_Successful.SUCCESSFUL);
+            reloginMainAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
             changePasswordSuccessful = new MutableLiveData<>();
-            changePasswordSuccessful.setValue(E_Change_Password_Successful.NO_STATEMENT);
+            changePasswordSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             changePasswordAuthSuccessful = new MutableLiveData<>();
-            changePasswordAuthSuccessful.setValue(E_Change_Password_Auth_Successful.NO_STATEMENT);
+            changePasswordAuthSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             personType = E_Person_Type.NO_STATEMENT;
             id = "";
             password = "";
-            isSavePassword = false;
+            savePassword = false;
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on Common_Live_Data class' constructor method.");
+            Log.d("Exception", "Exception on SD_Login_Process class' constructor method.");
         }
     }
 
@@ -56,28 +52,28 @@ public class SD_Login_Process {
             return INSTANCE;
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on Common_Live_Data class' getInstance method.");
+            Log.d("Exception", "Exception on SD_Login_Process class' getInstance method.");
             return null;
         }
     }
 
-    public MutableLiveData<E_Create_New_User_Successful> getCreateNewUserSuccessful() {
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getCreateNewUserSuccessful() {
         return createNewUserSuccessful;
     }
 
-    public MutableLiveData<E_Login_Successful> getLoginSuccessful() {
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getLoginSuccessful() {
         return loginSuccessful;
     }
 
-    public MutableLiveData<E_Relogin_Main_Admin_Successful> getReloginMainAdminSuccessful() {
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getReloginMainAdminSuccessful() {
         return reloginMainAdminSuccessful;
     }
 
-    public MutableLiveData<E_Change_Password_Successful> getChangePasswordSuccessful() {
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordSuccessful() {
         return changePasswordSuccessful;
     }
 
-    public MutableLiveData<E_Change_Password_Auth_Successful> getChangePasswordAuthSuccessful() {
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordAuthSuccessful() {
         return changePasswordAuthSuccessful;
     }
 
@@ -106,11 +102,11 @@ public class SD_Login_Process {
     }
 
     public boolean isSavePassword() {
-        return isSavePassword;
+        return savePassword;
     }
 
     public void setSavePassword(boolean savePassword) {
-        isSavePassword = savePassword;
+        this.savePassword = savePassword;
     }
 
 }

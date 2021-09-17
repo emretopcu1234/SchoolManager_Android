@@ -15,19 +15,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
 
+import java.util.ArrayList;
+
 
 public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Adapter<ViewHolder_MAD> {
 
     private Context context;
+    private ArrayList<String[]> departmentList;
+    private boolean checkBoxActive;
 
-
-    public RecyclerViewAdapter_Main_Admin_Departments(Context context) {
+    public RecyclerViewAdapter_Main_Admin_Departments(Context context, ArrayList<String[]> departmentList) {
         try{
             this.context = context;
+            this.departmentList = departmentList;
+            checkBoxActive = false;
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' constructor method.");
         }
+    }
+
+    public void setDepartmentList(ArrayList<String[]> departmentList){
+        this.departmentList = departmentList;
+        notifyDataSetChanged();
+    }
+
+    public void isCheckBoxActive(boolean checkBoxActive){
+        this.checkBoxActive = checkBoxActive;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,9 +64,9 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
     public void onBindViewHolder(ViewHolder_MAD viewHolder, int position) {
         try{
             final ViewHolder_Main_Admin_Departments holder = (ViewHolder_Main_Admin_Departments) viewHolder;
-            holder.checkBox.setChecked(false);
-            holder.textViewDeptName.setText("Electrical and Electronics Engineering");
-            holder.textViewDeptId.setText("EEE");
+            holder.checkBox.setChecked(checkBoxActive);
+            holder.textViewDeptName.setText(departmentList.get(position)[0]);
+            holder.textViewDeptId.setText(departmentList.get(position)[1]);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' onBindViewHolder method.");
@@ -61,7 +76,7 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
     @Override
     public int getItemCount() {
         try{
-            return 10;
+            return departmentList.size();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' getItemCount method.");
@@ -105,8 +120,6 @@ class ViewHolder_MAD extends RecyclerView.ViewHolder implements View.OnCreateCon
             }
         });
     }
-
-
 }
 
 class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {
@@ -125,7 +138,6 @@ class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {
         catch(Exception e){
             Log.d("Exception", "Exception on ViewHolder_Main_Admin_Departments class' constructor method.");
         }
-
     }
 }
 

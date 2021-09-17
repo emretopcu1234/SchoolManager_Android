@@ -151,7 +151,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     }
 
     @Override
-    public void onSemesterChanged(String selectedSemester) {
+    public void onSemesterChanged(String selectedSemester, int position) {
         try{
 
         }

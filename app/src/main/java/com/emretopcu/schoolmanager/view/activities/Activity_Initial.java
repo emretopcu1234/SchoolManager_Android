@@ -3,22 +3,24 @@ package com.emretopcu.schoolmanager.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.model.Shared_Prefs;
-import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Login_Successful;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 // TODO UNUTMA!!! ONCREATE'TE SADECE ATAMALAR YAPILIR, ONRESUME'DA SETTINGLER DUZENLENIR (VISIBILITY VB)!!!!!
 
 // TODO progress bar'ı gereken her yere eklemeyi unutma!
+
+// TODO dataloaderror kısımlarını viewmodel ve model kısmı için implement et. (model'de zaten edildi.)
+
+// TODO model main admin issemesteractive'deki semester.startsWith("spring") kısmını kaldır. (şimdilik deneme amaçlı yapıldı.)
+
 
 // TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
@@ -60,7 +62,7 @@ public class Activity_Initial extends AppCompatActivity {
             vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
             vmLoginProcess.getLoginSuccessful().observe(this, e_login_successful -> {
                 try{
-                    if(e_login_successful == E_Login_Successful.SUCCESSFUL){
+                    if(e_login_successful == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         if(vmLoginProcess.getPersonType() == E_Person_Type.MAIN_ADMIN){
                             Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
                             startActivity(i);
@@ -81,7 +83,7 @@ public class Activity_Initial extends AppCompatActivity {
                             Log.d("Exception","Unexpected person type!");
                         }
                     }
-                    else if(e_login_successful == E_Login_Successful.UNSUCCESSFUL){
+                    else if(e_login_successful == E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL){
                         Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
                         startActivity(i);
                     }

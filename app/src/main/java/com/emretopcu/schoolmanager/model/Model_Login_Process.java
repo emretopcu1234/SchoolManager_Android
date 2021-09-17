@@ -29,7 +29,6 @@ public class Model_Login_Process {
     private FirebaseAuth auth;
     private FirebaseUser user;
     private FirebaseFirestore dbRef;
-    private CollectionReference peopleRef;
 
 
     private Model_Login_Process(){
@@ -37,7 +36,6 @@ public class Model_Login_Process {
             sharedPrefs = Shared_Prefs.getInstance();
             auth = FirebaseAuth.getInstance();
             dbRef = FirebaseFirestore.getInstance();
-            peopleRef = dbRef.collection("people");
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Login_Process class' constructor method.");

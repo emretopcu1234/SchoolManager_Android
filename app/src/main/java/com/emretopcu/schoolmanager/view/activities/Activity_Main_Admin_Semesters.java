@@ -161,7 +161,7 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
     }
 
     @Override
-    public void onSemesterChanged(String selectedSemester) {
+    public void onSemesterChanged(String selectedSemester, int position) {
         // nothing to do, because spinner is invisible.
     }
 

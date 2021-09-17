@@ -190,7 +190,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     }
 
     @Override
-    public void onSemesterChanged(String selectedSemester) {
+    public void onSemesterChanged(String selectedSemester, int position) {
         try{
 
         }

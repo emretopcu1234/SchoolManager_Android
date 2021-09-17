@@ -4,6 +4,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,8 +29,12 @@ import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
 
@@ -46,6 +51,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private AlertDialog.Builder builderChangePassword;
     private View viewDialogChangePassword;
     private AlertDialog alertDialogChangePassword;
+
     private EditText editTextDialogChangePasswordOldPassword;
     private EditText editTextDialogChangePasswordNewPassword;
     private EditText editTextDialogChangePasswordNewPasswordConfirm;
@@ -56,13 +62,13 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
 
     private Button buttonAddDelete;
     private Button buttonSelectCancel;
-
-
-
+    private Button buttonSearchDeptName;
 
     private BottomNavigationView bottomNavigationView;
 
     private VM_Login_Process vmLoginProcess;
+    private VM_Main_Admin vmMainAdmin;
+
 
     // TODO department name değişirse hem semesterconditions'taki son dönem tablosunda hem de departments collectionında güncelle.
 
@@ -81,9 +87,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
 
             recyclerViewMainAdminDepartments = findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
-            adapter = new RecyclerViewAdapter_Main_Admin_Departments(this);
             recyclerViewMainAdminDepartments.setLayoutManager(layoutManager);
-            recyclerViewMainAdminDepartments.setAdapter(adapter);
 
             builderDepartment = new AlertDialog.Builder(this);
             viewDialogDepartment = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_departments, null);
@@ -223,28 +227,87 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                 }
             });
 
-
+            buttonSearchDeptName = findViewById(R.id.button_search_dept_name);
+            buttonSearchDeptName.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonSearchDeptName setOnClickListener method.");
+                }
+            });
 
             bottomNavigationView = findViewById(R.id.bottom_navigation_main_admin);
             bottomNavigationView.getMenu().findItem(R.id.menu_main_admin_departments).setChecked(true);
 
             vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
+            vmLoginProcess.getChangePasswordSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
 
+                    }
+                    else if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL){
 
-            // TODO
-            /**
-             *  bazen eklemeler başarısız olabiliyor, o yüzden tek tek eklenecek, her eklemede
-             *  eğer başarılı olunursa indis 1 artacak, başarısız olursa indis sabit kalacak,
-             *  ta ki o indis eklenene kadar.
-             *  metod buradan çalışmayacak, buradan vmloginprocess ilklendirilecek,
-             *  oradan sürekli model ile vm arasında dönecek.
-             *  for(int i=1;i<=360;i++){
-             *     vmLoginProcess.onCreateNewUserRequested(Integer.toString(30000+i));
-             *  }
-             */
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmLoginProcess.getChangePasswordSuccessful().observe method.");
+                }
+            });
+            vmLoginProcess.getChangePasswordAuthSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
 
+                    }
+                    else if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL){
 
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmLoginProcess.getChangePasswordAuthSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin = new ViewModelProvider(this).get(VM_Main_Admin.class);
+            vmMainAdmin.getSetSemestersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        fragmentUserAndSemester.setSpinnerList(vmMainAdmin.getSemesterList());
+                        fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getSetSemestersSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin.getIsSemesterActiveSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        if(vmMainAdmin.isSemesterActive()){
+                            buttonAddDelete.setVisibility(View.VISIBLE);
+                            buttonSelectCancel.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            buttonAddDelete.setVisibility(View.INVISIBLE);
+                            buttonSelectCancel.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getIsSemesterActiveSuccessful().observe method.");
+                }
+            });
 
+            vmMainAdmin.getSetDepartmentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        adapter = new RecyclerViewAdapter_Main_Admin_Departments(this, vmMainAdmin.getDepartmentList());
+                        recyclerViewMainAdminDepartments.setAdapter(adapter);
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getSetDepartmentsSuccessful().observe method.");
+                }
+            });
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onCreate method.");
@@ -255,7 +318,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     protected void onResume() {
         super.onResume();
         try{
-            fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+            fragmentUserAndSemester.setName("ADMIN");
+            vmMainAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onResume method.");
@@ -307,9 +371,12 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     }
 
     @Override
-    public void onSemesterChanged(String selectedSemester) {
+    public void onSemesterChanged(String selectedSemester, int position) {
         try{
-
+            Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
+            Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+            vmMainAdmin.onSemesterActiveRequested(selectedSemester);
+            vmMainAdmin.onDepartmentListRequested(selectedSemester);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onSemesterChanged method.");
@@ -331,7 +398,6 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     @Override
     public void onLogoutClicked() {
         try{
-            // TODO sharedprefs'te falan bir yer değiştirilecek. buradan vm'e, oradan da model'a call edilecek.
             vmLoginProcess.onLogoutRequested();
             Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
             startActivity(i);
@@ -344,7 +410,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     @Override
     public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
         try{
-            textViewDialogChangePassword.setText(R.string.warning_change_password_wrong_confirmation);
+            textViewDialogChangePassword.setText(warning);
             textViewDialogChangePassword.setVisibility(visibility);
         }
         catch (Exception e){

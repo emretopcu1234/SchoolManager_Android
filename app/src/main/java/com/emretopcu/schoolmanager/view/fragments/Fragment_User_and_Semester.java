@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 
@@ -31,6 +30,8 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
     private ArrayAdapter arrayAdapter;
     private TextView textView;
     private Button button;
+
+    private ArrayList<String> spinnerList = new ArrayList<>();
 
     private Interface_General_Activity interfaceUserAndSemester;
 
@@ -61,29 +62,12 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
         try{
             view = inflater.inflate(R.layout.fragment_user_and_semester, container, false);
 
-            ArrayList<String> semesters = new ArrayList<>();
-            semesters.add("2017-2018 Fall");
-            semesters.add("2017-2018 Spring");
-            semesters.add("2017-2018 Summer");
-            semesters.add("2018-2019 Fall");
-            semesters.add("2018-2019 Spring");
-            semesters.add("2018-2019 Summer");
-            semesters.add("2019-2020 Fall");
-            semesters.add("2019-2020 Spring");
-            semesters.add("2019-2020 Summer");
-            semesters.add("2020-2021 Fall");
-            semesters.add("2020-2021 Spring");
-            semesters.add("2020-2021 Summer");
-            // TODO input olarak gelecek.
-
-
             spinner = view.findViewById(R.id.spinner);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
-                        interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString());
+                        interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString(), position);
                     }
                     catch(Exception e){
                         Log.d("Exception", "Exception on Fragment_User_and_Semester class' spinner's onItemSelected method.");  // TODO spinnerın adı değişirse güncelle.
@@ -95,10 +79,6 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
                     // nothing to do
                 }
             });
-
-            arrayAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_type_fragment_user_and_semester, semesters);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(arrayAdapter);
 
             textView = view.findViewById(R.id.textView);
             button = view.findViewById(R.id.button);
@@ -145,9 +125,33 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
     }
 
     @Override
+    public void setName(String name) {
+        try{
+            textView.setText(name);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Fragment_User_and_Semester class' setName method.");
+        }
+    }
+
+    @Override
+    public void setSpinnerList(ArrayList<String> spinnerList) {
+        try{
+            this.spinnerList = spinnerList;
+            arrayAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_type_fragment_user_and_semester, spinnerList);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(arrayAdapter);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Fragment_User_and_Semester class' setSpinnerList method.");
+        }
+    }
+
+    @Override
     public void setSpinnerItem(int position) {
         try{
             spinner.setSelection(position);
+            interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString(), position);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Fragment_User_and_Semester class' setSpinnerItem method.");

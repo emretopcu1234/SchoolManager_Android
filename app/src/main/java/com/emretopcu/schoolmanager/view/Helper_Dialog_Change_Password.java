@@ -47,7 +47,7 @@ public class Helper_Dialog_Change_Password {
         try{
             if(passwordFields[1].equals(passwordFields[2])){
                 if(passwordFields[1].length() < MINIMUM_PASSWORD_SIZE){
-                    interfaceHelperDialogChangePassword.setAndShowWarningOnDialogChangePassword(R.string.warning_change_password_short_password, View.INVISIBLE);
+                    interfaceHelperDialogChangePassword.setAndShowWarningOnDialogChangePassword(R.string.warning_change_password_short_password, View.VISIBLE);
                 }
                 else{
                     interfaceHelperDialogChangePassword.onChangePasswordRequested(passwordFields[0],passwordFields[1]);
