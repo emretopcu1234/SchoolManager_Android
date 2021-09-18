@@ -15,11 +15,11 @@ public class SD_Main_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptAdminsSuccessful;
     private ArrayList<String> semesterList;
     private boolean semesterActive;
     private ArrayList<String[]> departmentList;
-
-
+    private ArrayList<String[]> deptAdminList;
 
     private SD_Main_Admin(){
         try{
@@ -29,9 +29,12 @@ public class SD_Main_Admin {
             isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDepartmentsSuccessful = new MutableLiveData<>();
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            setDeptAdminsSuccessful = new MutableLiveData<>();
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             semesterList = new ArrayList<>();
             semesterActive = false;
             departmentList = new ArrayList<>();
+            deptAdminList = new ArrayList<>();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on SD_Main_Admin class' constructor method.");
@@ -63,6 +66,10 @@ public class SD_Main_Admin {
         return setDepartmentsSuccessful;
     }
 
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDeptAdminsSuccessful() {
+        return setDeptAdminsSuccessful;
+    }
+
     public ArrayList<String> getSemesterList() {
         return semesterList;
     }
@@ -85,5 +92,13 @@ public class SD_Main_Admin {
 
     public void setDepartmentList(ArrayList<String[]> departmentList) {
         this.departmentList = departmentList;
+    }
+
+    public ArrayList<String[]> getDeptAdminList() {
+        return deptAdminList;
+    }
+
+    public void setDeptAdminList(ArrayList<String[]> deptAdminList) {
+        this.deptAdminList = deptAdminList;
     }
 }

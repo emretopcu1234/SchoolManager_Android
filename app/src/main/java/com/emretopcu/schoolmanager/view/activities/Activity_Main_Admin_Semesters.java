@@ -194,6 +194,11 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
     public void onChangePasswordRequested(String oldPassword, String newPassword) {
 
     }
+
+    @Override
+    public void onDismissDialogRequested() {
+
+    }
 }
 
 

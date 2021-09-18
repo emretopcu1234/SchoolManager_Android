@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class Activity_Login_Page extends AppCompatActivity {
     private Button buttonLogin;
     private VM_Login_Process vmLoginProcess;
     private boolean loginRequested;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class Activity_Login_Page extends AppCompatActivity {
                         textViewWarning.setVisibility(View.VISIBLE);
                     }
                     else{
+                        progressBar.setVisibility(View.VISIBLE);
                         textViewWarning.setVisibility(View.INVISIBLE);
                         vmLoginProcess.onLoginRequested
                                 (editTextId.getText().toString(),editTextPassword.getText().toString(),
@@ -62,10 +65,13 @@ public class Activity_Login_Page extends AppCompatActivity {
                 }
             });
 
+            progressBar = findViewById(R.id.progressBar);
+
             vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
             vmLoginProcess.getLoginSuccessful().observe(this, e_login_successful -> {
                 try{
                     if(e_login_successful == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBar.setVisibility(View.INVISIBLE);
                         if(vmLoginProcess.getPersonType() == E_Person_Type.MAIN_ADMIN){
                             Intent i = new Intent(getApplicationContext(), Activity_Main_Admin_Departments.class);
                             startActivity(i);
@@ -88,6 +94,7 @@ public class Activity_Login_Page extends AppCompatActivity {
                         loginRequested = false;
                     }
                     else if(e_login_successful == E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL){
+                        progressBar.setVisibility(View.INVISIBLE);
                         if(loginRequested){
                             textViewWarning.setText(R.string.warning_login_mismatch);
                             textViewWarning.setVisibility(View.VISIBLE);

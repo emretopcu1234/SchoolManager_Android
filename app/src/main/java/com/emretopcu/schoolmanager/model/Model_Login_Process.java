@@ -59,25 +59,22 @@ public class Model_Login_Process {
         try{
             String emailAddress = id + FAKE_EMAIL_DOMAIN;
             String password = FAKE_PASSWORD_PREFIX + id;
-            auth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    try{
-                        if(task.isSuccessful()){
-                            Log.d("Exception", "basarili: " + id);
-                            Log.d("Exception","before signout: " + auth.getCurrentUser().getEmail());
-                            auth.signOut();
-                            reloginForMainAdmin();
-                            vmLoginProcess.onCreateNewUserResulted(true);
-                        }
-                        else{
-                            Log.d("Exception", "basarisiz: " + id);
-                            vmLoginProcess.onCreateNewUserResulted(false);
-                        }
+            auth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(task -> {
+                try{
+                    if(task.isSuccessful()){
+                        Log.d("Exception", "basarili: " + id);
+                        Log.d("Exception","before signout: " + auth.getCurrentUser().getEmail());
+                        auth.signOut();
+                        reloginForMainAdmin();
+                        vmLoginProcess.onCreateNewUserResulted(true);
                     }
-                    catch (Exception e){
-                        Log.d("Exception", "Exception on Model_Login_Process class' auth createUserWithEmailAndPassword onComplete method.");
+                    else{
+                        Log.d("Exception", "basarisiz: " + id);
+                        vmLoginProcess.onCreateNewUserResulted(false);
                     }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Login_Process class' auth createUserWithEmailAndPassword onComplete method.");
                 }
             });
         }
@@ -111,38 +108,35 @@ public class Model_Login_Process {
     public void login(String id, String password, boolean isSavePassword, boolean isKeepLoggedIn){
         try{
             String email = id + FAKE_EMAIL_DOMAIN;
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    try {
-                        if (task.isSuccessful()) {
-                            sharedPrefs.setId(id);
-                            sharedPrefs.setPassword(password);
-                            sharedPrefs.setSavePassword(isSavePassword);
-                            sharedPrefs.setKeepLoggedIn(isKeepLoggedIn);
-                            user = auth.getCurrentUser();
-                            if(id.startsWith("1")){
-                                Model_Dept_Admin.getInstance().setDeptAdminId(id);
-                                vmLoginProcess.onLoginResultedWithDeptAdmin();
-                            }
-                            else if(id.startsWith("2")){
-                                Model_Lecturer.getInstance().setLecturerId(id);
-                                vmLoginProcess.onLoginResultedWithLecturer();
-                            }
-                            else if(id.startsWith("3")){
-                                Model_Student.getInstance().setStudentId(id);
-                                vmLoginProcess.onLoginResultedWithStudent();
-                            }
-                            else if(id.equals("ADMIN")){
-                                vmLoginProcess.onLoginResultedWithMainAdmin();
-                            }
-                        } else {
-                            vmLoginProcess.onLoginResultedUnsuccessful();
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                try {
+                    if (task.isSuccessful()) {
+                        sharedPrefs.setId(id);
+                        sharedPrefs.setPassword(password);
+                        sharedPrefs.setSavePassword(isSavePassword);
+                        sharedPrefs.setKeepLoggedIn(isKeepLoggedIn);
+                        user = auth.getCurrentUser();
+                        if(id.startsWith("1")){
+                            Model_Dept_Admin.getInstance().setDeptAdminId(id);
+                            vmLoginProcess.onLoginResultedWithDeptAdmin();
                         }
+                        else if(id.startsWith("2")){
+                            Model_Lecturer.getInstance().setLecturerId(id);
+                            vmLoginProcess.onLoginResultedWithLecturer();
+                        }
+                        else if(id.startsWith("3")){
+                            Model_Student.getInstance().setStudentId(id);
+                            vmLoginProcess.onLoginResultedWithStudent();
+                        }
+                        else if(id.equals("ADMIN")){
+                            vmLoginProcess.onLoginResultedWithMainAdmin();
+                        }
+                    } else {
+                        vmLoginProcess.onLoginResultedUnsuccessful();
                     }
-                    catch (Exception e){
-                        Log.d("Exception", "Exception on Model_Login_Process class' auth signInWithEmailAndPassword onComplete method.");
-                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Login_Process class' auth signInWithEmailAndPassword onComplete method.");
                 }
             });
         }
@@ -155,21 +149,18 @@ public class Model_Login_Process {
         try{
             String email = "ADMIN" + FAKE_EMAIL_DOMAIN;
             String password = sharedPrefs.getPassword();
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    try {
-                        if (task.isSuccessful()) {
-                            user = auth.getCurrentUser();
-                            vmLoginProcess.onReloginForMainAdminResulted(true);
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                try {
+                    if (task.isSuccessful()) {
+                        user = auth.getCurrentUser();
+                        vmLoginProcess.onReloginForMainAdminResulted(true);
 
-                        } else {
-                            vmLoginProcess.onReloginForMainAdminResulted(false);
-                        }
+                    } else {
+                        vmLoginProcess.onReloginForMainAdminResulted(false);
                     }
-                    catch (Exception e){
-                        Log.d("Exception", "Exception on Model_Login_Process class' auth signInWithEmailAndPassword onComplete method.");
-                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Login_Process class' auth signInWithEmailAndPassword onComplete method.");
                 }
             });
         }
@@ -187,6 +178,7 @@ public class Model_Login_Process {
                         user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
                             try{
                                 if(task1.isSuccessful()){
+                                    sharedPrefs.setPassword(newPassword);
                                     vmLoginProcess.onChangePasswordResulted(true,true);
                                 }
                                 else {

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.emretopcu.schoolmanager.model.Model_Login_Process;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
 import com.emretopcu.schoolmanager.viewmodel.sharedData.SD_Login_Process;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Login_Process;
@@ -18,8 +19,7 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> createNewUserSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> loginSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> reloginMainAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordAuthSuccessful;
+    private MutableLiveData<E_Change_Password_State> changePasswordSuccessful;
 
 
     public VM_Login_Process(){
@@ -31,7 +31,6 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
             loginSuccessful = sdLoginProcess.getLoginSuccessful();
             reloginMainAdminSuccessful = sdLoginProcess.getReloginMainAdminSuccessful();
             changePasswordSuccessful = sdLoginProcess.getChangePasswordSuccessful();
-            changePasswordAuthSuccessful = sdLoginProcess.getChangePasswordAuthSuccessful();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Login_Process class' constructor method.");
@@ -73,8 +72,7 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
 
     public void onChangePasswordRequested(String oldPassword, String newPassword){
         try{
-            changePasswordSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            changePasswordAuthSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            changePasswordSuccessful.setValue(E_Change_Password_State.NO_STATEMENT);
             modelLoginProcess.changePassword(oldPassword,newPassword);
         }
         catch (Exception e){
@@ -102,12 +100,8 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
         return reloginMainAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordSuccessful() {
+    public MutableLiveData<E_Change_Password_State> getChangePasswordSuccessful() {
         return changePasswordSuccessful;
-    }
-
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordAuthSuccessful() {
-        return changePasswordAuthSuccessful;
     }
 
     public E_Person_Type getPersonType() {
@@ -229,16 +223,15 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
     public void onChangePasswordResulted(boolean isChangePasswordAuthSuccessful, boolean isChangePasswordSuccessful){
         try{
             if(isChangePasswordAuthSuccessful){
-                changePasswordAuthSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
                 if(isChangePasswordSuccessful){
-                    changePasswordSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+                    changePasswordSuccessful.setValue(E_Change_Password_State.SUCCESSFUL);
                 }
                 else{
-                    changePasswordSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL);
+                    changePasswordSuccessful.setValue(E_Change_Password_State.CANNOT_CHANGED);
                 }
             }
             else{
-                changePasswordAuthSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.UNSUCCESSFUL);
+                changePasswordSuccessful.setValue(E_Change_Password_State.WRONG_PASSWORD);
             }
         }
         catch (Exception e){
@@ -246,9 +239,3 @@ public class VM_Login_Process extends ViewModel implements Interface_Login_Proce
         }
     }
 }
-
-// TODO hem changepasswordsuccessful hem changepasswordauthsuccessgul yerine tek bi tane live data oluşturulacak.
-// bunun için enum tanımlanacak ve state'leri boolean isChangePasswordAuthSuccessful, boolean isChangePasswordSuccessful
-// değişkenlerine göre belirlenecek. bu live data'yı izleyen model de ona göre ui kısmını güncelleyecek.
-// eski parola yanlış   /   parola değiştirilemedi (server kaynaklı)    / parola değiştirildi
-// progress bar kısmını da artık implemente etmeye başla!

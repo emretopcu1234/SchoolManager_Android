@@ -59,7 +59,6 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
         }
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder_MAD viewHolder, int position) {
         try{
@@ -123,7 +122,6 @@ class ViewHolder_MAD extends RecyclerView.ViewHolder implements View.OnCreateCon
 }
 
 class ViewHolder_Main_Admin_Departments extends ViewHolder_MAD {
-
     public CheckBox checkBox;
     public TextView textViewDeptName;
     public TextView textViewDeptId;

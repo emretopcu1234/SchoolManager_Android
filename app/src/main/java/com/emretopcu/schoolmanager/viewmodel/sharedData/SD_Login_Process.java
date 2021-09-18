@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Person_Type;
 
 public class SD_Login_Process {
@@ -14,8 +15,7 @@ public class SD_Login_Process {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> createNewUserSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> loginSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> reloginMainAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> changePasswordAuthSuccessful;
+    private MutableLiveData<E_Change_Password_State> changePasswordSuccessful;
     private E_Person_Type personType;
     private String id;
     private String password;
@@ -31,9 +31,7 @@ public class SD_Login_Process {
             reloginMainAdminSuccessful = new MutableLiveData<>();
             reloginMainAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
             changePasswordSuccessful = new MutableLiveData<>();
-            changePasswordSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            changePasswordAuthSuccessful = new MutableLiveData<>();
-            changePasswordAuthSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            changePasswordSuccessful.setValue(E_Change_Password_State.NO_STATEMENT);
             personType = E_Person_Type.NO_STATEMENT;
             id = "";
             password = "";
@@ -69,12 +67,8 @@ public class SD_Login_Process {
         return reloginMainAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordSuccessful() {
+    public MutableLiveData<E_Change_Password_State> getChangePasswordSuccessful() {
         return changePasswordSuccessful;
-    }
-
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getChangePasswordAuthSuccessful() {
-        return changePasswordAuthSuccessful;
     }
 
     public E_Person_Type getPersonType() {

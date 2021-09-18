@@ -6,4 +6,5 @@ public interface Interface_General_Activity {
     void onLogoutClicked();
     void setAndShowWarningOnDialogChangePassword(int warning, int visibility);
     void onChangePasswordRequested(String oldPassword, String newPassword);
+    void onDismissDialogRequested();
 }

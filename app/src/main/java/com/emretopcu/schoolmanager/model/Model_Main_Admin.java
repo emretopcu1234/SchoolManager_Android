@@ -1,5 +1,6 @@
 package com.emretopcu.schoolmanager.model;
 
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,12 +34,30 @@ public class Model_Main_Admin {
     private FirebaseFirestore dbRef;
     private CollectionReference semestersRef;
     private CollectionReference semesterConditionsRef;
+    private CollectionReference departmentsRef;
+    private CollectionReference deptAdminsRef;
+    private CollectionReference lecturersRef;
+    private CollectionReference studentsRef;
+
+    private HashMap<String,String> departmentsInfo;
+    private HashMap<String,String[]> deptAdminsInfo;
+    private HashMap<String,String[]> lecturersInfo;
+    private HashMap<String,String[]> studentsInfo;
 
     private Model_Main_Admin(){
         try{
             dbRef = FirebaseFirestore.getInstance();
             semestersRef = dbRef.collection("semesters");
             semesterConditionsRef = dbRef.collection("semesterConditions");
+            departmentsRef = dbRef.collection("departments");
+            deptAdminsRef = dbRef.collection("deptAdmins");
+            lecturersRef = dbRef.collection("lecturers");
+            studentsRef = dbRef.collection("students");
+            departmentsInfo = new HashMap<>();
+            deptAdminsInfo = new HashMap<>();
+            lecturersInfo = new HashMap<>();
+            studentsInfo = new HashMap<>();
+            storeInitialData();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' constructor method.");
@@ -55,6 +74,70 @@ public class Model_Main_Admin {
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getInstance method.");
             return null;
+        }
+    }
+
+    private void storeInitialData(){
+        try{
+            departmentsRef.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        Log.d("Exception","Data Load Error on storeInitialData!!!");
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        departmentsInfo.put(document.getId(),document.getString("name"));
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' departmentsRef.get().addOnCompleteListener method.");
+                }
+            });
+            deptAdminsRef.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        Log.d("Exception","Data Load Error on storeInitialData!!!");
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        deptAdminsInfo.put(document.getId(),new String[]{document.getString("name"),document.getString("surname")});
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdminsRef.get().addOnCompleteListener method.");
+                }
+            });
+            lecturersRef.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        Log.d("Exception","Data Load Error on storeInitialData!!!");
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        lecturersInfo.put(document.getId(),new String[]{document.getString("name"),document.getString("surname")});
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturersRef.get().addOnCompleteListener method.");
+                }
+            });
+            studentsRef.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        Log.d("Exception","Data Load Error on storeInitialData!!!");
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        studentsInfo.put(document.getId(),new String[]{document.getString("name"),document.getString("surname")});
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' studentsRef.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' storePeopleData method.");
         }
     }
 
@@ -150,6 +233,33 @@ public class Model_Main_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getDepartmentList method.");
+        }
+    }
+
+    public void getDeptAdminList(String unprocessedSemester){
+        try {
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
+            deptAdmins.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> deptAdminList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        deptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
+                                deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                    }
+                    vmMainAdmin.onGetDeptAdminListResulted(deptAdminList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getDeptAdminList method.");
         }
     }
     

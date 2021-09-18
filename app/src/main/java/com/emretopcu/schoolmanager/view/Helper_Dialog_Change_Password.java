@@ -65,6 +65,7 @@ public class Helper_Dialog_Change_Password {
     public void onCancelClicked(){
         try{
             resetFields();
+            interfaceHelperDialogChangePassword.onDismissDialogRequested();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Helper_Dialog_Change_Password class' onCancelClicked method.");

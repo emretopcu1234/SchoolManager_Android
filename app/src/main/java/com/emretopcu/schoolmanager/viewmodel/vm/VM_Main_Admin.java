@@ -20,7 +20,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
-
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptAdminsSuccessful;
 
     public VM_Main_Admin(){
         try{
@@ -30,6 +30,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
             setSemestersSuccessful = sdMainAdmin.getSetSemestersSuccessful();
             isSemesterActiveSuccessful = sdMainAdmin.getIsSemesterActiveSuccessful();
             setDepartmentsSuccessful = sdMainAdmin.getSetDepartmentsSuccessful();
+            setDeptAdminsSuccessful = sdMainAdmin.getSetDeptAdminsSuccessful();
 
         }
         catch (Exception e){
@@ -40,7 +41,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     public void onLoadSemestersRequested(){
         try{
             setSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            Model_Main_Admin.getInstance().loadSemesters();
+            modelMainAdmin.loadSemesters();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onLoadSemestersRequested method.");
@@ -50,7 +51,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     public void onSemesterActiveRequested(String selectedSemester){
         try{
             isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            Model_Main_Admin.getInstance().isSemesterActive(selectedSemester);
+            modelMainAdmin.isSemesterActive(selectedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onSemesterActiveRequested method.");
@@ -60,7 +61,17 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     public void onDepartmentListRequested(String selectedSemester){
         try{
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            Model_Main_Admin.getInstance().getDepartmentList(selectedSemester);
+            modelMainAdmin.getDepartmentList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDepartmentsRequested method.");
+        }
+    }
+
+    public void onDeptAdminListRequested(String selectedSemester){
+        try{
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDeptAdminList(selectedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDepartmentsRequested method.");
@@ -79,6 +90,10 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return setDepartmentsSuccessful;
     }
 
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDeptAdminsSuccessful() {
+        return setDeptAdminsSuccessful;
+    }
+
     public ArrayList<String> getSemesterList(){
         return sdMainAdmin.getSemesterList();
     }
@@ -91,10 +106,14 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return sdMainAdmin.getDepartmentList();
     }
 
+    public ArrayList<String[]> getDeptAdminList(){
+        return sdMainAdmin.getDeptAdminList();
+    }
+
     @Override
     public void dataLoadError() {
         try{
-
+            Log.d("Exception","Data Load Error!!!");
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' dataLoadError method.");
@@ -131,6 +150,17 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onGetDepartmentListResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetDeptAdminListResulted(ArrayList<String[]> deptAdminList) {
+        try{
+            sdMainAdmin.setDeptAdminList(deptAdminList);
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onGetDeptAdminListResulted method.");
         }
     }
 }
