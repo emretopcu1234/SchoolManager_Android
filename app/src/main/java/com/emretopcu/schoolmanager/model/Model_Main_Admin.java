@@ -1,5 +1,6 @@
 package com.emretopcu.schoolmanager.model;
 
+import android.hardware.ConsumerIrManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -168,6 +169,58 @@ public class Model_Main_Admin {
         }
     }
 
+    public void getDetailedSemesterList(){
+        try{
+            semestersRef.orderBy("startDate").get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String> semesterId = new ArrayList<>();
+                    ArrayList<Timestamp> startDate = new ArrayList<>();
+                    ArrayList<Timestamp> endDate = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        semesterId.add(document.getId());
+                        startDate.add(document.getTimestamp("startDate"));
+                        endDate.add(document.getTimestamp("endDate"));
+                    }
+                    ArrayList<String[]> detailedSemesterList = new ArrayList<>();
+                    for(int i=0;i<semesterId.size();i++){
+                        if(Common_Services.isSemesterActive(startDate.get(i), endDate.get(i))){
+                            detailedSemesterList.add(new String[]{
+                                    Common_Services.convertProcessedSemester(semesterId.get(i)),
+                                    Common_Services.convertTimestampToDateString(startDate.get(i)),
+                                    Common_Services.convertTimestampToDateString(endDate.get(i)),
+                                    "ACTIVE"});
+                        }
+                        else{
+                            if(Common_Services.isSemesterFuture(startDate.get(i))){
+                                detailedSemesterList.add(new String[]{
+                                        Common_Services.convertProcessedSemester(semesterId.get(i)),
+                                        Common_Services.convertTimestampToDateString(startDate.get(i)),
+                                        Common_Services.convertTimestampToDateString(endDate.get(i)),
+                                        "FUTURE"});
+                            }
+                            detailedSemesterList.add(new String[]{
+                                    Common_Services.convertProcessedSemester(semesterId.get(i)),
+                                    Common_Services.convertTimestampToDateString(startDate.get(i)),
+                                    Common_Services.convertTimestampToDateString(endDate.get(i)),
+                                    "PAST"});
+                        }
+                    }
+                    vmMainAdmin.onLoadDetailedSemestersResulted(detailedSemesterList);
+                }
+                catch (Exception e) {
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getDetailedSemesterList method.");
+        }
+    }
+
     public void isSemesterActive(String unprocessedSemester){
         try{
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
@@ -178,10 +231,7 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    Date todayDate = new Date();
-                    if(task.getResult().getTimestamp("startDate").compareTo(new Timestamp(todayDate)) <= 0
-                            && task.getResult().getTimestamp("endDate").compareTo(new Timestamp(todayDate)) <= 0){
-
+                    if(Common_Services.isSemesterActive(task.getResult().getTimestamp("startDate"),task.getResult().getTimestamp("endDate"))){
                         // TODO silinecek kısım başlangıç
                         if(semester.startsWith("spring")){
                             vmMainAdmin.onIsSemesterActiveResulted(false);
@@ -260,6 +310,87 @@ public class Model_Main_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getDeptAdminList method.");
+        }
+    }
+
+    public void getLecturerList(String unprocessedSemester){
+        try {
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
+            lecturers.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> lecturerList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        lecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
+                                lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                    }
+                    vmMainAdmin.onGetLecturerListResulted(lecturerList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getLecturerList method.");
+        }
+    }
+
+    public void getStudentList(String unprocessedSemester){
+        try {
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
+            students.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> studentList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        studentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
+                                studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                    }
+                    vmMainAdmin.onGetStudentListResulted(studentList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' students.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getStudentList method.");
+        }
+    }
+
+    public void getFilteredDepartmentList(String unprocessedSemester, String unprocessedFilteredDeptName){
+        try {
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
+
+            departments.get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> departmentList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        departmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+                    }
+                    vmMainAdmin.onGetDepartmentListResulted(departmentList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredDepartmentList method.");
         }
     }
     

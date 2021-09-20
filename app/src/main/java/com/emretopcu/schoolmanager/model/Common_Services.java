@@ -5,7 +5,10 @@ import android.util.Log;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Student;
 import com.google.firebase.Timestamp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Common_Services {
@@ -57,6 +60,41 @@ public class Common_Services {
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' convertProcessedSemester method.");
             return null;
+        }
+    }
+
+    public static String convertTimestampToDateString(Timestamp timestamp){
+        try{
+            DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+            DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy");
+            return formatter1.format(formatter.parse(timestamp.toDate().toString()));
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' convertTimestampToDateString method.");
+            return null;
+        }
+    }
+
+    public static boolean isSemesterActive(Timestamp startDate, Timestamp endDate){
+        try{
+            Date todayDate = new Date();
+            return(startDate.compareTo(new Timestamp(todayDate)) <= 0
+                    && endDate.compareTo(new Timestamp(todayDate)) <= 0);       // TODO >= olacak.
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' isSemesterActive method.");
+            return false;
+        }
+    }
+
+    public static boolean isSemesterFuture(Timestamp startDate){
+        try{
+            Date todayDate = new Date();
+            return(startDate.compareTo(new Timestamp(todayDate)) >= 0);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' isSemesterFuture method.");
+            return false;
         }
     }
 }

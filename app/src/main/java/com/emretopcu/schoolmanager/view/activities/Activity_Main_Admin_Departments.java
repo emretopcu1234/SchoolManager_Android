@@ -67,6 +67,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private Button buttonSelectCancel;
     private Button buttonSearchDeptName;
     private Button buttonCancelSearchDeptName;
+    private TextView textViewDeptName;
+    private EditText editTextDeptName;
 
     private BottomNavigationView bottomNavigationView;
     private Toast toastMessage;
@@ -243,7 +245,11 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonSearchDeptName = findViewById(R.id.button_search_dept_name);
             buttonSearchDeptName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchDeptName.setVisibility(View.INVISIBLE);
+                    buttonCancelSearchDeptName.setVisibility(View.VISIBLE);
+                    textViewDeptName.setVisibility(View.INVISIBLE);
+                    editTextDeptName.setVisibility(View.VISIBLE);
+                    editTextDeptName.requestFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonSearchDeptName setOnClickListener method.");
@@ -253,10 +259,45 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonCancelSearchDeptName = findViewById(R.id.button_cancel_search_dept_name);
             buttonCancelSearchDeptName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchDeptName.setVisibility(View.VISIBLE);
+                    buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
+                    textViewDeptName.setVisibility(View.VISIBLE);
+                    editTextDeptName.setVisibility(View.INVISIBLE);
+                    editTextDeptName.clearFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonCancelSearchDeptName setOnClickListener method.");
+                }
+            });
+
+            textViewDeptName = findViewById(R.id.textView_dept_name);
+            editTextDeptName = findViewById(R.id.editText_dept_name);
+            editTextDeptName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        String filteredDeptName = s.toString();
+                        if(filteredDeptName.length() == 0){
+                            vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                        }
+                        else{
+                            progressBarDepartment.setVisibility(View.VISIBLE);
+                            vmMainAdmin.onFilteredDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER,filteredDeptName);
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' editTextDeptName onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
                 }
             });
 
@@ -355,6 +396,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             }
             buttonSearchDeptName.setVisibility(View.VISIBLE);
             buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
+            textViewDeptName.setVisibility(View.VISIBLE);
+            editTextDeptName.setVisibility(View.INVISIBLE);
             fragmentUserAndSemester.setName("ADMIN");
             vmMainAdmin.onLoadSemestersRequested();
         }

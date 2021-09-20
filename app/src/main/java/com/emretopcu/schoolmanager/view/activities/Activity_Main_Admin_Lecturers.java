@@ -1,7 +1,9 @@
 package com.emretopcu.schoolmanager.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,21 +11,33 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
+import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
+import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Dept_Admins;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
+import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -36,26 +50,47 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     private RecyclerView recyclerViewMainAdminLecturers;
     private LinearLayoutManager layoutManager;
 
-    private AlertDialog.Builder builder;
-    private View viewDialog;
-    private AlertDialog alertDialog;
-    private Button button;
+    private AlertDialog.Builder builderLecturer;
+    private View viewDialogLecturer;
+    private AlertDialog alertDialogLecturer;
 
-    private RecyclerViewAdapter_Filter_Department adapterFilter;
-    private RecyclerView recyclerViewFilter;
-    private LinearLayoutManager layoutManagerFilter;
+    private AlertDialog.Builder builderChangePassword;
+    private View viewDialogChangePassword;
+    private AlertDialog alertDialogChangePassword;
 
-    private AlertDialog.Builder builderFilter;
-    private View viewDialogFilter;
-    private AlertDialog alertDialogFilter;
-    private Button buttonFilter;
+    private EditText editTextDialogChangePasswordOldPassword;
+    private EditText editTextDialogChangePasswordNewPassword;
+    private EditText editTextDialogChangePasswordNewPasswordConfirm;
+    private TextView textViewDialogChangePassword;
+    private Button buttonDialogChangePasswordOK;
+    private Button buttonDialogChangePasswordCancel;
+    private Helper_Dialog_Change_Password helperDialogChangePassword;
+
+    private Button buttonAddDelete;
+    private Button buttonSelectCancel;
+    private Button buttonSearchId;
+    private Button buttonCancelSearchId;
+    private Button buttonSearchName;
+    private Button buttonCancelSearchName;
+    private Button buttonSearchSurname;
+    private Button buttonCancelSearchSurname;
+    private Button buttonFilterDeptName;
+    private Button buttonCancelFilterDeptName;
 
     private BottomNavigationView bottomNavigationView;
+    private Toast toastMessage;
 
+    private VM_Login_Process vmLoginProcess;
+    private VM_Main_Admin vmMainAdmin;
+
+    private ProgressBar progressBarLecturer;
+    private boolean progressBarIndicator_isSemesterActive;
+    private boolean progressBarIndicator_setLecturers;
+
+    private ProgressBar progressBarChangePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.layout_main_admin_lecturers);
@@ -68,66 +103,306 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
 
             recyclerViewMainAdminLecturers = findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
-
-            adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this);
             recyclerViewMainAdminLecturers.setLayoutManager(layoutManager);
-            recyclerViewMainAdminLecturers.setAdapter(adapter);
 
+            builderLecturer = new AlertDialog.Builder(this);
+            viewDialogLecturer = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_lecturers, null);
+            builderLecturer.setView(viewDialogLecturer);
+            alertDialogLecturer = builderLecturer.create();
+            alertDialogLecturer.setCancelable(false);
+            alertDialogLecturer.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-            button = (Button) findViewById(R.id.button_add_delete);
-            button.setOnClickListener(v -> {
+            builderChangePassword = new AlertDialog.Builder(this);
+            viewDialogChangePassword = this.getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+            builderChangePassword.setView(viewDialogChangePassword);
+            alertDialogChangePassword = builderChangePassword.create();
+            alertDialogChangePassword.setCancelable(false);
+            alertDialogChangePassword.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            editTextDialogChangePasswordOldPassword = viewDialogChangePassword.findViewById(R.id.editText_old_password);
+            editTextDialogChangePasswordNewPassword = viewDialogChangePassword.findViewById(R.id.editText_new_password);
+            editTextDialogChangePasswordNewPasswordConfirm = viewDialogChangePassword.findViewById(R.id.editText_new_password_confirm);
+            editTextDialogChangePasswordOldPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(0,s.toString()));
+                        if(buttonDialogChangePasswordOK.isEnabled()){
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        }
+                        else{
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        }
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' editTextDialogChangePasswordOldPassword onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            editTextDialogChangePasswordNewPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(1,s.toString()));
+                        if(buttonDialogChangePasswordOK.isEnabled()){
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        }
+                        else{
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        }
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' editTextDialogChangePasswordNewPassword onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            editTextDialogChangePasswordNewPasswordConfirm.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(2,s.toString()));
+                        if(buttonDialogChangePasswordOK.isEnabled()){
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        }
+                        else{
+                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        }
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' editTextDialogChangePasswordNewPasswordConfirm onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            textViewDialogChangePassword = viewDialogChangePassword.findViewById(R.id.textView_warning);
+            buttonDialogChangePasswordOK = viewDialogChangePassword.findViewById(R.id.button_ok);
+            buttonDialogChangePasswordOK.setOnClickListener(v -> {
                 try{
-                    alertDialog.show();
+                    helperDialogChangePassword.onOKClicked();
                 }
                 catch(Exception e){
-                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonDialogChangePasswordOK setOnClickListener method.");
+                }
+            });
+            buttonDialogChangePasswordCancel = viewDialogChangePassword.findViewById(R.id.button_cancel);
+            buttonDialogChangePasswordCancel.setOnClickListener(v -> {
+                try{
+                    helperDialogChangePassword.onCancelClicked();
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonDialogChangePasswordCancel setOnClickListener method.");
+                }
+            });
+            progressBarChangePassword = viewDialogChangePassword.findViewById(R.id.progressBar);
+            helperDialogChangePassword = new Helper_Dialog_Change_Password(this);
+
+            buttonAddDelete = findViewById(R.id.button_add_delete);
+            buttonAddDelete.setVisibility(View.INVISIBLE);
+            buttonAddDelete.setOnClickListener(v -> {
+                try{
+                    alertDialogLecturer.show();
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonAddDelete setOnClickListener method.");
                 }
             });
 
-            builder = new AlertDialog.Builder(this);
-            viewDialog = this.getLayoutInflater().inflate(R.layout.dialog_main_admin_lecturers, null);
-            builder.setView(viewDialog);
-            alertDialog = builder.create();
-            alertDialog.setCancelable(false);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-
-
-
-
-            buttonFilter = (Button) findViewById(R.id.button_filter_empty_closed);
-            buttonFilter.setOnClickListener(v -> {
+            buttonSelectCancel = findViewById(R.id.button_select_cancel);
+            buttonSelectCancel.setVisibility(View.INVISIBLE);
+            buttonSelectCancel.setOnClickListener(v -> {
                 try{
-                    alertDialogFilter.show();
+                    // TODO
                 }
                 catch(Exception e){
-                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonSelectCancel setOnClickListener method.");
                 }
             });
 
-            builderFilter = new AlertDialog.Builder(this);
-            viewDialogFilter = this.getLayoutInflater().inflate(R.layout.dialog_filter_department, null);
-            builderFilter.setView(viewDialogFilter);
-            alertDialogFilter = builderFilter.create();
-            alertDialogFilter.setCancelable(false);
-            alertDialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            buttonSearchId = findViewById(R.id.button_search_id);
+            buttonSearchId.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonSearchId setOnClickListener method.");
+                }
+            });
 
-            recyclerViewFilter = viewDialogFilter.findViewById(R.id.recyclerView);
-            layoutManagerFilter = new LinearLayoutManager(this);
+            buttonCancelSearchId = findViewById(R.id.button_cancel_search_id);
+            buttonCancelSearchId.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonCancelSearchId setOnClickListener method.");
+                }
+            });
 
-            adapterFilter = new RecyclerViewAdapter_Filter_Department(this);
-            recyclerViewFilter.setLayoutManager(layoutManagerFilter);
-            recyclerViewFilter.setAdapter(adapterFilter);
+            buttonSearchName = findViewById(R.id.button_search_name);
+            buttonSearchName.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonSearchName setOnClickListener method.");
+                }
+            });
 
+            buttonCancelSearchName = findViewById(R.id.button_cancel_search_name);
+            buttonCancelSearchName.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonCancelSearchName setOnClickListener method.");
+                }
+            });
 
+            buttonSearchSurname = findViewById(R.id.button_search_surname);
+            buttonSearchSurname.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonSearchSurname setOnClickListener method.");
+                }
+            });
 
+            buttonCancelSearchSurname = findViewById(R.id.button_cancel_search_surname);
+            buttonCancelSearchSurname.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonCancelSearchSurname setOnClickListener method.");
+                }
+            });
 
+            buttonFilterDeptName = findViewById(R.id.button_filter_empty_closed);
+            buttonFilterDeptName.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonFilterDeptName setOnClickListener method.");
+                }
+            });
 
+            buttonCancelFilterDeptName = findViewById(R.id.button_filter_full_closed);
+            buttonCancelFilterDeptName.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch(Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonCancelFilterDeptName setOnClickListener method.");
+                }
+            });
 
             bottomNavigationView = findViewById(R.id.bottom_navigation_main_admin);
             bottomNavigationView.getMenu().findItem(R.id.menu_main_admin_lecturers).setChecked(true);
 
+            progressBarLecturer = findViewById(R.id.progressBar);
+
+            vmLoginProcess = new ViewModelProvider(this).get(VM_Login_Process.class);
+            vmLoginProcess.getChangePasswordSuccessful().observe(this, e_change_password_state -> {
+                try{
+                    if(e_change_password_state == E_Change_Password_State.SUCCESSFUL){
+                        alertDialogChangePassword.dismiss();
+                        showToastMessage(R.string.toast_change_password_successful);
+                    }
+                    else if(e_change_password_state == E_Change_Password_State.CANNOT_CHANGED){
+                        setAndShowWarningOnDialogChangePassword(R.string.warning_change_password_cannot_changed, View.VISIBLE);
+                    }
+                    else if(e_change_password_state == E_Change_Password_State.WRONG_PASSWORD){
+                        setAndShowWarningOnDialogChangePassword(R.string.warning_change_password_wrong_password, View.VISIBLE);
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmLoginProcess.getChangePasswordSuccessful().observe method.");
+                }
+            });
+
+            vmMainAdmin = new ViewModelProvider(this).get(VM_Main_Admin.class);
+            vmMainAdmin.getSetSemestersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        fragmentUserAndSemester.setSpinnerList(vmMainAdmin.getSemesterList());
+                        fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getSetSemestersSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin.getIsSemesterActiveSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarIndicator_isSemesterActive = true;
+                        if(progressBarIndicator_setLecturers){
+                            progressBarLecturer.setVisibility(View.INVISIBLE);
+                        }
+                        if(vmMainAdmin.isSemesterActive()){
+                            buttonAddDelete.setVisibility(View.VISIBLE);
+                            buttonSelectCancel.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            buttonAddDelete.setVisibility(View.INVISIBLE);
+                            buttonSelectCancel.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getIsSemesterActiveSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin.getSetLecturersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarIndicator_setLecturers = true;
+                        if(progressBarIndicator_isSemesterActive){
+                            progressBarLecturer.setVisibility(View.INVISIBLE);
+                        }
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this, vmMainAdmin.getLecturerList());
+                            recyclerViewMainAdminLecturers.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getSetLecturersSuccessful().observe method.");
+                }
+            });
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onCreate method.");
@@ -138,10 +413,35 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     protected void onResume() {
         super.onResume();
         try{
-            fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
+            progressBarLecturer.setVisibility(View.VISIBLE);
+            progressBarIndicator_isSemesterActive = false;
+            progressBarIndicator_setLecturers = false;
+            if(toastMessage != null){
+                toastMessage.cancel();
+            }
+            buttonSearchId.setVisibility(View.VISIBLE);
+            buttonSearchName.setVisibility(View.VISIBLE);
+            buttonSearchSurname.setVisibility(View.VISIBLE);
+            buttonFilterDeptName.setVisibility(View.VISIBLE);
+            buttonCancelSearchId.setVisibility(View.INVISIBLE);
+            buttonCancelSearchName.setVisibility(View.INVISIBLE);
+            buttonCancelSearchSurname.setVisibility(View.INVISIBLE);
+            buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+            fragmentUserAndSemester.setName("ADMIN");
+            vmMainAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onResume method.");
+        }
+    }
+
+    private void showToastMessage(int message){
+        try{
+            toastMessage = Toast.makeText(this, getResources().getString(message), Toast.LENGTH_SHORT);
+            toastMessage.show();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' showToastMessage method.");
         }
     }
 
@@ -192,7 +492,11 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     @Override
     public void onSemesterChanged(String selectedSemester, int position) {
         try{
-
+            progressBarLecturer.setVisibility(View.VISIBLE);
+            Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
+            Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+            vmMainAdmin.onSemesterActiveRequested(selectedSemester);
+            vmMainAdmin.onLecturerListRequested(selectedSemester);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onSemesterChanged method.");
@@ -202,7 +506,15 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     @Override
     public void onChangePasswordClicked() {
         try{
-
+            editTextDialogChangePasswordOldPassword.setText(null);
+            editTextDialogChangePasswordNewPassword.setText(null);
+            editTextDialogChangePasswordNewPasswordConfirm.setText(null);
+            editTextDialogChangePasswordOldPassword.clearFocus();
+            editTextDialogChangePasswordNewPassword.clearFocus();
+            editTextDialogChangePasswordNewPasswordConfirm.clearFocus();
+            textViewDialogChangePassword.setVisibility(View.INVISIBLE);
+            buttonDialogChangePasswordOK.setEnabled(false);
+            alertDialogChangePassword.show();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onChangePasswordClicked method.");
@@ -212,7 +524,10 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     @Override
     public void onLogoutClicked() {
         try{
-
+            fragmentUserAndSemester.setSpinnerItem(0);
+            vmLoginProcess.onLogoutRequested();
+            Intent i = new Intent(getApplicationContext(), Activity_Login_Page.class);
+            startActivity(i);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onLogoutClicked method.");
@@ -221,17 +536,36 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
 
     @Override
     public void setAndShowWarningOnDialogChangePassword(int warning, int visibility) {
-
+        try{
+            progressBarChangePassword.setVisibility(View.INVISIBLE);
+            textViewDialogChangePassword.setText(warning);
+            textViewDialogChangePassword.setVisibility(visibility);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' setAndShowWarningOnDialogChangePassword method.");
+        }
     }
 
     @Override
     public void onChangePasswordRequested(String oldPassword, String newPassword) {
-
+        try{
+            progressBarChangePassword.setVisibility(View.VISIBLE);
+            vmLoginProcess.onChangePasswordRequested(oldPassword, newPassword);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onChangePasswordRequested method.");
+        }
     }
 
     @Override
     public void onDismissDialogRequested() {
-
+        try{
+            progressBarChangePassword.setVisibility(View.INVISIBLE);
+            alertDialogChangePassword.dismiss();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onDismissDialogRequested method.");
+        }
     }
 }
 

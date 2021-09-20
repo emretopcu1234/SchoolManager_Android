@@ -84,7 +84,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
 
     private ProgressBar progressBarDeptAdmin;
     private boolean progressBarIndicator_isSemesterActive;
-    private boolean progressBarIndicator_setDepartments;
+    private boolean progressBarIndicator_setDeptAdmins;
 
     private ProgressBar progressBarChangePassword;
 
@@ -365,7 +365,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_isSemesterActive = true;
-                        if(progressBarIndicator_setDepartments){
+                        if(progressBarIndicator_setDeptAdmins){
                             progressBarDeptAdmin.setVisibility(View.INVISIBLE);
                         }
                         if(vmMainAdmin.isSemesterActive()){
@@ -385,7 +385,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             vmMainAdmin.getSetDeptAdminsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
-                        progressBarIndicator_setDepartments = true;
+                        progressBarIndicator_setDeptAdmins = true;
                         if(progressBarIndicator_isSemesterActive){
                             progressBarDeptAdmin.setVisibility(View.INVISIBLE);
                         }
@@ -414,7 +414,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
         try{
             progressBarDeptAdmin.setVisibility(View.VISIBLE);
             progressBarIndicator_isSemesterActive = false;
-            progressBarIndicator_setDepartments = false;
+            progressBarIndicator_setDeptAdmins = false;
             if(toastMessage != null){
                 toastMessage.cancel();
             }

@@ -6,7 +6,7 @@
     <string name="menu_main_admin_delete_semester">Delete semester</string>
     <string name="menu_main_admin_edit_department">Edit department</string>
     <string name="menu_main_admin_delete_department">Delete department</string>
-    <string name="menu_main_admin_edit_dept_admin">Edit department</string>
+    <string name="menu_main_admin_edit_dept_admin">Edit department admin</string>
     <string name="menu_main_admin_delete_dept_admin">Delete department admin</string>
     <string name="menu_main_admin_edit_lecturer">Edit lecturer</string>
     <string name="menu_main_admin_delete_lecturer">Delete lecturer</string>

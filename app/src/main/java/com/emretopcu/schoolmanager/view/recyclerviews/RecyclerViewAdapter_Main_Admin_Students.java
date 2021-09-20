@@ -14,18 +14,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
 
+import java.util.ArrayList;
+
 public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapter<ViewHolder_MASt> {
 
     private Context context;
+    private ArrayList<String[]> studentList;
+    private boolean checkBoxActive;
 
-
-    public RecyclerViewAdapter_Main_Admin_Students(Context context) {
+    public RecyclerViewAdapter_Main_Admin_Students(Context context, ArrayList<String[]> studentList) {
         try{
             this.context = context;
+            this.studentList = studentList;
+            checkBoxActive = false;
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' constructor method.");
         }
+    }
+
+    public void setStudentList(ArrayList<String[]> studentList){
+        this.studentList = studentList;
+        notifyDataSetChanged();
+    }
+
+    public void isCheckBoxActive(boolean checkBoxActive){
+        this.checkBoxActive = checkBoxActive;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,16 +57,15 @@ public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapte
         }
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder_MASt viewHolder, int position) {
         try{
             final ViewHolder_Main_Admin_Students holder = (ViewHolder_Main_Admin_Students) viewHolder;
-            holder.checkBox.setChecked(false);
-            holder.textViewId.setText("30001");
-            holder.textViewName.setText("Ahmet Mehmet");
-            holder.textViewSurname.setText("KAYIŞOĞLU");
-            holder.textViewDeptName.setText("IE");
+            holder.checkBox.setChecked(checkBoxActive);
+            holder.textViewId.setText(studentList.get(position)[0]);
+            holder.textViewName.setText(studentList.get(position)[1]);
+            holder.textViewSurname.setText(studentList.get(position)[2]);
+            holder.textViewDeptName.setText(studentList.get(position)[3]);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' onBindViewHolder method.");
@@ -61,7 +75,7 @@ public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapte
     @Override
     public int getItemCount() {
         try{
-            return 10;
+            return studentList.size();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' getItemCount method.");
@@ -127,8 +141,5 @@ class ViewHolder_Main_Admin_Students extends ViewHolder_MASt {
         catch(Exception e){
             Log.d("Exception", "Exception on ViewHolder_Main_Admin_Students class' constructor method.");
         }
-
     }
 }
-
-
