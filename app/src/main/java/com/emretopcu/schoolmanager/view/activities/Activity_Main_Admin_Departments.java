@@ -67,6 +67,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private Button buttonSelectCancel;
     private Button buttonSearchDeptName;
     private Button buttonCancelSearchDeptName;
+
     private TextView textViewDeptName;
     private EditText editTextDeptName;
 
@@ -262,6 +263,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                     buttonSearchDeptName.setVisibility(View.VISIBLE);
                     buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
                     textViewDeptName.setVisibility(View.VISIBLE);
+                    editTextDeptName.setText(null);
                     editTextDeptName.setVisibility(View.INVISIBLE);
                     editTextDeptName.clearFocus();
                 }
@@ -281,13 +283,15 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     try{
-                        String filteredDeptName = s.toString();
-                        if(filteredDeptName.length() == 0){
-                            vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                        String deptNameFilter = s.toString();
+                        if(deptNameFilter.length() == 0){
+                            if (buttonSearchDeptName.getVisibility() == View.INVISIBLE){
+                                vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                            }
                         }
                         else{
                             progressBarDepartment.setVisibility(View.VISIBLE);
-                            vmMainAdmin.onFilteredDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER,filteredDeptName);
+                            vmMainAdmin.onFilteredDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER,deptNameFilter);
                         }
                     }
                     catch (Exception e){
@@ -388,21 +392,32 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     protected void onResume() {
         super.onResume();
         try{
-            progressBarDepartment.setVisibility(View.VISIBLE);
+            resetWidgets();
             progressBarIndicator_isSemesterActive = false;
             progressBarIndicator_setDepartments = false;
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            buttonSearchDeptName.setVisibility(View.VISIBLE);
-            buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
-            textViewDeptName.setVisibility(View.VISIBLE);
-            editTextDeptName.setVisibility(View.INVISIBLE);
             fragmentUserAndSemester.setName("ADMIN");
             vmMainAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onResume method.");
+        }
+    }
+
+    private void resetWidgets(){
+        try{
+            progressBarDepartment.setVisibility(View.VISIBLE);
+            buttonSearchDeptName.setVisibility(View.VISIBLE);
+            buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
+            textViewDeptName.setVisibility(View.VISIBLE);
+            editTextDeptName.setText(null);
+            editTextDeptName.setVisibility(View.INVISIBLE);
+            editTextDeptName.clearFocus();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' resetWidgets method.");
         }
     }
 
@@ -463,7 +478,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     @Override
     public void onSemesterChanged(String selectedSemester, int position) {
         try{
-            progressBarDepartment.setVisibility(View.VISIBLE);
+            resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
             vmMainAdmin.onSemesterActiveRequested(selectedSemester);

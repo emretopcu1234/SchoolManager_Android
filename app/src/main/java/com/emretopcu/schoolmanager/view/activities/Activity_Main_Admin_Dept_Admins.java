@@ -31,6 +31,7 @@ import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
+import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Dept_Admins;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
@@ -49,9 +50,21 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     private RecyclerView recyclerViewMainAdminDeptAdmins;
     private LinearLayoutManager layoutManager;
 
+    private RecyclerViewAdapter_Filter_Department adapterFilter;
+    private RecyclerView recyclerViewMainAdminDeptAdminsFilter;
+    private LinearLayoutManager layoutManagerFilter;
+
     private AlertDialog.Builder builderDeptAdmin;
     private View viewDialogDeptAdmin;
     private AlertDialog alertDialogDeptAdmin;
+
+    private AlertDialog.Builder builderFilter;
+    private View viewDialogFilter;
+    private AlertDialog alertDialogFilter;
+
+    private Button buttonFilterClear;
+    private Button buttonFilterOK;
+    private Button buttonFilterCancel;
 
     private AlertDialog.Builder builderChangePassword;
     private View viewDialogChangePassword;
@@ -76,6 +89,13 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     private Button buttonFilterDeptName;
     private Button buttonCancelFilterDeptName;
 
+    private TextView textViewId;
+    private EditText editTextId;
+    private TextView textViewName;
+    private EditText editTextName;
+    private TextView textViewSurname;
+    private EditText editTextSurname;
+
     private BottomNavigationView bottomNavigationView;
     private Toast toastMessage;
 
@@ -85,6 +105,10 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     private ProgressBar progressBarDeptAdmin;
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDeptAdmins;
+    private boolean progressBarIndicator_setDepartments;
+    private String idFilter;
+    private String nameFilter;
+    private String surnameFilter;
 
     private ProgressBar progressBarChangePassword;
 
@@ -110,6 +134,45 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             alertDialogDeptAdmin = builderDeptAdmin.create();
             alertDialogDeptAdmin.setCancelable(false);
             alertDialogDeptAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            builderFilter = new AlertDialog.Builder(this);
+            viewDialogFilter = this.getLayoutInflater().inflate(R.layout.dialog_filter_department, null);
+            builderFilter.setView(viewDialogFilter);
+            alertDialogFilter = builderFilter.create();
+            alertDialogFilter.setCancelable(false);
+            alertDialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            recyclerViewMainAdminDeptAdminsFilter = viewDialogFilter.findViewById(R.id.recyclerView);
+            layoutManagerFilter = new LinearLayoutManager(this);
+            recyclerViewMainAdminDeptAdminsFilter.setLayoutManager(layoutManagerFilter);
+
+            buttonFilterClear = viewDialogFilter.findViewById(R.id.button_clear);
+            buttonFilterOK = viewDialogFilter.findViewById(R.id.button_ok);
+            buttonFilterCancel = viewDialogFilter.findViewById(R.id.button_cancel);
+            buttonFilterClear.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterClear setOnClickListener method.");
+                }
+            });
+            buttonFilterOK.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterOK setOnClickListener method.");
+                }
+            });
+            buttonFilterCancel.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterCancel setOnClickListener method.");
+                }
+            });
 
             builderChangePassword = new AlertDialog.Builder(this);
             viewDialogChangePassword = this.getLayoutInflater().inflate(R.layout.dialog_change_password, null);
@@ -248,7 +311,11 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonSearchId = findViewById(R.id.button_search_id);
             buttonSearchId.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchId.setVisibility(View.INVISIBLE);
+                    buttonCancelSearchId.setVisibility(View.VISIBLE);
+                    textViewId.setVisibility(View.INVISIBLE);
+                    editTextId.setVisibility(View.VISIBLE);
+                    editTextId.requestFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonSearchId setOnClickListener method.");
@@ -258,7 +325,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonCancelSearchId = findViewById(R.id.button_cancel_search_id);
             buttonCancelSearchId.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchId.setVisibility(View.VISIBLE);
+                    buttonCancelSearchId.setVisibility(View.INVISIBLE);
+                    textViewId.setVisibility(View.VISIBLE);
+                    editTextId.setText(null);
+                    editTextId.setVisibility(View.INVISIBLE);
+                    editTextId.clearFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchId setOnClickListener method.");
@@ -268,7 +340,11 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonSearchName = findViewById(R.id.button_search_name);
             buttonSearchName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchName.setVisibility(View.INVISIBLE);
+                    buttonCancelSearchName.setVisibility(View.VISIBLE);
+                    textViewName.setVisibility(View.INVISIBLE);
+                    editTextName.setVisibility(View.VISIBLE);
+                    editTextName.requestFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonSearchName setOnClickListener method.");
@@ -278,7 +354,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonCancelSearchName = findViewById(R.id.button_cancel_search_name);
             buttonCancelSearchName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchName.setVisibility(View.VISIBLE);
+                    buttonCancelSearchName.setVisibility(View.INVISIBLE);
+                    textViewName.setVisibility(View.VISIBLE);
+                    editTextName.setText(null);
+                    editTextName.setVisibility(View.INVISIBLE);
+                    editTextName.clearFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchName setOnClickListener method.");
@@ -288,7 +369,11 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonSearchSurname = findViewById(R.id.button_search_surname);
             buttonSearchSurname.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchSurname.setVisibility(View.INVISIBLE);
+                    buttonCancelSearchSurname.setVisibility(View.VISIBLE);
+                    textViewSurname.setVisibility(View.INVISIBLE);
+                    editTextSurname.setVisibility(View.VISIBLE);
+                    editTextSurname.requestFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonSearchSurname setOnClickListener method.");
@@ -298,7 +383,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonCancelSearchSurname = findViewById(R.id.button_cancel_search_surname);
             buttonCancelSearchSurname.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    buttonSearchSurname.setVisibility(View.VISIBLE);
+                    buttonCancelSearchSurname.setVisibility(View.INVISIBLE);
+                    textViewSurname.setVisibility(View.VISIBLE);
+                    editTextSurname.setText(null);
+                    editTextSurname.setVisibility(View.INVISIBLE);
+                    editTextSurname.clearFocus();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchSurname setOnClickListener method.");
@@ -308,7 +398,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonFilterDeptName = findViewById(R.id.button_filter_empty_closed);
             buttonFilterDeptName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    alertDialogFilter.show();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterDeptName setOnClickListener method.");
@@ -318,10 +408,107 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonCancelFilterDeptName = findViewById(R.id.button_filter_full_closed);
             buttonCancelFilterDeptName.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    alertDialogFilter.show();
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelFilterDeptName setOnClickListener method.");
+                }
+            });
+
+            textViewId = findViewById(R.id.textView_id);
+            textViewName = findViewById(R.id.textView_name);
+            textViewSurname = findViewById(R.id.textView_surname);
+            editTextId = findViewById(R.id.editText_id);
+            editTextName = findViewById(R.id.editText_name);
+            editTextSurname = findViewById(R.id.editText_surname);
+            editTextId.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        idFilter = s.toString();
+                        if(idFilter.length() == 0){
+                            if (buttonSearchId.getVisibility() == View.INVISIBLE){
+                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                            }
+                        }
+                        else{
+                            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' editTextId onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            editTextName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        nameFilter = s.toString();
+                        if(nameFilter.length() == 0){
+                            if (buttonSearchName.getVisibility() == View.INVISIBLE){
+                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                            }
+                        }
+                        else{
+                            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' editTextName onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            editTextSurname.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        surnameFilter = s.toString();
+                        if(surnameFilter.length() == 0){
+                            if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
+                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                            }
+                        }
+                        else{
+                            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' editTextSurname onTextChanged method.");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
                 }
             });
 
@@ -365,7 +552,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_isSemesterActive = true;
-                        if(progressBarIndicator_setDeptAdmins){
+                        if(progressBarIndicator_setDeptAdmins && progressBarIndicator_setDepartments){
                             progressBarDeptAdmin.setVisibility(View.INVISIBLE);
                         }
                         if(vmMainAdmin.isSemesterActive()){
@@ -386,7 +573,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_setDeptAdmins = true;
-                        if(progressBarIndicator_isSemesterActive){
+                        if(progressBarIndicator_isSemesterActive && progressBarIndicator_setDepartments){
                             progressBarDeptAdmin.setVisibility(View.INVISIBLE);
                         }
                         if(adapter == null){
@@ -402,6 +589,26 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' vmMainAdmin.getSetDeptAdminsSuccessful().observe method.");
                 }
             });
+            vmMainAdmin.getSetDepartmentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarIndicator_setDepartments = true;
+                        if(progressBarIndicator_isSemesterActive && progressBarIndicator_setDeptAdmins){
+                            progressBarDeptAdmin.setVisibility(View.INVISIBLE);
+                        }
+                        if(adapterFilter == null){
+                            adapterFilter = new RecyclerViewAdapter_Filter_Department(this, vmMainAdmin.getDepartmentList());
+                            recyclerViewMainAdminDeptAdminsFilter.setAdapter(adapterFilter);
+                        }
+                        else{
+                            adapterFilter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' vmMainAdmin.getSetDepartmentsSuccessful().observe method.");
+                }
+            });
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onCreate method.");
@@ -412,25 +619,46 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     protected void onResume() {
         super.onResume();
         try{
-            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+            resetWidgets();
             progressBarIndicator_isSemesterActive = false;
             progressBarIndicator_setDeptAdmins = false;
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            buttonSearchId.setVisibility(View.VISIBLE);
-            buttonSearchName.setVisibility(View.VISIBLE);
-            buttonSearchSurname.setVisibility(View.VISIBLE);
-            buttonFilterDeptName.setVisibility(View.VISIBLE);
-            buttonCancelSearchId.setVisibility(View.INVISIBLE);
-            buttonCancelSearchName.setVisibility(View.INVISIBLE);
-            buttonCancelSearchSurname.setVisibility(View.INVISIBLE);
-            buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
             fragmentUserAndSemester.setName("ADMIN");
             vmMainAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onResume method.");
+        }
+    }
+
+    private void resetWidgets(){
+        try{
+            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+            buttonSearchId.setVisibility(View.VISIBLE);
+            buttonCancelSearchId.setVisibility(View.INVISIBLE);
+            buttonSearchName.setVisibility(View.VISIBLE);
+            buttonCancelSearchName.setVisibility(View.INVISIBLE);
+            buttonSearchSurname.setVisibility(View.VISIBLE);
+            buttonCancelSearchSurname.setVisibility(View.INVISIBLE);
+            buttonFilterDeptName.setVisibility(View.VISIBLE);
+            buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+            textViewId.setVisibility(View.VISIBLE);
+            editTextId.setText(null);
+            editTextId.setVisibility(View.INVISIBLE);
+            editTextId.clearFocus();
+            textViewName.setVisibility(View.VISIBLE);
+            editTextName.setText(null);
+            editTextName.setVisibility(View.INVISIBLE);
+            editTextName.clearFocus();
+            textViewSurname.setVisibility(View.VISIBLE);
+            editTextSurname.setText(null);
+            editTextSurname.setVisibility(View.INVISIBLE);
+            editTextSurname.clearFocus();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' resetWidgets method.");
         }
     }
 
@@ -491,11 +719,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     @Override
     public void onSemesterChanged(String selectedSemester, int position) {
         try{
-            progressBarDeptAdmin.setVisibility(View.VISIBLE);
+            resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
             vmMainAdmin.onSemesterActiveRequested(selectedSemester);
             vmMainAdmin.onDeptAdminListRequested(selectedSemester);
+            vmMainAdmin.onDepartmentListRequested(selectedSemester);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' onSemesterChanged method.");

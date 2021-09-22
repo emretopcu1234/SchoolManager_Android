@@ -367,25 +367,26 @@ public class Model_Main_Admin {
         }
     }
 
-    public void getFilteredDepartmentList(String unprocessedSemester, String unprocessedFilteredDeptName){
+    public void getFilteredDepartmentList(String unprocessedSemester, String unprocessedDeptNameFilter){
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String deptNameFilter = Common_Services.convertUnprocessedFilter(unprocessedDeptNameFilter);
             CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
-
-            departments.get().addOnCompleteListener(task -> {
+            departments.whereGreaterThanOrEqualTo("name",deptNameFilter)
+                    .whereLessThanOrEqualTo("name", deptNameFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> departmentList = new ArrayList<>();
+                    ArrayList<String[]> filteredDepartmentList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        departmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+                        filteredDepartmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
                     }
-                    vmMainAdmin.onGetDepartmentListResulted(departmentList);
+                    vmMainAdmin.onGetDepartmentListResulted(filteredDepartmentList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.FILTER.get().addOnCompleteListener method.");
                 }
             });
         }

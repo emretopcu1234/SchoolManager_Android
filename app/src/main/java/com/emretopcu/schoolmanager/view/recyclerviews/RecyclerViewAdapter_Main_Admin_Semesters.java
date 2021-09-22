@@ -36,8 +36,13 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
     }
 
     public void setDetailedSemesterList(ArrayList<String[]> detailedSemesterList){
-        this.detailedSemesterList = detailedSemesterList;
-        notifyDataSetChanged();
+        try{
+            this.detailedSemesterList = detailedSemesterList;
+            notifyDataSetChanged();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Semesters class' setDetailedSemesterList method.");
+        }
     }
 
     @Override

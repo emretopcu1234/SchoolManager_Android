@@ -36,13 +36,23 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
     }
 
     public void setDepartmentList(ArrayList<String[]> departmentList){
-        this.departmentList = departmentList;
-        notifyDataSetChanged();
+        try{
+            this.departmentList = departmentList;
+            notifyDataSetChanged();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' setDepartmentList method.");
+        }
     }
 
     public void isCheckBoxActive(boolean checkBoxActive){
-        this.checkBoxActive = checkBoxActive;
-        notifyDataSetChanged();
+        try{
+            this.checkBoxActive = checkBoxActive;
+            notifyDataSetChanged();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' isCheckBoxActive method.");
+        }
     }
 
     @Override
@@ -102,22 +112,27 @@ class ViewHolder_MAD extends RecyclerView.ViewHolder implements View.OnCreateCon
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        MenuItem edit = menu.add(0, v.getId(), 0, R.string.menu_main_admin_edit_department);
-        MenuItem delete = menu.add(0, v.getId(), 0, R.string.menu_main_admin_delete_department);
-        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        try{
+            MenuItem edit = menu.add(0, v.getId(), 0, R.string.menu_main_admin_edit_department);
+            MenuItem delete = menu.add(0, v.getId(), 0, R.string.menu_main_admin_delete_department);
+            edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
 
-                return true;
-            }
-        });
-        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                    return true;
+                }
+            });
+            delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
 
-                return true;
-            }
-        });
+                    return true;
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on ViewHolder_MAD class' onCreateContextMenu method.");
+        }
     }
 }
 

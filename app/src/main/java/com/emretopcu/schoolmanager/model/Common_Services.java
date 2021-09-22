@@ -97,4 +97,23 @@ public class Common_Services {
             return false;
         }
     }
+
+    public static String convertUnprocessedFilter(String unprocessedFilter){
+        try{
+            StringBuilder filter = new StringBuilder(Character.toString(unprocessedFilter.charAt(0)).toUpperCase());
+            for(int i=1;i<unprocessedFilter.length();i++){
+                if(unprocessedFilter.charAt(i-1) == ' '){
+                    filter.append(Character.toString(unprocessedFilter.charAt(i)).toUpperCase());
+                }
+                else{
+                    filter.append(Character.toString(unprocessedFilter.charAt(i)).toLowerCase());
+                }
+            }
+            return filter.toString();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' convertUnprocessedFilter method.");
+            return null;
+        }
+    }
 }
