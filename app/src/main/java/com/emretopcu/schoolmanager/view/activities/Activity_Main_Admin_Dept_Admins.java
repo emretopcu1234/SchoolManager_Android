@@ -106,9 +106,11 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDeptAdmins;
     private boolean progressBarIndicator_setDepartments;
-    private String idFilter;
-    private String nameFilter;
-    private String surnameFilter;
+    private String idFilter = "";
+    private String nameFilter = "";
+    private String surnameFilter = "";
+    private ArrayList<String> deptFilter = new ArrayList<>();
+    private ArrayList<Boolean> previousChecks = new ArrayList<>();
 
     private ProgressBar progressBarChangePassword;
 
@@ -151,7 +153,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             buttonFilterCancel = viewDialogFilter.findViewById(R.id.button_cancel);
             buttonFilterClear.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    adapterFilter.resetChecks();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterClear setOnClickListener method.");
@@ -159,7 +161,21 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             });
             buttonFilterOK.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    previousChecks.clear();
+                    for(int i=0;i<adapterFilter.getChecks().size();i++){
+                        previousChecks.add(adapterFilter.getChecks().get(i));
+                    }
+                    deptFilter = adapterFilter.getFilteredDepartmentList();
+                    if(deptFilter.size() > 0){
+                        buttonFilterDeptName.setVisibility(View.INVISIBLE);
+                        buttonCancelFilterDeptName.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        buttonFilterDeptName.setVisibility(View.VISIBLE);
+                        buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+                    }
+                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    alertDialogFilter.dismiss();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterOK setOnClickListener method.");
@@ -167,7 +183,8 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             });
             buttonFilterCancel.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    adapterFilter.setChecks(previousChecks);
+                    alertDialogFilter.dismiss();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonFilterCancel setOnClickListener method.");
@@ -433,12 +450,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         idFilter = s.toString();
                         if(idFilter.length() == 0){
                             if (buttonSearchId.getVisibility() == View.INVISIBLE){
-                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                             }
                         }
                         else{
                             progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                         }
                     }
                     catch (Exception e){
@@ -463,12 +480,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         nameFilter = s.toString();
                         if(nameFilter.length() == 0){
                             if (buttonSearchName.getVisibility() == View.INVISIBLE){
-                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                             }
                         }
                         else{
                             progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                         }
                     }
                     catch (Exception e){
@@ -493,12 +510,12 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         surnameFilter = s.toString();
                         if(surnameFilter.length() == 0){
                             if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
-                                vmMainAdmin.onDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                             }
                         }
                         else{
                             progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                            vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                         }
                     }
                     catch (Exception e){
@@ -656,6 +673,11 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
+
+            idFilter = "";
+            nameFilter = "";
+            surnameFilter = "";
+            deptFilter.clear();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' resetWidgets method.");

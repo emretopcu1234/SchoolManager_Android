@@ -100,6 +100,9 @@ public class Common_Services {
 
     public static String convertUnprocessedFilter(String unprocessedFilter){
         try{
+            if(unprocessedFilter.length() == 0){
+                return "";
+            }
             StringBuilder filter = new StringBuilder(Character.toString(unprocessedFilter.charAt(0)).toUpperCase());
             for(int i=1;i<unprocessedFilter.length();i++){
                 if(unprocessedFilter.charAt(i-1) == ' '){

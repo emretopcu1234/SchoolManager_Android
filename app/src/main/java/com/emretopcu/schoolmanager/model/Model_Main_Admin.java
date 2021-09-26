@@ -10,12 +10,14 @@ import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Main_Admin;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.collect.BiMap;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -372,7 +374,7 @@ public class Model_Main_Admin {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
             String deptNameFilter = Common_Services.convertUnprocessedFilter(unprocessedDeptNameFilter);
             CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
-            departments.whereGreaterThanOrEqualTo("name",deptNameFilter)
+            departments.whereGreaterThanOrEqualTo("name", deptNameFilter)
                     .whereLessThanOrEqualTo("name", deptNameFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -392,6 +394,174 @@ public class Model_Main_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredDepartmentList method.");
+        }
+    }
+
+    public void getFilteredDeptAdminList(String unprocessedSemester, String idFilter, String unprocessedNameFilter,
+                                         String unprocessedSurnameFilter, ArrayList<String> deptFilter){
+        try {
+            if(idFilter.length() == 0){
+                idFilter = "1"; // deptAdmin ids always start with 1.
+            }
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String nameFilter = Common_Services.convertUnprocessedFilter(unprocessedNameFilter);
+            String surnameFilter = Common_Services.convertUnprocessedFilter(unprocessedSurnameFilter);
+            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
+            deptAdmins.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> filteredDeptAdminList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        boolean isExist = true;
+                        if(deptFilter.size() > 0){
+                            isExist = false;
+                            for(int i=0;i<deptFilter.size();i++){
+                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                    isExist = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(nameFilter.length() > 0){
+                            if(!deptAdminsInfo.get(document.getId())[0].startsWith(nameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(surnameFilter.length() > 0){
+                            if(!deptAdminsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(isExist){
+                            filteredDeptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
+                                    deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        }
+                    }
+                    vmMainAdmin.onGetDeptAdminListResulted(filteredDeptAdminList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.FILTER.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredDeptAdminList method.");
+        }
+    }
+
+    public void getFilteredLecturerList(String unprocessedSemester, String idFilter, String unprocessedNameFilter,
+                                         String unprocessedSurnameFilter, ArrayList<String> deptFilter){
+        try {
+            if(idFilter.length() == 0){
+                idFilter = "2"; // lecturer ids always start with 2.
+            }
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String nameFilter = Common_Services.convertUnprocessedFilter(unprocessedNameFilter);
+            String surnameFilter = Common_Services.convertUnprocessedFilter(unprocessedSurnameFilter);
+            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
+            lecturers.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> filteredLecturerList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        boolean isExist = true;
+                        if(deptFilter.size() > 0){
+                            isExist = false;
+                            for(int i=0;i<deptFilter.size();i++){
+                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                    isExist = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(nameFilter.length() > 0){
+                            if(!lecturersInfo.get(document.getId())[0].startsWith(nameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(surnameFilter.length() > 0){
+                            if(!lecturersInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(isExist){
+                            filteredLecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
+                                    lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        }
+                    }
+                    vmMainAdmin.onGetLecturerListResulted(filteredLecturerList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.FILTER.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredLecturerList method.");
+        }
+    }
+
+    public void getFilteredStudentList(String unprocessedSemester, String idFilter, String unprocessedNameFilter,
+                                         String unprocessedSurnameFilter, ArrayList<String> deptFilter){
+        try {
+            if(idFilter.length() == 0){
+                idFilter = "3"; // student ids always start with 2.
+            }
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String nameFilter = Common_Services.convertUnprocessedFilter(unprocessedNameFilter);
+            String surnameFilter = Common_Services.convertUnprocessedFilter(unprocessedSurnameFilter);
+            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
+            students.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    ArrayList<String[]> filteredStudentList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        boolean isExist = true;
+                        if(deptFilter.size() > 0){
+                            isExist = false;
+                            for(int i=0;i<deptFilter.size();i++){
+                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                    isExist = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(nameFilter.length() > 0){
+                            if(!studentsInfo.get(document.getId())[0].startsWith(nameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(surnameFilter.length() > 0){
+                            if(!studentsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(isExist){
+                            filteredStudentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
+                                    studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        }
+                    }
+                    vmMainAdmin.onGetStudentListResulted(filteredStudentList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' students.FILTER.get().addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredStudentList method.");
         }
     }
     

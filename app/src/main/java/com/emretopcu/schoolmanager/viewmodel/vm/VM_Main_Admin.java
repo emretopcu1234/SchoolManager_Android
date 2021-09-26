@@ -123,30 +123,30 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onFilteredDeptAdminListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter){
+    public void onFilteredDeptAdminListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
         try{
             setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.getFilteredDeptAdminList(selectedSemester, idFilter, nameFilter, surnameFilter);
+            modelMainAdmin.getFilteredDeptAdminList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredDeptAdminListRequested method.");
         }
     }
 
-    public void onFilteredLecturerListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter){
+    public void onFilteredLecturerListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
         try{
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.getFilteredLecturerList(selectedSemester, idFilter, nameFilter, surnameFilter);
+            modelMainAdmin.getFilteredLecturerList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredLecturerListRequested method.");
         }
     }
 
-    public void onFilteredStudentListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter){
+    public void onFilteredStudentListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
         try{
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.getFilteredStudentList(selectedSemester, idFilter, nameFilter, surnameFilter);
+            modelMainAdmin.getFilteredStudentList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredStudentListRequested method.");

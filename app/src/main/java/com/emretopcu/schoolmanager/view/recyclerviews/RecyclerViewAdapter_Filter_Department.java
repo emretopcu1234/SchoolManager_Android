@@ -3,14 +3,11 @@ package com.emretopcu.schoolmanager.view.recyclerviews;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
@@ -48,15 +45,44 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
         }
     }
 
+    public ArrayList<String> getFilteredDepartmentList(){
+        try{
+            ArrayList<String> filteredDepartmentList = new ArrayList<>();
+            for(int i=0;i<isChecked.size();i++){
+                if(isChecked.get(i)){
+                    filteredDepartmentList.add(departmentList.get(i)[0]);
+                }
+            }
+            return filteredDepartmentList;
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' getFilteredDepartmentList method.");
+            return null;
+        }
+    }
+
     public void resetChecks(){
         try{
             for(int i=0;i<isChecked.size();i++){
                 isChecked.set(i,false);
             }
+            notifyDataSetChanged();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' resetChecks method.");
         }
+    }
+
+    public ArrayList<Boolean> getChecks(){
+        return isChecked;
+    }
+
+    public void setChecks(ArrayList<Boolean> checks){
+        isChecked.clear();
+        for(int i=0;i<checks.size();i++){
+            isChecked.add(checks.get(i));
+        }
+        notifyDataSetChanged();
     }
 
     private void onItemClicked(int position){
@@ -64,7 +90,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             isChecked.set(position,!isChecked.get(position));
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' setChecked method.");
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' setChecks method.");
         }
     }
 
@@ -89,27 +115,21 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             holder.checkBox.setChecked(isChecked.get(position));
             holder.textViewDeptName.setText(departmentList.get(position)[0]);
 
-            holder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try{
-                        onItemClicked(position);
-                    }
-                    catch (Exception e){
-                        Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' holder.checkBox.setOnClickListener method.");
-                    }
+            holder.checkBox.setOnClickListener(v -> {
+                try{
+                    onItemClicked(position);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' holder.checkBox.setOnClickListener method.");
                 }
             });
-            holder.textViewDeptName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try{
-                        holder.checkBox.setChecked(!holder.checkBox.isChecked());
-                        onItemClicked(position);
-                    }
-                    catch (Exception e){
-                        Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' holder.textViewDeptName.setOnClickListener method.");
-                    }
+            holder.textViewDeptName.setOnClickListener(v -> {
+                try{
+                    holder.checkBox.setChecked(!holder.checkBox.isChecked());
+                    onItemClicked(position);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' holder.textViewDeptName.setOnClickListener method.");
                 }
             });
         }
@@ -163,9 +183,3 @@ class ViewHolder_Filter_Department extends ViewHolder_FD{
         }
     }
 }
-
-// TODO filterdialog'daki ok cancel clear butonlarının onclick kısımları doldurulacak (bu classta değil, activitylerde (3ünde de aynı olacak şekilde)
-// TODO department filtresi varsa/yoksa ona uygun filter butonu visible olacak.
-
-// TODO vmmainadmin'deki hata alan yerden yola çıkarak model kısmı düzenlenecek
-// TODO vmmainadmindeki getfiltered... metodlarına da yeni bir arguman eklenecek (sadece seçili olan departmanlar için filtre yapılacağı için)
