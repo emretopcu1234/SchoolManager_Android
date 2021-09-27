@@ -80,6 +80,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private ProgressBar progressBarDepartment;
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDepartments;
+    private boolean selectIndicator = true;
+    private ArrayList<Boolean> checks = new ArrayList<>();
 
     private ProgressBar progressBarChangePassword;
 
@@ -225,7 +227,12 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonAddDelete.setVisibility(View.INVISIBLE);
             buttonAddDelete.setOnClickListener(v -> {
                 try{
-                    alertDialogDepartment.show();
+                    if(selectIndicator){
+                        alertDialogDepartment.show();
+                    }
+                    else{
+                        // TODO
+                    }
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonAddDelete setOnClickListener method.");
@@ -236,7 +243,25 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonSelectCancel.setVisibility(View.INVISIBLE);
             buttonSelectCancel.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    selectIndicator = !selectIndicator;
+                    adapter.setCheckBoxActive(!selectIndicator);
+                    if(selectIndicator){
+                        buttonSelectCancel.setText(R.string.button_indicator_select);
+                        buttonAddDelete.setText(R.string.button_indicator_add);
+                        buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        buttonAddDelete.setEnabled(true);
+                    }
+                    else{
+                        buttonSelectCancel.setText(R.string.button_indicator_cancel);
+                        buttonAddDelete.setText(R.string.button_indicator_delete);
+                        buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        buttonAddDelete.setEnabled(false);
+                        checks.clear();
+                        for(int i=0;i<adapter.getItemCount();i++){
+                            checks.add(false);
+                        }
+                        adapter.resetChecks();
+                    }
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonSelectCancel setOnClickListener method.");
@@ -409,6 +434,12 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private void resetWidgets(){
         try{
             progressBarDepartment.setVisibility(View.VISIBLE);
+            buttonSelectCancel.setText(R.string.button_indicator_select);
+            buttonAddDelete.setText(R.string.button_indicator_add);
+            selectIndicator = true;
+            if(adapter != null){    // uygulama ilk acildiginda henuz adapter set edilmemis oldugu icin
+                adapter.setCheckBoxActive(false);
+            }
             buttonSearchDeptName.setVisibility(View.VISIBLE);
             buttonCancelSearchDeptName.setVisibility(View.INVISIBLE);
             textViewDeptName.setVisibility(View.VISIBLE);
@@ -428,6 +459,23 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' showToastMessage method.");
+        }
+    }
+
+    public void onListItemClicked(int position, boolean isChecked){
+        try{
+            checks.set(position,isChecked);
+            if(checks.contains(true)){
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                buttonAddDelete.setEnabled(true);
+            }
+            else{
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                buttonAddDelete.setEnabled(false);
+            }
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onListItemClicked method.");
         }
     }
 

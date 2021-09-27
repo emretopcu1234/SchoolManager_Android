@@ -30,6 +30,7 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 // TODO model main admin issemesteractive'deki semester.startsWith("spring") kısmını kaldır. (şimdilik deneme amaçlı yapıldı.)
 
 
+// TODO tüm layoutlarda add select cancel delete butonlarının rengi lightblack'ten black'e çevirilecek. (main admin kısmı için çevrildi.)
 // TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
 // TODO tüm java classlarda (recyclerviewadapter'ları unutma!!!) yapılmayan try catchler yapılacak (mesela buttona basınca oluşturulan onclick metodunda ya da overridelarda vb.)

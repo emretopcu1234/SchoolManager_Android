@@ -13,20 +13,23 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Students;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapter<ViewHolder_MASt> {
 
-    private Context context;
+    private Activity_Main_Admin_Students context;
     private ArrayList<String[]> studentList;
     private boolean checkBoxActive;
+    private ArrayList<Boolean> isChecked;
 
-    public RecyclerViewAdapter_Main_Admin_Students(Context context, ArrayList<String[]> studentList) {
+    public RecyclerViewAdapter_Main_Admin_Students(Activity_Main_Admin_Students context, ArrayList<String[]> studentList) {
         try{
             this.context = context;
             this.studentList = studentList;
             checkBoxActive = false;
+            isChecked = new ArrayList<>();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' constructor method.");
@@ -36,6 +39,10 @@ public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapte
     public void setStudentList(ArrayList<String[]> studentList){
         try{
             this.studentList = studentList;
+            isChecked.clear();
+            for(int i=0;i<studentList.size();i++){
+                isChecked.add(false);
+            }
             notifyDataSetChanged();
         }
         catch(Exception e){
@@ -43,13 +50,35 @@ public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapte
         }
     }
 
-    public void isCheckBoxActive(boolean checkBoxActive){
+    public void setCheckBoxActive(boolean checkBoxActive){
         try{
             this.checkBoxActive = checkBoxActive;
             notifyDataSetChanged();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' isCheckBoxActive method.");
+        }
+    }
+
+    public void resetChecks(){
+        try{
+            for(int i=0;i<isChecked.size();i++){
+                isChecked.set(i,false);
+            }
+            notifyDataSetChanged();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' resetChecks method.");
+        }
+    }
+
+    private void onItemClicked(int position){
+        try{
+            isChecked.set(position,!isChecked.get(position));
+            context.onListItemClicked(position,isChecked.get(position));
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' onItemClicked method.");
         }
     }
 
@@ -71,7 +100,41 @@ public class RecyclerViewAdapter_Main_Admin_Students extends RecyclerView.Adapte
     public void onBindViewHolder(ViewHolder_MASt viewHolder, int position) {
         try{
             final ViewHolder_Main_Admin_Students holder = (ViewHolder_Main_Admin_Students) viewHolder;
-            holder.checkBox.setChecked(checkBoxActive);
+            final View.OnClickListener checkListener = v -> {
+                try{
+                    holder.checkBox.setChecked(!holder.checkBox.isChecked());
+                    onItemClicked(position);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' checkListener.setOnClickListener method.");
+                }
+            };
+
+            if(checkBoxActive){
+                holder.checkBox.setVisibility(View.VISIBLE);
+                holder.checkBox.setChecked(isChecked.get(position));
+                holder.textViewId.setOnClickListener(checkListener);
+                holder.textViewName.setOnClickListener(checkListener);
+                holder.textViewSurname.setOnClickListener(checkListener);
+                holder.textViewDeptName.setOnClickListener(checkListener);
+            }
+            else{
+                holder.checkBox.setVisibility(View.INVISIBLE);
+                holder.textViewId.setOnClickListener(null);
+                holder.textViewName.setOnClickListener(null);
+                holder.textViewSurname.setOnClickListener(null);
+                holder.textViewDeptName.setOnClickListener(null);
+            }
+
+            holder.checkBox.setOnClickListener(v -> {
+                try{
+                    onItemClicked(position);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Students class' holder.checkBox.setOnClickListener method.");
+                }
+            });
+
             holder.textViewId.setText(studentList.get(position)[0]);
             holder.textViewName.setText(studentList.get(position)[1]);
             holder.textViewSurname.setText(studentList.get(position)[2]);

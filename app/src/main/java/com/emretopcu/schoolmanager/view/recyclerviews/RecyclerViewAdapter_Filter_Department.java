@@ -78,11 +78,16 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
     }
 
     public void setChecks(ArrayList<Boolean> checks){
-        isChecked.clear();
-        for(int i=0;i<checks.size();i++){
-            isChecked.add(checks.get(i));
+        try{
+            isChecked.clear();
+            for(int i=0;i<checks.size();i++){
+                isChecked.add(checks.get(i));
+            }
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
+        catch (Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' setChecks method.");
+        }
     }
 
     private void onItemClicked(int position){
@@ -90,7 +95,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             isChecked.set(position,!isChecked.get(position));
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' setChecks method.");
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' onItemClicked method.");
         }
     }
 

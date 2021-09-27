@@ -16,12 +16,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +29,6 @@ import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
-import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
-import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Dept_Admins;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
@@ -111,7 +106,9 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     private String nameFilter = "";
     private String surnameFilter = "";
     private ArrayList<String> deptFilter = new ArrayList<>();
-    private ArrayList<Boolean> previousChecks = new ArrayList<>();
+    private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
+    private boolean selectIndicator = true;
+    private ArrayList<Boolean> checks = new ArrayList<>();
 
     private ProgressBar progressBarChangePassword;
 
@@ -163,9 +160,9 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             });
             buttonFilterOK.setOnClickListener(v -> {
                 try{
-                    previousChecks.clear();
+                    previousFilterChecks.clear();
                     for(int i=0;i<adapterFilter.getChecks().size();i++){
-                        previousChecks.add(adapterFilter.getChecks().get(i));
+                        previousFilterChecks.add(adapterFilter.getChecks().get(i));
                     }
                     deptFilter = adapterFilter.getFilteredDepartmentList();
                     if(deptFilter.size() > 0){
@@ -185,7 +182,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             });
             buttonFilterCancel.setOnClickListener(v -> {
                 try{
-                    adapterFilter.setChecks(previousChecks);
+                    adapterFilter.setChecks(previousFilterChecks);
                     alertDialogFilter.dismiss();
                 }
                 catch (Exception e){
@@ -309,7 +306,12 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             buttonAddDelete.setVisibility(View.INVISIBLE);
             buttonAddDelete.setOnClickListener(v -> {
                 try{
-                    alertDialogLecturer.show();
+                    if(selectIndicator){
+                        alertDialogLecturer.show();
+                    }
+                    else{
+                        // TODO
+                    }
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonAddDelete setOnClickListener method.");
@@ -320,7 +322,25 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             buttonSelectCancel.setVisibility(View.INVISIBLE);
             buttonSelectCancel.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    selectIndicator = !selectIndicator;
+                    adapter.setCheckBoxActive(!selectIndicator);
+                    if(selectIndicator){
+                        buttonSelectCancel.setText(R.string.button_indicator_select);
+                        buttonAddDelete.setText(R.string.button_indicator_add);
+                        buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        buttonAddDelete.setEnabled(true);
+                    }
+                    else{
+                        buttonSelectCancel.setText(R.string.button_indicator_cancel);
+                        buttonAddDelete.setText(R.string.button_indicator_delete);
+                        buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        buttonAddDelete.setEnabled(false);
+                        checks.clear();
+                        for(int i=0;i<adapter.getItemCount();i++){
+                            checks.add(false);
+                        }
+                        adapter.resetChecks();
+                    }
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonSelectCancel setOnClickListener method.");
@@ -655,6 +675,12 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     private void resetWidgets(){
         try{
             progressBarLecturer.setVisibility(View.VISIBLE);
+            buttonSelectCancel.setText(R.string.button_indicator_select);
+            buttonAddDelete.setText(R.string.button_indicator_add);
+            selectIndicator = true;
+            if(adapter != null){    // uygulama ilk acildiginda henuz adapter set edilmemis oldugu icin
+                adapter.setCheckBoxActive(false);
+            }
             buttonSearchId.setVisibility(View.VISIBLE);
             buttonCancelSearchId.setVisibility(View.INVISIBLE);
             buttonSearchName.setVisibility(View.VISIBLE);
@@ -693,6 +719,23 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' showToastMessage method.");
+        }
+    }
+
+    public void onListItemClicked(int position, boolean isChecked){
+        try{
+            checks.set(position,isChecked);
+            if(checks.contains(true)){
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                buttonAddDelete.setEnabled(true);
+            }
+            else{
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                buttonAddDelete.setEnabled(false);
+            }
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' onListItemClicked method.");
         }
     }
 
