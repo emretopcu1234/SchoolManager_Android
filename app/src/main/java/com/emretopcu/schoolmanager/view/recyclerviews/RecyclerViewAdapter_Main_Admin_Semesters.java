@@ -1,6 +1,5 @@
 package com.emretopcu.schoolmanager.view.recyclerviews;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -14,20 +13,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.view.interfaces.Interface_Main_Admin_Semesters;
+import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Semesters;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapter<ViewHolder_MASe> {
 
-    private Context context;
+    private Activity_Main_Admin_Semesters context;
     private ArrayList<String[]> detailedSemesterList;
-    private Interface_Main_Admin_Semesters interfaceMainAdminSemesters;
 
-    public RecyclerViewAdapter_Main_Admin_Semesters(Context context, Interface_Main_Admin_Semesters interfaceMainAdminSemesters, ArrayList<String[]> detailedSemesterList) {
+    public RecyclerViewAdapter_Main_Admin_Semesters(Activity_Main_Admin_Semesters context, ArrayList<String[]> detailedSemesterList) {
         try{
             this.context = context;
-            this.interfaceMainAdminSemesters = interfaceMainAdminSemesters;
             this.detailedSemesterList = detailedSemesterList;
         }
         catch(Exception e){
@@ -59,7 +56,6 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
         }
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder_MASe viewHolder, int position) {
         try{
@@ -79,25 +75,31 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
                     MenuInflater inflater = popup.getMenuInflater();
                     inflater.inflate(R.menu.menu_main_admin_edit_or_delete_semester, popup.getMenu());
                     popup.show();
-                    MenuItem editSemester = popup.getMenu().findItem(R.id.menu_main_admin_edit_semester);
-                    MenuItem deleteSemester = popup.getMenu().findItem(R.id.menu_main_admin_delete_semester);
-                    editSemester.setOnMenuItemClickListener(item -> {
+                    MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_semester);
+                    MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_semester);
+                    if(!detailedSemesterList.get(position)[3].equals("ACTIVE")){
+                        delete.setVisible(true);
+                    }
+                    else{
+                        delete.setVisible(false);
+                    }
+                    edit.setOnMenuItemClickListener(item -> {
                         try{
-                            interfaceMainAdminSemesters.onEditSemesterClicked(position);
+                            context.onEditRequested(position);
                             return true;
                         }
                         catch (Exception e){
-                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Semesters class' editSemester.setOnMenuItemClickListener method.");
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Semesters class' edit setOnMenuItemClickListener method.");
                             return false;
                         }
                     });
-                    deleteSemester.setOnMenuItemClickListener(item -> {
+                    delete.setOnMenuItemClickListener(item -> {
                         try{
-                            interfaceMainAdminSemesters.onDeleteSemesterClicked(position);
+                            context.onDeleteRequested(position);
                             return true;
                         }
                         catch (Exception e){
-                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Semesters class' deleteSemester.setOnMenuItemClickListener method.");
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Semesters class' delete setOnMenuItemClickListener method.");
                             return false;
                         }
                     });
@@ -158,8 +160,5 @@ class ViewHolder_Main_Admin_Semesters extends ViewHolder_MASe {
         catch(Exception e){
             Log.d("Exception", "Exception on ViewHolder_Main_Admin_Semesters class' constructor method.");
         }
-
     }
 }
-
-

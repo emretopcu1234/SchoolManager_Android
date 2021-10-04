@@ -5,10 +5,12 @@ import android.content.Context;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -111,6 +113,41 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
                     Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' checkListener.setOnClickListener method.");
                 }
             };
+            final View.OnLongClickListener menuListener = v -> {
+                try{
+                    PopupMenu popup = new PopupMenu(context, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.menu_main_admin_edit_or_delete_department, popup.getMenu());
+                    popup.show();
+                    MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_department);
+                    MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_department);
+                    edit.setOnMenuItemClickListener(item -> {
+                        try{
+                            context.onEditRequested(position);
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' edit setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                    delete.setOnMenuItemClickListener(item -> {
+                        try{
+                            context.onDeleteRequested(position);
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' delete setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                    return true;
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' menuListener.setOnLongClickListener method.");
+                    return false;
+                }
+            };
 
             if(checkBoxActive){
                 holder.checkBox.setVisibility(View.VISIBLE);
@@ -132,6 +169,9 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
                     Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' holder.checkBox.setOnClickListener method.");
                 }
             });
+
+            holder.textViewDeptName.setOnLongClickListener(menuListener);
+            holder.textViewDeptId.setOnLongClickListener(menuListener);
 
             holder.textViewDeptName.setText(departmentList.get(position)[0]);
             holder.textViewDeptId.setText(departmentList.get(position)[1]);

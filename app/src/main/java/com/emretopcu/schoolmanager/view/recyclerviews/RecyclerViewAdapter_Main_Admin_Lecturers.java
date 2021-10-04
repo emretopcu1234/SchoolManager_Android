@@ -1,13 +1,13 @@
 package com.emretopcu.schoolmanager.view.recyclerviews;
 
-import android.content.Context;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,6 +109,41 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
                     Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' checkListener.setOnClickListener method.");
                 }
             };
+            final View.OnLongClickListener menuListener = v -> {
+                try{
+                    PopupMenu popup = new PopupMenu(context, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.menu_main_admin_edit_or_delete_lecturer, popup.getMenu());
+                    popup.show();
+                    MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_lecturer);
+                    MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_lecturer);
+                    edit.setOnMenuItemClickListener(item -> {
+                        try{
+                            context.onEditRequested(position);
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' edit setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                    delete.setOnMenuItemClickListener(item -> {
+                        try{
+                            context.onDeleteRequested(position);
+                            return true;
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' delete setOnMenuItemClickListener method.");
+                            return false;
+                        }
+                    });
+                    return true;
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' menuListener.setOnLongClickListener method.");
+                    return false;
+                }
+            };
 
             if(checkBoxActive){
                 holder.checkBox.setVisibility(View.VISIBLE);
@@ -134,6 +169,11 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
                     Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' holder.checkBox.setOnClickListener method.");
                 }
             });
+
+            holder.textViewId.setOnLongClickListener(menuListener);
+            holder.textViewName.setOnLongClickListener(menuListener);
+            holder.textViewSurname.setOnLongClickListener(menuListener);
+            holder.textViewDeptName.setOnLongClickListener(menuListener);
 
             holder.textViewId.setText(lecturerList.get(position)[0]);
             holder.textViewName.setText(lecturerList.get(position)[1]);
@@ -167,35 +207,9 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
     }
 }
 
-class ViewHolder_MAL extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+class ViewHolder_MAL extends RecyclerView.ViewHolder {
     public ViewHolder_MAL(View v) {
         super(v);
-        v.setOnCreateContextMenuListener(this);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        try{
-            MenuItem edit = menu.add(0, v.getId(), 0, R.string.menu_main_admin_edit_lecturer);
-            MenuItem delete = menu.add(0, v.getId(), 0, R.string.menu_main_admin_delete_lecturer);
-            edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-
-                    return true;
-                }
-            });
-            delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-
-                    return true;
-                }
-            });
-        }
-        catch (Exception e){
-            Log.d("Exception", "Exception on ViewHolder_MAL class' onCreateContextMenu method.");
-        }
     }
 }
 

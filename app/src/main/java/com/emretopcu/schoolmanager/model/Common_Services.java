@@ -2,16 +2,16 @@ package com.emretopcu.schoolmanager.model;
 
 import android.util.Log;
 
-import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Student;
 import com.google.firebase.Timestamp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Common_Services {
+
+    private static DateFormat formatterOriginal = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+    private static DateFormat formatterSpecified = new SimpleDateFormat("dd / MM / yyyy");
 
     public static String convertUnprocessedSemester(String unprocessedSemester){
         try{
@@ -65,12 +65,20 @@ public class Common_Services {
 
     public static String convertTimestampToDateString(Timestamp timestamp){
         try{
-            DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-            DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy");
-            return formatter1.format(formatter.parse(timestamp.toDate().toString()));
+            return formatterSpecified.format(formatterOriginal.parse(timestamp.toDate().toString()));
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' convertTimestampToDateString method.");
+            return null;
+        }
+    }
+
+    public static Timestamp convertDateStringToTimestamp(String date){
+        try{
+            return new Timestamp(formatterSpecified.parse(date));
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' convertDateStringToTimestamp method.");
             return null;
         }
     }
@@ -79,7 +87,7 @@ public class Common_Services {
         try{
             Date todayDate = new Date();
             return(startDate.compareTo(new Timestamp(todayDate)) <= 0
-                    && endDate.compareTo(new Timestamp(todayDate)) <= 0);       // TODO >= olacak.
+                    && endDate.compareTo(new Timestamp(todayDate)) >= 0);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' isSemesterActive method.");
@@ -116,6 +124,25 @@ public class Common_Services {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' convertUnprocessedFilter method.");
+            return null;
+        }
+    }
+
+    public static String specifySemesterName(String startDate, String endDate){
+        try{
+            String semesterName;
+            int startYear = Integer.parseInt(startDate.substring(startDate.length() - 4));
+            int endYear = Integer.parseInt(endDate.substring(endDate.length() - 4));
+            if(startYear != endYear){
+                semesterName = "fall" + startYear + endYear;
+            }
+            else{
+                semesterName = "spring" + startYear + endYear;
+            }
+            return semesterName;
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' specifySemesterName method.");
             return null;
         }
     }

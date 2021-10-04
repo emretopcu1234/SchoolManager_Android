@@ -18,9 +18,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
 
@@ -51,9 +54,25 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private View viewDialogDepartment;
     private AlertDialog alertDialogDepartment;
 
+    private EditText editTextDialogDeptId;
+    private EditText editTextDialogDeptName;
+    private TextView textViewDialogWarning;
+    private Button buttonDialogOK;
+    private Button buttonDialogCancel;
+    private ProgressBar progressBarDialog;
+
     private AlertDialog.Builder builderChangePassword;
     private View viewDialogChangePassword;
     private AlertDialog alertDialogChangePassword;
+
+    private AlertDialog.Builder builderDeleteConfirmation;
+    private View viewDialogDeleteConfirmation;
+    private AlertDialog alertDialogDeleteConfirmation;
+
+    private TextView textViewDeleteConfirmation;
+    private Button buttonDeleteConfirmationYes;
+    private Button buttonDeleteConfirmationNo;
+    private ProgressBar progressBarDeleteConfirmation;
 
     private EditText editTextDialogChangePasswordOldPassword;
     private EditText editTextDialogChangePasswordNewPassword;
@@ -78,15 +97,16 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private VM_Main_Admin vmMainAdmin;
 
     private ProgressBar progressBarDepartment;
+    private ProgressBar progressBarChangePassword;
+
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDepartments;
     private boolean selectIndicator = true;
     private ArrayList<Boolean> checks = new ArrayList<>();
+    private ArrayList<String> deletedIdList = new ArrayList<>();
+    private boolean addRequested;
 
-    private ProgressBar progressBarChangePassword;
-
-    // TODO department name değişirse hem semesterconditions'taki son dönem tablosunda hem de dep_artments collectionında güncelle.
-
+    // TODO department name değişirse hem semesterconditions'taki son dönem tablosunda hem de departments collectionında güncelle.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +131,100 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             alertDialogDepartment.setCancelable(false);
             alertDialogDepartment.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+            editTextDialogDeptId = viewDialogDepartment.findViewById(R.id.editText_id);
+            editTextDialogDeptName = viewDialogDepartment.findViewById(R.id.editText_name);
+            textViewDialogWarning = viewDialogDepartment.findViewById(R.id.textView_warning);
+            textViewDialogWarning.setVisibility(View.INVISIBLE);
+            progressBarDialog = viewDialogDepartment.findViewById(R.id.progressBar);
+            buttonDialogOK = viewDialogDepartment.findViewById(R.id.button_ok);
+            buttonDialogCancel = viewDialogDepartment.findViewById(R.id.button_cancel);
+
+            TextWatcher watcherDialog = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        textViewDialogWarning.setVisibility(View.INVISIBLE);
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' watcherDialog onTextChanged method.");
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try{
+                        if(editTextDialogDeptId.getText().length() == 0 || editTextDialogDeptName.getText().length() == 0){
+                            buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                            buttonDialogOK.setEnabled(false);
+                        }
+                        else{
+                            buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                            buttonDialogOK.setEnabled(true);
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' watcherDialog afterTextChanged method.");
+                    }
+                }
+            };
+            editTextDialogDeptId.addTextChangedListener(watcherDialog);
+            editTextDialogDeptName.addTextChangedListener(watcherDialog);
+
+            buttonDialogOK.setOnClickListener(v -> {
+                try{
+                    progressBarDialog.setVisibility(View.VISIBLE);
+                    if(addRequested){
+                        vmMainAdmin.onAddDepartmentRequested(editTextDialogDeptName.getText().toString(),editTextDialogDeptId.getText().toString());
+                    }
+                    else{
+                        vmMainAdmin.onEditDepartmentRequested(editTextDialogDeptName.getText().toString(),editTextDialogDeptId.getText().toString());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonDialogOK setOnClickListener method.");
+                }
+            });
+            buttonDialogCancel.setOnClickListener(v -> {
+                try{
+                    alertDialogDepartment.dismiss();
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonDialogCancel setOnClickListener method.");
+                }
+            });
+
+            builderDeleteConfirmation = new AlertDialog.Builder(this);
+            viewDialogDeleteConfirmation = this.getLayoutInflater().inflate(R.layout.dialog_delete_confirmation, null);
+            builderDeleteConfirmation.setView(viewDialogDeleteConfirmation);
+            alertDialogDeleteConfirmation = builderDeleteConfirmation.create();
+            alertDialogDeleteConfirmation.setCancelable(false);
+            alertDialogDeleteConfirmation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            textViewDeleteConfirmation = viewDialogDeleteConfirmation.findViewById(R.id.textView_confirmation);
+            progressBarDeleteConfirmation = viewDialogDeleteConfirmation.findViewById(R.id.progressBar);
+            buttonDeleteConfirmationYes = viewDialogDeleteConfirmation.findViewById(R.id.button_yes);
+            buttonDeleteConfirmationNo = viewDialogDeleteConfirmation.findViewById(R.id.button_no);
+            buttonDeleteConfirmationYes.setOnClickListener(v -> {
+                try{
+                    progressBarDeleteConfirmation.setVisibility(View.VISIBLE);
+                    vmMainAdmin.onDeleteDepartmentsRequested(Common_Variables_View.SELECTED_SEMESTER, deletedIdList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonDeleteConfirmationYes setOnClickListener method.");
+                }
+            });
+            buttonDeleteConfirmationNo.setOnClickListener(v -> {
+                try{
+                    alertDialogDeleteConfirmation.dismiss();
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonDeleteConfirmationNo setOnClickListener method.");
+                }
+            });
+
             builderChangePassword = new AlertDialog.Builder(this);
             viewDialogChangePassword = this.getLayoutInflater().inflate(R.layout.dialog_change_password, null);
             builderChangePassword.setView(viewDialogChangePassword);
@@ -120,16 +234,35 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             editTextDialogChangePasswordOldPassword = viewDialogChangePassword.findViewById(R.id.editText_old_password);
             editTextDialogChangePasswordNewPassword = viewDialogChangePassword.findViewById(R.id.editText_new_password);
             editTextDialogChangePasswordNewPasswordConfirm = viewDialogChangePassword.findViewById(R.id.editText_new_password_confirm);
-            editTextDialogChangePasswordOldPassword.addTextChangedListener(new TextWatcher() {
+
+            TextWatcher watcherPassword = new TextWatcher() {
+                String fieldValue;
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
-
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     try{
-                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(0,s.toString()));
+                        fieldValue = s.toString();
+                        textViewDialogChangePassword.setVisibility(View.INVISIBLE);
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' watcherPassword onTextChanged method.");
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try{
+                        if(s.hashCode() == editTextDialogChangePasswordOldPassword.getText().hashCode()){
+                            buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(0,fieldValue));
+                        }
+                        else if (s.hashCode() == editTextDialogChangePasswordNewPassword.getText().hashCode()){
+                            buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(1,fieldValue));
+                        }
+                        else if (s.hashCode() == editTextDialogChangePasswordNewPasswordConfirm.getText().hashCode()){
+                            buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(2,fieldValue));
+                        }
                         if(buttonDialogChangePasswordOK.isEnabled()){
                             buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                         }
@@ -137,70 +270,15 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                             buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
                         }
                     }
-                    catch(Exception e){
-                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' editTextDialogChangePasswordOldPassword onTextChanged method.");
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' watcherPassword afterTextChanged method.");
                     }
                 }
+            };
+            editTextDialogChangePasswordOldPassword.addTextChangedListener(watcherPassword);
+            editTextDialogChangePasswordNewPassword.addTextChangedListener(watcherPassword);
+            editTextDialogChangePasswordNewPasswordConfirm.addTextChangedListener(watcherPassword);
 
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            editTextDialogChangePasswordNewPassword.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    try{
-                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(1,s.toString()));
-                        if(buttonDialogChangePasswordOK.isEnabled()){
-                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-                        }
-                        else{
-                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
-                        }
-                    }
-                    catch(Exception e){
-                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' editTextDialogChangePasswordNewPassword onTextChanged method.");
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            editTextDialogChangePasswordNewPasswordConfirm.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    try{
-                        buttonDialogChangePasswordOK.setEnabled(helperDialogChangePassword.onFieldChanged(2,s.toString()));
-                        if(buttonDialogChangePasswordOK.isEnabled()){
-                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-                        }
-                        else{
-                            buttonDialogChangePasswordOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
-                        }
-                    }
-                    catch(Exception e){
-                        Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' editTextDialogChangePasswordNewPasswordConfirm onTextChanged method.");
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
             textViewDialogChangePassword = viewDialogChangePassword.findViewById(R.id.textView_warning);
             buttonDialogChangePasswordOK = viewDialogChangePassword.findViewById(R.id.button_ok);
             buttonDialogChangePasswordOK.setOnClickListener(v -> {
@@ -228,10 +306,24 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonAddDelete.setOnClickListener(v -> {
                 try{
                     if(selectIndicator){
+                        addRequested = true;
+                        editTextDialogDeptName.setText(null);
+                        editTextDialogDeptId.setText(null);
+                        editTextDialogDeptName.clearFocus();
+                        editTextDialogDeptId.clearFocus();
+                        buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                        buttonDialogOK.setEnabled(false);
                         alertDialogDepartment.show();
                     }
                     else{
-                        // TODO
+                        deletedIdList.clear();
+                        for(int i=0;i<checks.size();i++){
+                            if(checks.get(i)){
+                                deletedIdList.add(vmMainAdmin.getDepartmentList().get(i)[1]);
+                            }
+                        }
+                        textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_department));
+                        alertDialogDeleteConfirmation.show();
                     }
                 }
                 catch(Exception e){
@@ -291,6 +383,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                     editTextDeptName.setText(null);
                     editTextDeptName.setVisibility(View.INVISIBLE);
                     editTextDeptName.clearFocus();
+                    progressBarDepartment.setVisibility(View.VISIBLE);
+                    vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonCancelSearchDeptName setOnClickListener method.");
@@ -304,7 +398,6 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
-
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     try{
@@ -323,7 +416,6 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' editTextDeptName onTextChanged method.");
                     }
                 }
-
                 @Override
                 public void afterTextChanged(Editable s) {
 
@@ -407,6 +499,45 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getSetDepartmentsSuccessful().observe method.");
                 }
             });
+            vmMainAdmin.getAddDepartmentSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        alertDialogDepartment.dismiss();
+                        showToastMessage(R.string.toast_add_department_successful);
+                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getAddDepartmentSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin.getEditDepartmentSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        alertDialogDepartment.dismiss();
+                        showToastMessage(R.string.toast_edit_department_successful);
+                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getEditDepartmentSuccessful().observe method.");
+                }
+            });
+            vmMainAdmin.getDeleteDepartmentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        progressBarDeleteConfirmation.setVisibility(View.INVISIBLE);
+                        alertDialogDeleteConfirmation.dismiss();
+                        showToastMessage(R.string.toast_delete_department_successful);
+                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getDeleteDepartmentsSuccessful().observe method.");
+                }
+            });
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onCreate method.");
@@ -423,7 +554,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            fragmentUserAndSemester.setName("ADMIN");
+            fragmentUserAndSemester.setName("MAIN ADMIN");
             vmMainAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
@@ -476,6 +607,35 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onListItemClicked method.");
+        }
+    }
+
+    public void onEditRequested(int position){
+        try{
+            addRequested = false;
+            ArrayList<String[]> departmentList = vmMainAdmin.getDepartmentList();
+            editTextDialogDeptName.setText(departmentList.get(position)[0]);
+            editTextDialogDeptId.setText(departmentList.get(position)[1]);
+            editTextDialogDeptName.clearFocus();
+            editTextDialogDeptId.clearFocus();
+            buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+            buttonDialogOK.setEnabled(true);
+            alertDialogDepartment.show();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onEditRequested method.");
+        }
+    }
+
+    public void onDeleteRequested(int position){
+        try{
+            deletedIdList.clear();
+            deletedIdList.add(vmMainAdmin.getDepartmentList().get(position)[1]);
+            textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_department));
+            alertDialogDeleteConfirmation.show();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' onDeleteRequested method.");
         }
     }
 

@@ -27,9 +27,6 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 
 // TODO dataloaderror kısımlarını viewmodel ve model kısmı için implement et. (model'de zaten edildi.)
 
-// TODO model main admin issemesteractive'deki semester.startsWith("spring") kısmını kaldır. (şimdilik deneme amaçlı yapıldı.)
-
-
 // TODO tüm layoutlarda add select cancel delete butonlarının rengi lightblack'ten black'e çevirilecek. (main admin kısmı için çevrildi.)
 // TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
@@ -55,7 +52,7 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 // TODO push notification!!!
 // TODO id olmayan yerlerde duplicate data'ya izin verme. (bir section içindeki birden fazla announcement'ta ayni title olamaz, course note'ta ayni filename olamaz vb)
 
-
+// TODO vmmainadmin'deki todo yazılı metodları doldur. (semester eklerken extreme datalar girilmesi durumu için)
 
 public class Activity_Initial extends AppCompatActivity {
 
