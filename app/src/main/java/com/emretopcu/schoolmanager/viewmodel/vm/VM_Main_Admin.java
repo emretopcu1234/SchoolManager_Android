@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.emretopcu.schoolmanager.model.Model_Main_Admin;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Semester_State;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Main_Admin;
 import com.emretopcu.schoolmanager.viewmodel.sharedData.SD_Main_Admin;
 
@@ -19,26 +22,28 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     private Model_Main_Admin modelMainAdmin;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDetailedSemestersSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveOrFutureSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptAdminsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addDepartmentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addDeptAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addLecturerSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addStudentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addSemesterSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editDepartmentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editDeptAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editLecturerSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editStudentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editSemesterSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Department_State> addDepartmentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addDeptAdminSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addLecturerSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addStudentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Semester_State> addSemesterSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Department_State> editDepartmentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editDeptAdminSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editLecturerSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editStudentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Semester_State> editSemesterSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteDepartmentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteDeptAdminsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteSemesterSuccessful;
+
+    private String lastProcessedSemester;
 
     public VM_Main_Admin(){
         try{
@@ -48,7 +53,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
             modelMainAdmin.getDepartmentIdInfo();
             setSemestersSuccessful = sdMainAdmin.getSetSemestersSuccessful();
             setDetailedSemestersSuccessful = sdMainAdmin.getSetDetailedSemestersSuccessful();
-            isSemesterActiveSuccessful = sdMainAdmin.getIsSemesterActiveSuccessful();
+            isSemesterActiveOrFutureSuccessful = sdMainAdmin.getIsSemesterActiveOrFutureSuccessful();
             setDepartmentsSuccessful = sdMainAdmin.getSetDepartmentsSuccessful();
             setDeptAdminsSuccessful = sdMainAdmin.getSetDeptAdminsSuccessful();
             setLecturersSuccessful = sdMainAdmin.getSetLecturersSuccessful();
@@ -84,10 +89,10 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onSemesterActiveRequested(String selectedSemester){
+    public void onSemesterActiveOrFutureRequested(String selectedSemester){
         try{
-            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.isSemesterActive(selectedSemester);
+            isSemesterActiveOrFutureSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.isSemesterActiveOrFuture(selectedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onSemesterActiveRequested method.");
@@ -184,40 +189,44 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onAddDepartmentRequested(String deptName, String deptId){
+    public void onAddDepartmentRequested(String deptName, String deptId, String semester){
         try{
-            addDepartmentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.addDepartment(deptName, deptId);
+            lastProcessedSemester = semester;
+            addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
+            modelMainAdmin.addDepartment(deptName, deptId, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminRequested method.");
         }
     }
 
-    public void onAddDeptAdminRequested(String id, String name, String surname, String deptId){
+    public void onAddDeptAdminRequested(String id, String name, String surname, String deptId, String semester){
         try{
-            addDeptAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.addDeptAdmin(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            addDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.addDeptAdmin(id, name, surname, deptId, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminRequested method.");
         }
     }
 
-    public void onAddLecturerRequested(String id, String name, String surname, String deptId){
+    public void onAddLecturerRequested(String id, String name, String surname, String deptId, String semester){
         try{
-            addLecturerSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.addLecturer(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            addLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.addLecturer(id, name, surname, deptId, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddLecturerRequested method.");
         }
     }
 
-    public void onAddStudentRequested(String id, String name, String surname, String deptId){
+    public void onAddStudentRequested(String id, String name, String surname, String deptId, String semester){
         try{
-            addStudentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.addStudent(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            addStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.addStudent(id, name, surname, deptId, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddStudentRequested method.");
@@ -226,7 +235,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
 
     public void onAddSemesterRequested(String startDate, String endDate){
         try{
-            addSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
             modelMainAdmin.addSemester(startDate, endDate);
         }
         catch (Exception e){
@@ -234,50 +243,54 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onEditDepartmentRequested(String deptName, String deptId){
+    public void onEditDepartmentRequested(String deptName, String deptId, String semester){
         try{
-            editDepartmentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.editDepartment(deptName, deptId);
+            lastProcessedSemester = semester;
+            editDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
+            modelMainAdmin.editDepartment(deptName, deptId, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditDeptAdminRequested method.");
         }
     }
 
-    public void onEditDeptAdminRequested(String id, String name, String surname, String deptId){
+    public void onEditDeptAdminRequested(String id, String name, String surname, String deptName, String semester){
         try{
-            editDeptAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.editDeptAdmin(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            editDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.editDeptAdmin(id, name, surname, deptName, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditDeptAdminRequested method.");
         }
     }
 
-    public void onEditLecturerRequested(String id, String name, String surname, String deptId){
+    public void onEditLecturerRequested(String id, String name, String surname, String deptName, String semester){
         try{
-            editLecturerSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.editLecturer(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            editLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.editLecturer(id, name, surname, deptName, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditLecturerRequested method.");
         }
     }
 
-    public void onEditStudentRequested(String id, String name, String surname, String deptId){
+    public void onEditStudentRequested(String id, String name, String surname, String deptName, String semester){
         try{
-            editStudentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.editStudent(id, name, surname, deptId);
+            lastProcessedSemester = semester;
+            editStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
+            modelMainAdmin.editStudent(id, name, surname, deptName, semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditStudentRequested method.");
         }
     }
 
-    public void onEditSemesterRequested(String semesterId, String startDate, String endDate){
+    public void onEditSemesterRequested(String startDate, String endDate){
         try{
-            editSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.editSemester(semesterId, startDate, endDate);
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
+            modelMainAdmin.editSemester(startDate, endDate);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterRequested method.");
@@ -342,8 +355,8 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return setDetailedSemestersSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveSuccessful() {
-        return isSemesterActiveSuccessful;
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveOrFutureSuccessful() {
+        return isSemesterActiveOrFutureSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDepartmentsSuccessful() {
@@ -362,43 +375,43 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return setStudentsSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddDepartmentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Department_State> getAddDepartmentSuccessful() {
         return addDepartmentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddDeptAdminSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddDeptAdminSuccessful() {
         return addDeptAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddLecturerSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddLecturerSuccessful() {
         return addLecturerSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddStudentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddStudentSuccessful() {
         return addStudentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddSemesterSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Semester_State> getAddSemesterSuccessful() {
         return addSemesterSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditDepartmentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Department_State> getEditDepartmentSuccessful() {
         return editDepartmentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditDeptAdminSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditDeptAdminSuccessful() {
         return editDeptAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditLecturerSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditLecturerSuccessful() {
         return editLecturerSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditStudentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditStudentSuccessful() {
         return editStudentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditSemesterSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Semester_State> getEditSemesterSuccessful() {
         return editSemesterSuccessful;
     }
 
@@ -430,8 +443,8 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return sdMainAdmin.getDetailedSemesterList();
     }
 
-    public boolean isSemesterActive(){
-        return sdMainAdmin.isSemesterActive();
+    public boolean isSemesterActiveOrFuture(){
+        return sdMainAdmin.isSemesterActiveOrFuture();
     }
 
     public ArrayList<String[]> getDepartmentList(){
@@ -492,10 +505,10 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onIsSemesterActiveResulted(boolean semesterActive) {
+    public void onIsSemesterActiveOrFutureResulted(boolean semesterActiveOrFuture) {
         try{
-            sdMainAdmin.setSemesterActive(semesterActive);
-            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            sdMainAdmin.setSemesterActiveOrFuture(semesterActiveOrFuture);
+            isSemesterActiveOrFutureSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onIsSemesterActiveResulted method.");
@@ -547,24 +560,242 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
+    public void onAddDepartmentResultedSuccessful() {
+        try{
+            addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.SUCCESSFUL);
+            setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDepartmentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddDepartmentResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onAddDepartmentResultedDuplicatedId() {
+        try{
+            addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_ID);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddDepartmentResultedDuplicatedId method.");
+        }
+    }
+
+    @Override
+    public void onAddDepartmentResultedDuplicatedName() {
+        try{
+            addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_NAME);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddDepartmentResultedDuplicatedName method.");
+        }
+    }
+
+    @Override
+    public void onAddDeptAdminResultedSuccessful() {
+        try{
+            addDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDeptAdminList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onAddDeptAdminResultedDuplicatedId() {
+        try{
+            addDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.UNSUCCESSFUL_DUPLICATED_ID);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminResultedDuplicatedId method.");
+        }
+    }
+
+    @Override
+    public void onAddLecturerResultedSuccessful() {
+        try{
+            addLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getLecturerList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddLecturerResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onAddLecturerResultedDuplicatedId() {
+        try{
+            addLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.UNSUCCESSFUL_DUPLICATED_ID);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddLecturerResultedDuplicatedId method.");
+        }
+    }
+
+    @Override
+    public void onAddStudentResultedSuccessful() {
+        try{
+            addStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getStudentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddStudentResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onAddStudentResultedDuplicatedId() {
+        try{
+            addStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.UNSUCCESSFUL_DUPLICATED_ID);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddStudentResultedDuplicatedId method.");
+        }
+    }
+
+    @Override
     public void onAddSemesterResultedSuccessful() {
-        addSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
-        setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-        modelMainAdmin.getDetailedSemesterList();
+        try{
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.SUCCESSFUL);
+            setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDetailedSemesterList();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterResultedSuccessful method.");
+        }
     }
 
     @Override
     public void onAddSemesterResultedReverseOrder() {
-        // TODO
+        try{
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_REVERSE_ORDER);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterResultedReverseOrder method.");
+        }
     }
 
     @Override
     public void onAddSemesterResultedLowDateDifference() {
-        // TODO
+        try{
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_LOW_DIFF);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterResultedLowDateDifference method.");
+        }
     }
 
     @Override
     public void onAddSemesterResultedHighDateDifference() {
-        // TODO
+        try{
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_HIGH_DIFF);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterResultedHighDateDifference method.");
+        }
+    }
+
+    @Override
+    public void onEditDepartmentResultedSuccessful() {
+        try{
+            editDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.SUCCESSFUL);
+            setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDepartmentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditDepartmentResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditDepartmentResultedDuplicatedName() {
+        try{
+            editDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_NAME);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditDepartmentResultedDuplicatedName method.");
+        }
+    }
+
+    @Override
+    public void onEditDeptAdminResultedSuccessful() {
+        try{
+            editDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDeptAdminList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditDeptAdminResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditLecturerResultedSuccessful() {
+        try{
+            editLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getLecturerList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditLecturerResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditStudentResultedSuccessful() {
+        try{
+            editStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.SUCCESSFUL);
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getStudentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditStudentResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditSemesterResultedSuccessful() {
+        try{
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.SUCCESSFUL);
+            setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDetailedSemesterList();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditSemesterResultedReverseOrder() {
+        try{
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_REVERSE_ORDER);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterResultedReverseOrder method.");
+        }
+    }
+
+    @Override
+    public void onEditSemesterResultedLowDateDifference() {
+        try{
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_LOW_DIFF);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterResultedLowDateDifference method.");
+        }
+    }
+
+    @Override
+    public void onEditSemesterResultedHighDateDifference() {
+        try{
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_HIGH_DIFF);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterResultedHighDateDifference method.");
+        }
     }
 }

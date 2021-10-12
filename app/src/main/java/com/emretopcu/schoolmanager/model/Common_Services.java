@@ -47,9 +47,6 @@ public class Common_Services {
             else if(processedSemester.startsWith("spring")){
                 semesterType = "Spring";
             }
-            else if(processedSemester.endsWith("summer")){
-                semesterType = "Summer";
-            }
             else{
                 Log.d("Exception", "Unexpected semester type!");
                 return null;
@@ -106,21 +103,21 @@ public class Common_Services {
         }
     }
 
-    public static String convertUnprocessedFilter(String unprocessedFilter){
+    public static String convertUnprocessedName(String unprocessedName){
         try{
-            if(unprocessedFilter.length() == 0){
+            if(unprocessedName.length() == 0){
                 return "";
             }
-            StringBuilder filter = new StringBuilder(Character.toString(unprocessedFilter.charAt(0)).toUpperCase());
-            for(int i=1;i<unprocessedFilter.length();i++){
-                if(unprocessedFilter.charAt(i-1) == ' '){
-                    filter.append(Character.toString(unprocessedFilter.charAt(i)).toUpperCase());
+            StringBuilder name = new StringBuilder(Character.toString(unprocessedName.charAt(0)).toUpperCase());
+            for(int i=1;i<unprocessedName.length();i++){
+                if(unprocessedName.charAt(i-1) == ' '){
+                    name.append(Character.toString(unprocessedName.charAt(i)).toUpperCase());
                 }
                 else{
-                    filter.append(Character.toString(unprocessedFilter.charAt(i)).toLowerCase());
+                    name.append(Character.toString(unprocessedName.charAt(i)).toLowerCase());
                 }
             }
-            return filter.toString();
+            return name.toString();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' convertUnprocessedFilter method.");

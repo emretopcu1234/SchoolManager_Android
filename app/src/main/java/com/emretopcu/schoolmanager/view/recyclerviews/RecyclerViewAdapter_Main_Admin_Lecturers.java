@@ -22,6 +22,7 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
     private Activity_Main_Admin_Lecturers context;
     private ArrayList<String[]> lecturerList;
     private boolean checkBoxActive;
+    private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
 
     public RecyclerViewAdapter_Main_Admin_Lecturers(Activity_Main_Admin_Lecturers context, ArrayList<String[]> lecturerList) {
@@ -29,6 +30,7 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
             this.context = context;
             this.lecturerList = lecturerList;
             checkBoxActive = false;
+            popupMenuActive = false;
             isChecked = new ArrayList<>();
         }
         catch(Exception e){
@@ -57,6 +59,16 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' isCheckBoxActive method.");
+        }
+    }
+
+    public void setPopupMenuActive(boolean popupMenuActive){
+        try{
+            this.popupMenuActive = popupMenuActive;
+            notifyDataSetChanged();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' setPopupMenuActive method.");
         }
     }
 
@@ -111,32 +123,34 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
             };
             final View.OnLongClickListener menuListener = v -> {
                 try{
-                    PopupMenu popup = new PopupMenu(context, v);
-                    MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.menu_main_admin_edit_or_delete_lecturer, popup.getMenu());
-                    popup.show();
-                    MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_lecturer);
-                    MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_lecturer);
-                    edit.setOnMenuItemClickListener(item -> {
-                        try{
-                            context.onEditRequested(position);
-                            return true;
-                        }
-                        catch (Exception e){
-                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' edit setOnMenuItemClickListener method.");
-                            return false;
-                        }
-                    });
-                    delete.setOnMenuItemClickListener(item -> {
-                        try{
-                            context.onDeleteRequested(position);
-                            return true;
-                        }
-                        catch (Exception e){
-                            Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' delete setOnMenuItemClickListener method.");
-                            return false;
-                        }
-                    });
+                    if(popupMenuActive){
+                        PopupMenu popup = new PopupMenu(context, v);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        inflater.inflate(R.menu.menu_main_admin_edit_or_delete_lecturer, popup.getMenu());
+                        popup.show();
+                        MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_lecturer);
+                        MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_lecturer);
+                        edit.setOnMenuItemClickListener(item -> {
+                            try{
+                                context.onEditRequested(position);
+                                return true;
+                            }
+                            catch (Exception e){
+                                Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' edit setOnMenuItemClickListener method.");
+                                return false;
+                            }
+                        });
+                        delete.setOnMenuItemClickListener(item -> {
+                            try{
+                                context.onDeleteRequested(position);
+                                return true;
+                            }
+                            catch (Exception e){
+                                Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' delete setOnMenuItemClickListener method.");
+                                return false;
+                            }
+                        });
+                    }
                     return true;
                 }
                 catch (Exception e){

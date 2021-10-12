@@ -1,10 +1,8 @@
 package com.emretopcu.schoolmanager.view.activities;
 
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +16,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +31,12 @@ import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Departments;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
 
@@ -105,8 +101,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private ArrayList<Boolean> checks = new ArrayList<>();
     private ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
-
-    // TODO department name değişirse hem semesterconditions'taki son dönem tablosunda hem de departments collectionında güncelle.
+    private boolean semesterActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,10 +172,12 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                 try{
                     progressBarDialog.setVisibility(View.VISIBLE);
                     if(addRequested){
-                        vmMainAdmin.onAddDepartmentRequested(editTextDialogDeptName.getText().toString(),editTextDialogDeptId.getText().toString());
+                        vmMainAdmin.onAddDepartmentRequested(editTextDialogDeptName.getText().toString(),
+                                editTextDialogDeptId.getText().toString(), Common_Variables_View.SELECTED_SEMESTER);
                     }
                     else{
-                        vmMainAdmin.onEditDepartmentRequested(editTextDialogDeptName.getText().toString(),editTextDialogDeptId.getText().toString());
+                        vmMainAdmin.onEditDepartmentRequested(editTextDialogDeptName.getText().toString(),
+                                editTextDialogDeptId.getText().toString(),Common_Variables_View.SELECTED_SEMESTER);
                     }
                 }
                 catch (Exception e){
@@ -309,8 +306,10 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         addRequested = true;
                         editTextDialogDeptName.setText(null);
                         editTextDialogDeptId.setText(null);
+                        editTextDialogDeptId.setEnabled(true);
                         editTextDialogDeptName.clearFocus();
                         editTextDialogDeptId.clearFocus();
+                        textViewDialogWarning.setVisibility(View.INVISIBLE);
                         buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
                         buttonDialogOK.setEnabled(false);
                         alertDialogDepartment.show();
@@ -458,18 +457,20 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getSetSemestersSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getIsSemesterActiveSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getIsSemesterActiveOrFutureSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_isSemesterActive = true;
                         if(progressBarIndicator_setDepartments){
                             progressBarDepartment.setVisibility(View.INVISIBLE);
                         }
-                        if(vmMainAdmin.isSemesterActive()){
+                        if(vmMainAdmin.isSemesterActiveOrFuture()){
+                            semesterActive = true;
                             buttonAddDelete.setVisibility(View.VISIBLE);
                             buttonSelectCancel.setVisibility(View.VISIBLE);
                         }
                         else{
+                            semesterActive = false;
                             buttonAddDelete.setVisibility(View.INVISIBLE);
                             buttonSelectCancel.setVisibility(View.INVISIBLE);
                         }
@@ -493,32 +494,62 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         else{
                             adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
                         }
+                        adapter.setPopupMenuActive(semesterActive);
                     }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getSetDepartmentsSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getAddDepartmentSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getAddDepartmentSuccessful().observe(this, e_add_or_edit_department_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_department_state == E_Add_Or_Edit_Department_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogDepartment.dismiss();
                         showToastMessage(R.string.toast_add_department_successful);
-                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Departments(this, vmMainAdmin.getDepartmentList());
+                            recyclerViewMainAdminDepartments.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        }
+                        resetWidgets();
+                    }
+                    else if(e_add_or_edit_department_state == E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_ID){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_department_duplicated_id);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
+                    }
+                    else if(e_add_or_edit_department_state == E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_NAME){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_department_duplicated_name);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' vmMainAdmin.getAddDepartmentSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getEditDepartmentSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getEditDepartmentSuccessful().observe(this, e_add_or_edit_department_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_department_state == E_Add_Or_Edit_Department_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogDepartment.dismiss();
                         showToastMessage(R.string.toast_edit_department_successful);
-                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Departments(this, vmMainAdmin.getDepartmentList());
+                            recyclerViewMainAdminDepartments.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        }
+                        resetWidgets();
+                    }
+                    else if(e_add_or_edit_department_state == E_Add_Or_Edit_Department_State.UNSUCCESSFUL_DUPLICATED_NAME){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_department_duplicated_name);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e){
@@ -531,7 +562,13 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         progressBarDeleteConfirmation.setVisibility(View.INVISIBLE);
                         alertDialogDeleteConfirmation.dismiss();
                         showToastMessage(R.string.toast_delete_department_successful);
-                        adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Departments(this, vmMainAdmin.getDepartmentList());
+                            recyclerViewMainAdminDepartments.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
+                        }
                     }
                 }
                 catch (Exception e){
@@ -616,8 +653,10 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             ArrayList<String[]> departmentList = vmMainAdmin.getDepartmentList();
             editTextDialogDeptName.setText(departmentList.get(position)[0]);
             editTextDialogDeptId.setText(departmentList.get(position)[1]);
+            editTextDialogDeptId.setEnabled(false);
             editTextDialogDeptName.clearFocus();
             editTextDialogDeptId.clearFocus();
+            textViewDialogWarning.setVisibility(View.INVISIBLE);
             buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
             buttonDialogOK.setEnabled(true);
             alertDialogDepartment.show();
@@ -689,7 +728,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
-            vmMainAdmin.onSemesterActiveRequested(selectedSemester);
+            vmMainAdmin.onSemesterActiveOrFutureRequested(selectedSemester);
             vmMainAdmin.onDepartmentListRequested(selectedSemester);
         }
         catch(Exception e){

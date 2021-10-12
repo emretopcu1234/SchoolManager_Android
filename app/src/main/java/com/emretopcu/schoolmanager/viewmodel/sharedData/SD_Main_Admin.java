@@ -5,6 +5,9 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Semester_State;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,21 +18,21 @@ public class SD_Main_Admin {
 
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDetailedSemestersSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveOrFutureSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptAdminsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addDepartmentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addDeptAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addLecturerSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addStudentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> addSemesterSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editDepartmentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editDeptAdminSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editLecturerSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editStudentSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> editSemesterSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Department_State> addDepartmentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addDeptAdminSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addLecturerSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> addStudentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Semester_State> addSemesterSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Department_State> editDepartmentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editDeptAdminSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editLecturerSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Person_State> editStudentSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Semester_State> editSemesterSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteDepartmentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteDeptAdminsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteLecturersSuccessful;
@@ -37,7 +40,7 @@ public class SD_Main_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteSemesterSuccessful;
     private ArrayList<String> semesterList;
     private ArrayList<String[]> detailedSemesterList;
-    private boolean semesterActive;
+    private boolean semesterActiveOrFuture;
     private ArrayList<String[]> departmentList;
     private ArrayList<String[]> deptAdminList;
     private ArrayList<String[]> lecturerList;
@@ -50,8 +53,8 @@ public class SD_Main_Admin {
             setSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDetailedSemestersSuccessful = new MutableLiveData<>();
             setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            isSemesterActiveSuccessful = new MutableLiveData<>();
-            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            isSemesterActiveOrFutureSuccessful = new MutableLiveData<>();
+            isSemesterActiveOrFutureSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDepartmentsSuccessful = new MutableLiveData<>();
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDeptAdminsSuccessful = new MutableLiveData<>();
@@ -61,25 +64,25 @@ public class SD_Main_Admin {
             setStudentsSuccessful = new MutableLiveData<>();
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             addDepartmentSuccessful = new MutableLiveData<>();
-            addDepartmentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
             addDeptAdminSuccessful = new MutableLiveData<>();
-            addDeptAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             addLecturerSuccessful = new MutableLiveData<>();
-            addLecturerSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             addStudentSuccessful = new MutableLiveData<>();
-            addStudentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             addSemesterSuccessful = new MutableLiveData<>();
-            addSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
             editDepartmentSuccessful = new MutableLiveData<>();
-            editDepartmentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            editDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
             editDeptAdminSuccessful = new MutableLiveData<>();
-            editDeptAdminSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            editDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             editLecturerSuccessful = new MutableLiveData<>();
-            editLecturerSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            editLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             editStudentSuccessful = new MutableLiveData<>();
-            editStudentSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            editStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
             editSemesterSuccessful = new MutableLiveData<>();
-            editSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
             deleteDepartmentsSuccessful = new MutableLiveData<>();
             deleteDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             deleteDeptAdminsSuccessful = new MutableLiveData<>();
@@ -92,7 +95,7 @@ public class SD_Main_Admin {
             deleteSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             semesterList = new ArrayList<>();
             detailedSemesterList = new ArrayList<>();
-            semesterActive = false;
+            semesterActiveOrFuture = false;
             departmentList = new ArrayList<>();
             deptAdminList = new ArrayList<>();
             lecturerList = new ArrayList<>();
@@ -125,8 +128,8 @@ public class SD_Main_Admin {
         return setDetailedSemestersSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveSuccessful() {
-        return isSemesterActiveSuccessful;
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveOrFutureSuccessful() {
+        return isSemesterActiveOrFutureSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDepartmentsSuccessful() {
@@ -145,43 +148,43 @@ public class SD_Main_Admin {
         return setStudentsSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddDepartmentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Department_State> getAddDepartmentSuccessful() {
         return addDepartmentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddDeptAdminSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddDeptAdminSuccessful() {
         return addDeptAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddLecturerSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddLecturerSuccessful() {
         return addLecturerSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddStudentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getAddStudentSuccessful() {
         return addStudentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getAddSemesterSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Semester_State> getAddSemesterSuccessful() {
         return addSemesterSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditDepartmentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Department_State> getEditDepartmentSuccessful() {
         return editDepartmentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditDeptAdminSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditDeptAdminSuccessful() {
         return editDeptAdminSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditLecturerSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditLecturerSuccessful() {
         return editLecturerSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditStudentSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Person_State> getEditStudentSuccessful() {
         return editStudentSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getEditSemesterSuccessful() {
+    public MutableLiveData<E_Add_Or_Edit_Semester_State> getEditSemesterSuccessful() {
         return editSemesterSuccessful;
     }
 
@@ -221,12 +224,12 @@ public class SD_Main_Admin {
         this.detailedSemesterList = detailedSemesterList;
     }
 
-    public boolean isSemesterActive() {
-        return semesterActive;
+    public boolean isSemesterActiveOrFuture() {
+        return semesterActiveOrFuture;
     }
 
-    public void setSemesterActive(boolean semesterActive) {
-        this.semesterActive = semesterActive;
+    public void setSemesterActiveOrFuture(boolean semesterActiveOrFuture) {
+        this.semesterActiveOrFuture = semesterActiveOrFuture;
     }
 
     public ArrayList<String[]> getDepartmentList() {

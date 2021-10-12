@@ -16,7 +16,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
@@ -32,12 +30,12 @@ import com.emretopcu.schoolmanager.view.interfaces.Interface_General_Activity;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Semesters;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Semester_State;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Activity_Main_Admin_Semesters extends AppCompatActivity implements Interface_General_Activity {
@@ -205,13 +203,13 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                                 editTextDialogEndDate.setSelection(editTextDialogEndDate.getText().length());
                             }
                         }
-                        if(editTextDialogStartDate.getText().length() == 0 || editTextDialogEndDate.getText().length() == 0){
-                            buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
-                            buttonDialogOK.setEnabled(false);
-                        }
-                        else{
+                        if(editTextDialogStartDate.getText().length() == 14 && editTextDialogEndDate.getText().length() == 14){
                             buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                             buttonDialogOK.setEnabled(true);
+                        }
+                        else{
+                            buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                            buttonDialogOK.setEnabled(false);
                         }
                     }
                     catch (Exception e){
@@ -229,8 +227,7 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                         vmMainAdmin.onAddSemesterRequested(editTextDialogStartDate.getText().toString(),editTextDialogEndDate.getText().toString());
                     }
                     else{
-                        vmMainAdmin.onEditSemesterRequested(editTextDialogSemester.getText().toString(),editTextDialogStartDate.getText().toString(),
-                                editTextDialogEndDate.getText().toString());
+                        vmMainAdmin.onEditSemesterRequested(editTextDialogStartDate.getText().toString(),editTextDialogEndDate.getText().toString());
                     }
                 }
                 catch (Exception e){
@@ -360,6 +357,7 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                     editTextDialogEndDate.setText(null);
                     editTextDialogStartDate.clearFocus();
                     editTextDialogEndDate.clearFocus();
+                    textViewDialogWarning.setVisibility(View.INVISIBLE);
                     buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
                     buttonDialogOK.setEnabled(false);
                     alertDialogSemester.show();
@@ -411,26 +409,68 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                     Log.d("Exception", "Exception on Activity_Main_Admin_Semesters class' vmMainAdmin.getSetDetailedSemestersSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getAddSemesterSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getAddSemesterSuccessful().observe(this, e_add_or_edit_semester_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogSemester.dismiss();
                         showToastMessage(R.string.toast_add_semester_successful);
-                        adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Semesters(this, vmMainAdmin.getDetailedSemesterList());
+                            recyclerViewMainAdminSemesters.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        }
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_REVERSE_ORDER){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_reverse_order);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_LOW_DIFF){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_low_difference);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_HIGH_DIFF){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_high_difference);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Semesters class' vmMainAdmin.getAddSemesterSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getEditSemesterSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getEditSemesterSuccessful().observe(this, e_add_or_edit_semester_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogSemester.dismiss();
                         showToastMessage(R.string.toast_edit_semester_successful);
-                        adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Semesters(this, vmMainAdmin.getDetailedSemesterList());
+                            recyclerViewMainAdminSemesters.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        }
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_REVERSE_ORDER){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_reverse_order);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_LOW_DIFF){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_low_difference);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
+                    }
+                    else if(e_add_or_edit_semester_state == E_Add_Or_Edit_Semester_State.UNSUCCESSFUL_HIGH_DIFF){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_semester_high_difference);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e){
@@ -443,7 +483,13 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                         progressBarDeleteConfirmation.setVisibility(View.INVISIBLE);
                         alertDialogDeleteConfirmation.dismiss();
                         showToastMessage(R.string.toast_delete_semester_successful);
-                        adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Semesters(this, vmMainAdmin.getDetailedSemesterList());
+                            recyclerViewMainAdminSemesters.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
+                        }
                     }
                 }
                 catch (Exception e){
@@ -492,6 +538,7 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
             editTextDialogEndDate.setText(semesterList.get(position)[2]);
             editTextDialogStartDate.clearFocus();
             editTextDialogEndDate.clearFocus();
+            textViewDialogWarning.setVisibility(View.INVISIBLE);
             buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
             buttonDialogOK.setEnabled(true);
             alertDialogSemester.show();

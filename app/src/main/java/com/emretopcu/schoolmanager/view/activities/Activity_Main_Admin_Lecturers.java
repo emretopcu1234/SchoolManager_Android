@@ -34,6 +34,7 @@ import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Main_Admin_Lecturers;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.loginProcess.E_Change_Password_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -134,6 +135,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     private ArrayList<Boolean> checks = new ArrayList<>();
     private ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
+    private boolean semesterActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,11 +216,11 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                     progressBarDialog.setVisibility(View.VISIBLE);
                     if(addRequested){
                         vmMainAdmin.onAddLecturerRequested(editTextDialogId.getText().toString(),editTextDialogName.getText().toString(),
-                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString());
+                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString(),Common_Variables_View.SELECTED_SEMESTER);
                     }
                     else{
                         vmMainAdmin.onEditLecturerRequested(editTextDialogId.getText().toString(),editTextDialogName.getText().toString(),
-                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString());
+                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString(),Common_Variables_View.SELECTED_SEMESTER);
                     }
                 }
                 catch (Exception e){
@@ -688,18 +690,20 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getSetSemestersSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getIsSemesterActiveSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getIsSemesterActiveOrFutureSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_isSemesterActive = true;
                         if(progressBarIndicator_setLecturers && progressBarIndicator_setDepartments){
                             progressBarLecturer.setVisibility(View.INVISIBLE);
                         }
-                        if(vmMainAdmin.isSemesterActive()){
+                        if(vmMainAdmin.isSemesterActiveOrFuture()){
+                            semesterActive = true;
                             buttonAddDelete.setVisibility(View.VISIBLE);
                             buttonSelectCancel.setVisibility(View.VISIBLE);
                         }
                         else{
+                            semesterActive = false;
                             buttonAddDelete.setVisibility(View.INVISIBLE);
                             buttonSelectCancel.setVisibility(View.INVISIBLE);
                         }
@@ -723,6 +727,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         else{
                             adapter.setLecturerList(vmMainAdmin.getLecturerList());
                         }
+                        adapter.setPopupMenuActive(semesterActive);
                     }
                 }
                 catch (Exception e){
@@ -749,26 +754,45 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getSetDepartmentsSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getAddLecturerSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getAddLecturerSuccessful().observe(this, e_add_or_edit_person_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_person_state == E_Add_Or_Edit_Person_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogLecturer.dismiss();
                         showToastMessage(R.string.toast_add_lecturer_successful);
-                        adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this, vmMainAdmin.getLecturerList());
+                            recyclerViewMainAdminLecturers.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        }
+                        resetWidgets();
+                    }
+                    else if(e_add_or_edit_person_state == E_Add_Or_Edit_Person_State.UNSUCCESSFUL_DUPLICATED_ID){
+                        progressBarDialog.setVisibility(View.INVISIBLE);
+                        textViewDialogWarning.setText(R.string.warning_add_or_edit_lecturer_duplicated_id);
+                        textViewDialogWarning.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' vmMainAdmin.getAddLecturerSuccessful().observe method.");
                 }
             });
-            vmMainAdmin.getEditLecturerSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmMainAdmin.getEditLecturerSuccessful().observe(this, e_add_or_edit_person_state -> {
                 try{
-                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                    if(e_add_or_edit_person_state == E_Add_Or_Edit_Person_State.SUCCESSFUL){
                         progressBarDialog.setVisibility(View.INVISIBLE);
                         alertDialogLecturer.dismiss();
                         showToastMessage(R.string.toast_edit_lecturer_successful);
-                        adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this, vmMainAdmin.getLecturerList());
+                            recyclerViewMainAdminLecturers.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        }
+                        resetWidgets();
                     }
                 }
                 catch (Exception e){
@@ -781,7 +805,13 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         progressBarDeleteConfirmation.setVisibility(View.INVISIBLE);
                         alertDialogDeleteConfirmation.dismiss();
                         showToastMessage(R.string.toast_delete_lecturer_successful);
-                        adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        if(adapter == null){
+                            adapter = new RecyclerViewAdapter_Main_Admin_Lecturers(this, vmMainAdmin.getLecturerList());
+                            recyclerViewMainAdminLecturers.setAdapter(adapter);
+                        }
+                        else{
+                            adapter.setLecturerList(vmMainAdmin.getLecturerList());
+                        }
                     }
                 }
                 catch (Exception e){
@@ -984,7 +1014,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
-            vmMainAdmin.onSemesterActiveRequested(selectedSemester);
+            vmMainAdmin.onSemesterActiveOrFutureRequested(selectedSemester);
             vmMainAdmin.onLecturerListRequested(selectedSemester);
             vmMainAdmin.onDepartmentListRequested(selectedSemester);
         }

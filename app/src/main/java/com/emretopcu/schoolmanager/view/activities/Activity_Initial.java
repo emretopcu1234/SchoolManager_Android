@@ -44,15 +44,13 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 // TODO dialog kısımlarındaki ok butonları için input validation kısımları yapılacak. ona göre butonun rengi siyahlaşacak.
 // TODO dialog kısımlarındaki edittext kısımlarındaki validationlar yapılacak.
 // (date için ay girilince otomatik " / " karakteri eklenecek, course code için otomatik olarak bölümün kodu başa eklenecek vb)
-// TODO dialog kısımlarındaki text'ler için düzenleme yapılacak. (operations research --> Operations Research, emre topcu --> Emre TOPÇU vb)
-// TODO checkboxlar enabled iken o satıra basılması durumunda işaretle/işareti kaldır (tam olarak kutucuğa basılmasına zorlamamak için)
-// TODO recyclerview'da onscrolllistener (tek seferde tüm datayı çekmemek, aşağı kaydırıldıkça yüklemek için)
-// TODO ayrıca scroll edilince progress bar da gösterilecek     https://stackoverflow.com/questions/28741645/how-to-implement-onscrolllistener-to-a-listview/28742473
+
+
 // TODO weekly schedule ve appointment kısımlarında spinner'da sadece içinde bulunulan dönem seçili olacak, diğer seçenekler çıkmayacak.
 // TODO push notification!!!
 // TODO id olmayan yerlerde duplicate data'ya izin verme. (bir section içindeki birden fazla announcement'ta ayni title olamaz, course note'ta ayni filename olamaz vb)
 
-// TODO vmmainadmin'deki todo yazılı metodları doldur. (semester eklerken extreme datalar girilmesi durumu için)
+// TODO main admin'deki delete işlemlerinden sonra henüz eklenmemiş olan bazı collectionların ve/veya documentların da silinmesi vb gerekebilir.
 
 public class Activity_Initial extends AppCompatActivity {
 
