@@ -17,6 +17,8 @@
     <string name="menu_main_admin_lecturers">Lecturers</string>
     <string name="menu_main_admin_students">Students</string>
     <string name="menu_main_admin_semesters">Semesters</string>
+    <string name="menu_dept_admin_edit_course">Edit course</string>
+    <string name="menu_dept_admin_delete_course">Delete course</string>
     <string name="menu_dept_admin_courses">Courses</string>
     <string name="menu_dept_admin_lecturers">Lecturers</string>
     <string name="menu_dept_admin_students">Students</string>
@@ -65,6 +67,7 @@
     <string name="dept_admin_courses_lecturer">Lecturer</string>
     <string name="dept_admin_courses_add_course_hour">Add Course Hour</string>
     <string name="dept_admin_courses_reset_course_hour">Reset Course Hour</string>
+    <string name="dept_admin_show_all_departments">Show all departments</string>
     <string name="dept_admin_lecturers_id">ID</string>
     <string name="dept_admin_lecturers_name">Name</string>
     <string name="dept_admin_lecturers_surname">Surname</string>
@@ -150,7 +153,9 @@
     <string name="warning_add_or_edit_dept_admin_duplicated_id">Department admin with this id already exists.</string>
     <string name="warning_add_or_edit_lecturer_duplicated_id">Lecturer with this id already exists.</string>
     <string name="warning_add_or_edit_student_duplicated_id">Student with this id already exists.</string>
+    <string name="warning_add_or_edit_course_duplicated_id">Course with this code already exists.</string>
     <string name="warning_add_or_edit_department_duplicated_name">Department with this name already exists.</string>
+    <string name="warning_add_or_edit_course_duplicated_name">Course with this name already exists.</string>
     <string name="warning_add_or_edit_semester_reverse_order">Start date and end date are not consistent.</string>
     <string name="warning_add_or_edit_semester_low_difference">There should be at least 60 days between start date and end date.</string>
     <string name="warning_add_or_edit_semester_high_difference">There should be at most 150 days between start date and end date.</string>
@@ -160,20 +165,24 @@
     <string name="delete_confirmation_lecturer">lecturer(s) will be deleted. Are you sure?</string>
     <string name="delete_confirmation_student">student(s) will be deleted. Are you sure?</string>
     <string name="delete_confirmation_semester">Semester will be deleted. Are you sure?</string>
+    <string name="delete_confirmation_course">courses(s) will be deleted. Are you sure?</string>
     <string name="toast_change_password_successful">Password has been changed.</string>
     <string name="toast_add_department_successful">Department has been added.</string>
     <string name="toast_add_dept_admin_successful">Department admin has been added.</string>
     <string name="toast_add_lecturer_successful">Lecturer has been added.</string>
     <string name="toast_add_student_successful">Student has been added.</string>
     <string name="toast_add_semester_successful">Semester has been added.</string>
+    <string name="toast_add_course_successful">Course has been added.</string>
     <string name="toast_edit_department_successful">Department has been edited.</string>
     <string name="toast_edit_dept_admin_successful">Department admin has been edited.</string>
     <string name="toast_edit_lecturer_successful">Lecturer has been edited.</string>
     <string name="toast_edit_student_successful">Student has been edited.</string>
     <string name="toast_edit_semester_successful">Semester has been edited.</string>
+    <string name="toast_edit_course_successful">Course has been edited.</string>
     <string name="toast_delete_department_successful">Department(s) have been deleted.</string>
     <string name="toast_delete_dept_admin_successful">Department admin(s) have been deleted.</string>
     <string name="toast_delete_lecturer_successful">Lecturer(s) have been deleted.</string>
     <string name="toast_delete_student_successful">Student(s) have been deleted.</string>
     <string name="toast_delete_semester_successful">Semester has been deleted.</string>
+    <string name="toast_delete_course_successful">Course has been deleted.</string>
 </resources>

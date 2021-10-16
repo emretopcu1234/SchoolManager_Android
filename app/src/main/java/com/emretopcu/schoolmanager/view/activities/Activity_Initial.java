@@ -25,10 +25,8 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 
 // TODO progress bar'ı gereken her yere eklemeyi unutma!
 
-// TODO dataloaderror kısımlarını viewmodel ve model kısmı için implement et. (model'de zaten edildi.)
+// TODO dataloaderror kısımlarını viewmodel ve view kısmı için implement et. (model'de zaten edildi.)
 
-// TODO tüm layoutlarda add select cancel delete butonlarının rengi lightblack'ten black'e çevirilecek. (main admin kısmı için çevrildi.)
-// TODO tüm layoutlardaki fragmentlar fragmentcontainerview ile değiştirilecek. (örnek: layout main admin departments)
 // TODO tüm activity, fragment vblerde (Button) ya da (TextView) cast'ları silinecek.
 // TODO tüm java classlarda (recyclerviewadapter'ları unutma!!!) yapılmayan try catchler yapılacak (mesela buttona basınca oluşturulan onclick metodunda ya da overridelarda vb.)
 // TODO user and semester ve/veya course code and name fragmenti içeren tüm aktiviteler Interface_General_Activity'den implemente edilecek.
@@ -38,10 +36,6 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 // TODO main admin'de eklenecekler eklendiğinde firestore rule'unu "if auth" olarak değiştir!
 // TODO main admin'e bişey eklendiğinde relogin durumunda unsuccessful olursa durumunu unutma!
 
-
-// TODO main admin eğer herhangi bir şeyi (student, dept admin vb) edit etmek isterse, açılacak dialogda id kısmı disabled olacak.
-// TODO herhangi bir şey siliniyorsa onay sorusu dialogu çıkar.
-// TODO dialog kısımlarındaki ok butonları için input validation kısımları yapılacak. ona göre butonun rengi siyahlaşacak.
 // TODO dialog kısımlarındaki edittext kısımlarındaki validationlar yapılacak.
 // (date için ay girilince otomatik " / " karakteri eklenecek, course code için otomatik olarak bölümün kodu başa eklenecek vb)
 

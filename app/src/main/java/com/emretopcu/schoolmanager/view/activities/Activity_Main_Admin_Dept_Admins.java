@@ -610,6 +610,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                             idFilter = fieldValue;
                             if(idFilter.length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
+                                    progressBarDeptAdmin.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -622,6 +623,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                             nameFilter = fieldValue;
                             if(nameFilter.length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
+                                    progressBarDeptAdmin.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -634,6 +636,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                             surnameFilter = fieldValue;
                             if(surnameFilter.length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
+                                    progressBarDeptAdmin.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -810,6 +813,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         else{
                             adapter.setDeptAdminList(vmMainAdmin.getDeptAdminList());
                         }
+                        resetWidgets();
                     }
                 }
                 catch (Exception e){
@@ -869,7 +873,6 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-
             idFilter = "";
             nameFilter = "";
             surnameFilter = "";

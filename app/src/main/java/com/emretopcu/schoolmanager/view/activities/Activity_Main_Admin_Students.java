@@ -611,6 +611,7 @@ public class Activity_Main_Admin_Students extends AppCompatActivity implements I
                             idFilter = s.toString();
                             if(idFilter.length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
+                                    progressBarStudent.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -623,6 +624,7 @@ public class Activity_Main_Admin_Students extends AppCompatActivity implements I
                             nameFilter = s.toString();
                             if(nameFilter.length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
+                                    progressBarStudent.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -635,6 +637,7 @@ public class Activity_Main_Admin_Students extends AppCompatActivity implements I
                             surnameFilter = s.toString();
                             if(surnameFilter.length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
+                                    progressBarStudent.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -810,6 +813,7 @@ public class Activity_Main_Admin_Students extends AppCompatActivity implements I
                         else{
                             adapter.setStudentList(vmMainAdmin.getStudentList());
                         }
+                        resetWidgets();
                     }
                 }
                 catch (Exception e){
@@ -869,7 +873,6 @@ public class Activity_Main_Admin_Students extends AppCompatActivity implements I
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-
             idFilter = "";
             nameFilter = "";
             surnameFilter = "";

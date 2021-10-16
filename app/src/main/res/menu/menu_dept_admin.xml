@@ -4,15 +4,18 @@
         android:id="@+id/menu_dept_admin_courses"
         android:enabled="true"
         android:icon="@drawable/courses"
-        android:title="@string/menu_dept_admin_courses" />
+        android:title="@string/menu_dept_admin_courses"
+        android:onClick="goToCourses"/>
     <item
         android:id="@+id/menu_dept_admin_lecturers"
         android:enabled="true"
         android:icon="@drawable/lecturers"
-        android:title="@string/menu_dept_admin_lecturers"/>
+        android:title="@string/menu_dept_admin_lecturers"
+        android:onClick="goToLecturers"/>
     <item
         android:id="@+id/menu_dept_admin_students"
         android:enabled="true"
         android:icon="@drawable/students"
-        android:title="@string/menu_dept_admin_students"/>
+        android:title="@string/menu_dept_admin_students"
+        android:onClick="goToStudents"/>
 </menu>

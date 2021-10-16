@@ -403,6 +403,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         String deptNameFilter = s.toString();
                         if(deptNameFilter.length() == 0){
                             if (buttonSearchDeptName.getVisibility() == View.INVISIBLE){
+                                progressBarDepartment.setVisibility(View.VISIBLE);
                                 vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
                             }
                         }
@@ -569,6 +570,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         else{
                             adapter.setDepartmentList(vmMainAdmin.getDepartmentList());
                         }
+                        resetWidgets();
                     }
                 }
                 catch (Exception e){

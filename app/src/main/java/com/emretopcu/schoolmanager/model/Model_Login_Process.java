@@ -62,14 +62,11 @@ public class Model_Login_Process {
             auth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(task -> {
                 try{
                     if(task.isSuccessful()){
-                        Log.d("Exception", "basarili: " + id);
-                        Log.d("Exception","before signout: " + auth.getCurrentUser().getEmail());
                         auth.signOut();
                         reloginForMainAdmin();
                         vmLoginProcess.onCreateNewUserResulted(true);
                     }
                     else{
-                        Log.d("Exception", "basarisiz: " + id);
                         vmLoginProcess.onCreateNewUserResulted(false);
                     }
                 }

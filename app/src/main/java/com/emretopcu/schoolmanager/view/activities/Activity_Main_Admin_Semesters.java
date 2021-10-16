@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
 import com.emretopcu.schoolmanager.view.interfaces.Interface_Fragment_User_and_Semester;
@@ -403,6 +404,8 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
                         else{
                             adapter.setDetailedSemesterList(vmMainAdmin.getDetailedSemesterList());
                         }
+                        fragmentUserAndSemester.setSpinnerList(vmMainAdmin.getSemesterList());
+                        fragmentUserAndSemester.setSpinnerItem(Common_Variables_View.SEMESTER_SPINNER_POSITION);
                     }
                 }
                 catch (Exception e){

@@ -2,24 +2,336 @@ package com.emretopcu.schoolmanager.viewmodel.vm;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.emretopcu.schoolmanager.model.Model_Dept_Admin;
+import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
+import com.emretopcu.schoolmanager.viewmodel.enums.deptAdmin.E_Add_Or_Edit_Course_State;
+import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Dept_Admin;
+import com.emretopcu.schoolmanager.viewmodel.sharedData.SD_Dept_Admin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
+
+    private SD_Dept_Admin sdDeptAdmin;
+    private Model_Dept_Admin modelDeptAdmin;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCoursesSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Course_State> addCourseSuccessful;
+    private MutableLiveData<E_Add_Or_Edit_Course_State> editCourseSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteCoursesSuccessful;
 
 
     public VM_Dept_Admin(){
         try{
-            Model_Dept_Admin.getInstance().setVmDeptAdmin(this);
+            sdDeptAdmin = SD_Dept_Admin.getInstance();
+            modelDeptAdmin = Model_Dept_Admin.getInstance();
+            modelDeptAdmin.setVmDeptAdmin(this);
+            sdDeptAdmin.setDeptAdminId(modelDeptAdmin.getDeptAdminId());
+            setSemestersSuccessful = sdDeptAdmin.getSetSemestersSuccessful();
+            isSemesterActiveSuccessful = sdDeptAdmin.getIsSemesterActiveSuccessful();
+            setCoursesSuccessful = sdDeptAdmin.getSetCoursesSuccessful();
+            setLecturersSuccessful = sdDeptAdmin.getSetLecturersSuccessful();
+            setStudentsSuccessful = sdDeptAdmin.getSetStudentsSuccessful();
+            setDepartmentsSuccessful = sdDeptAdmin.getSetDepartmentsSuccessful();
+            addCourseSuccessful = sdDeptAdmin.getAddCourseSuccessful();
+            editCourseSuccessful = sdDeptAdmin.getEditCourseSuccessful();
+            deleteCoursesSuccessful = sdDeptAdmin.getDeleteCoursesSuccessful();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' constructor method.");
         }
     }
 
+    public void onLoadSemestersRequested(){
+        try{
+            setSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.loadSemesters();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onLoadSemestersRequested method.");
+        }
+    }
 
+    public void onSemesterActiveRequested(String selectedSemester){
+        try{
+            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.isSemesterActive(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onSemesterActiveRequested method.");
+        }
+    }
+
+    public void onCourseListRequested(String selectedSemester){
+        try{
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getCourseList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onCourseListRequested method.");
+        }
+    }
+
+    public void onLecturerListRequested(String selectedSemester){
+        try{
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getLecturerList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onLecturerListRequested method.");
+        }
+    }
+
+    public void onStudentListRequested(String selectedSemester){
+        try{
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getStudentList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onLecturerListRequested method.");
+        }
+    }
+
+    public void onDepartmentListRequested(String selectedSemester){
+        try{
+            setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getDepartmentList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onDepartmentListRequested method.");
+        }
+    }
+
+    public void onFilteredCourseListRequested(String selectedSemester, String idFilter, String nameFilter){
+        try{
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getFilteredCourseList(selectedSemester, idFilter, nameFilter);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredCourseListRequested method.");
+        }
+    }
+
+    public void onFilteredLecturerListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter){
+        try{
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getFilteredLecturerList(selectedSemester, idFilter, nameFilter, surnameFilter);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredLecturerListRequested method.");
+        }
+    }
+
+    public void onFilteredStudentListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
+        try{
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getFilteredStudentList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredStudentListRequested method.");
+        }
+    }
+
+    public void onAddCourseRequested(String courseId, String courseName, String sections){
+        try{
+            addCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.NO_STATEMENT);
+            modelDeptAdmin.addCourse(courseId, courseName, sections);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseRequested method.");
+        }
+    }
+
+    public void onEditCourseRequested(String courseId, String courseName, String sections){
+        try{
+            editCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.NO_STATEMENT);
+            modelDeptAdmin.editCourse(courseId, courseName, sections);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseRequested method.");
+        }
+    }
+
+    public void onDeleteCoursesRequested(ArrayList<String> idList){
+        try{
+            deleteCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.deleteCourses(idList);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onDeleteCoursesRequested method.");
+        }
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetSemestersSuccessful() {
+        return setSemestersSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveSuccessful() {
+        return isSemesterActiveSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetCoursesSuccessful() {
+        return setCoursesSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetLecturersSuccessful() {
+        return setLecturersSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetStudentsSuccessful() {
+        return setStudentsSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDepartmentsSuccessful() {
+        return setDepartmentsSuccessful;
+    }
+
+    public MutableLiveData<E_Add_Or_Edit_Course_State> getAddCourseSuccessful() {
+        return addCourseSuccessful;
+    }
+
+    public MutableLiveData<E_Add_Or_Edit_Course_State> getEditCourseSuccessful() {
+        return editCourseSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getDeleteCoursesSuccessful() {
+        return deleteCoursesSuccessful;
+    }
+
+    public ArrayList<String> getSemesterList(){
+        return sdDeptAdmin.getSemesterList();
+    }
+
+    public boolean isSemesterActive(){
+        return sdDeptAdmin.isSemesterActive();
+    }
+
+    public ArrayList<String[]> getCourseList(){
+        return sdDeptAdmin.getCourseList();
+    }
+
+    public ArrayList<String[]> getLecturerList(){
+        return sdDeptAdmin.getLecturerList();
+    }
+
+    public ArrayList<String[]> getStudentList(){
+        return sdDeptAdmin.getStudentList();
+    }
+
+    public ArrayList<String[]> getDepartmentList(){
+        return sdDeptAdmin.getDepartmentList();
+    }
+
+    public String getDeptAdminId(){
+        return sdDeptAdmin.getDeptAdminId();
+    }
+
+    @Override
+    public void dataLoadError() {
+        try{
+            Log.d("Exception","Data Load Error!!!");
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' dataLoadError method.");
+        }
+    }
+
+    @Override
+    public void onLoadSemestersResulted(ArrayList<String> semestersList) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onLoadSemestersResulted method.");
+        }
+    }
+
+    @Override
+    public void onIsSemesterActiveResulted(boolean semesterActive) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onIsSemesterActiveResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetCourseListResulted(ArrayList<String[]> courseList) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetCourseListResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetLecturerListResulted(ArrayList<String[]> lecturerList) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetLecturerListResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetStudentListResulted(ArrayList<String[]> studentList) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetStudentListResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetDepartmentListResulted(ArrayList<String[]> departmentList) {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetDepartmentListResulted method.");
+        }
+    }
+
+    @Override
+    public void onAddCourseResultedSuccessful() {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onEditCourseResultedSuccessful() {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onDeleteCoursesResultedSuccessful() {
+        try{
+
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onDeleteCoursesResultedSuccessful method.");
+        }
+    }
 }
-
-

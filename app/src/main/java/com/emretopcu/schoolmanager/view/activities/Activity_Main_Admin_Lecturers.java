@@ -612,6 +612,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                             idFilter = s.toString();
                             if(idFilter.length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
+                                    progressBarLecturer.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -624,6 +625,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                             nameFilter = s.toString();
                             if(nameFilter.length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
+                                    progressBarLecturer.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -636,6 +638,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                             surnameFilter = s.toString();
                             if(surnameFilter.length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
+                                    progressBarLecturer.setVisibility(View.VISIBLE);
                                     vmMainAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
                                 }
                             }
@@ -812,6 +815,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         else{
                             adapter.setLecturerList(vmMainAdmin.getLecturerList());
                         }
+                        resetWidgets();
                     }
                 }
                 catch (Exception e){
@@ -871,7 +875,6 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-
             idFilter = "";
             nameFilter = "";
             surnameFilter = "";

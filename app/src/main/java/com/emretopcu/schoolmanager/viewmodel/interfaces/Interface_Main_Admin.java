@@ -47,4 +47,10 @@ public interface Interface_Main_Admin {
     void onEditSemesterResultedReverseOrder();
     void onEditSemesterResultedLowDateDifference();
     void onEditSemesterResultedHighDateDifference();
+
+    void onDeleteDepartmentsResultedSuccessful();
+    void onDeleteDeptAdminsResultedSuccessful();
+    void onDeleteLecturersResultedSuccessful();
+    void onDeleteStudentsResultedSuccessful();
+    void onDeleteSemesterResultedSuccessful();
 }

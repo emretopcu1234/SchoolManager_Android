@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_dept_admin_edit_course"
+        android:enabled="true"
+        android:title="@string/menu_dept_admin_edit_course" />
+    <item
+        android:id="@+id/menu_dept_admin_delete_course"
+        android:enabled="true"
+        android:title="@string/menu_dept_admin_delete_course"/>
+</menu>

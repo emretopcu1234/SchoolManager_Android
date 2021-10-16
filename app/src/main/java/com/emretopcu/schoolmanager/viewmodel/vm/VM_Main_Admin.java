@@ -297,40 +297,44 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onDeleteDepartmentsRequested(String selectedSemester, ArrayList<String> idList){
+    public void onDeleteDepartmentsRequested(String semester, ArrayList<String> idList){
         try{
+            lastProcessedSemester = semester;
             deleteDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.deleteDepartments(selectedSemester, idList);
+            modelMainAdmin.deleteDepartments(semester, idList);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDepartmentsRequested method.");
         }
     }
 
-    public void onDeleteDeptAdminsRequested(String selectedSemester, ArrayList<String> idList){
+    public void onDeleteDeptAdminsRequested(String semester, ArrayList<String> idList){
         try{
+            lastProcessedSemester = semester;
             deleteDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.deleteDeptAdmins(selectedSemester, idList);
+            modelMainAdmin.deleteDeptAdmins(semester, idList);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDeptAdminsRequested method.");
         }
     }
 
-    public void onDeleteLecturersRequested(String selectedSemester, ArrayList<String> idList){
+    public void onDeleteLecturersRequested(String semester, ArrayList<String> idList){
         try{
+            lastProcessedSemester = semester;
             deleteLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.deleteLecturers(selectedSemester, idList);
+            modelMainAdmin.deleteLecturers(semester, idList);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteLecturersRequested method.");
         }
     }
 
-    public void onDeleteStudentsRequested(String selectedSemester, ArrayList<String> idList){
+    public void onDeleteStudentsRequested(String semester, ArrayList<String> idList){
         try{
+            lastProcessedSemester = semester;
             deleteStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.deleteStudents(selectedSemester, idList);
+            modelMainAdmin.deleteStudents(semester, idList);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteStudentsRequested method.");
@@ -340,7 +344,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     public void onDeleteSemesterRequested(String selectedSemester){
         try{
             deleteSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-//            modelMainAdmin.deleteSemester(selectedSemester);
+            modelMainAdmin.deleteSemester(selectedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteSemesterRequested method.");
@@ -479,7 +483,12 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
 
     @Override
     public void onDepartmentIdInfo(HashMap<String, String> departmentIdInfo) {
-        sdMainAdmin.setDepartmentIdInfo(departmentIdInfo);
+        try{
+            sdMainAdmin.setDepartmentIdInfo(departmentIdInfo);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDepartmentIdInfo method.");
+        }
     }
 
     @Override
@@ -796,6 +805,66 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterResultedHighDateDifference method.");
+        }
+    }
+
+    @Override
+    public void onDeleteDepartmentsResultedSuccessful() {
+        try{
+            deleteDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDepartmentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDepartmentsResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onDeleteDeptAdminsResultedSuccessful() {
+        try{
+            deleteDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDeptAdminList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDeptAdminsResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onDeleteLecturersResultedSuccessful() {
+        try{
+            deleteLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getLecturerList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteLecturersResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onDeleteStudentsResultedSuccessful() {
+        try{
+            deleteStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getStudentList(lastProcessedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteStudentsResultedSuccessful method.");
+        }
+    }
+
+    @Override
+    public void onDeleteSemesterResultedSuccessful() {
+        try{
+            deleteSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelMainAdmin.getDetailedSemesterList();
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteSemesterResultedSuccessful method.");
         }
     }
 }

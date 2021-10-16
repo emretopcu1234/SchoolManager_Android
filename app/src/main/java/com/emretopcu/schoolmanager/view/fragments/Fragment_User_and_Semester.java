@@ -70,7 +70,7 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
                         interfaceUserAndSemester.onSemesterChanged(spinner.getSelectedItem().toString(), position);
                     }
                     catch(Exception e){
-                        Log.d("Exception", "Exception on Fragment_User_and_Semester class' spinner's onItemSelected method.");  // TODO spinnerın adı değişirse güncelle.
+                        Log.d("Exception", "Exception on Fragment_User_and_Semester class' spinner's onItemSelected method.");
                     }
                 }
 
@@ -113,7 +113,7 @@ public class Fragment_User_and_Semester extends Fragment implements Interface_Fr
                     });
                 }
                 catch(Exception e){
-                    Log.d("Exception", "Exception on Fragment_User_and_Semester class' buttonXXX setOnClickListener method.");  // TODO butonun adını güncelle.
+                    Log.d("Exception", "Exception on Fragment_User_and_Semester class' buttonXXX setOnClickListener method.");
                 }
             });
             return view;

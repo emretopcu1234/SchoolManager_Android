@@ -1,6 +1,5 @@
 package com.emretopcu.schoolmanager.view.recyclerviews;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +9,33 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.view.activities.Activity_Dept_Admin_Students;
+
+import java.util.ArrayList;
 
 public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapter<ViewHolder_DASt> {
 
-    private Context context;
+    private Activity_Dept_Admin_Students context;
+    private ArrayList<String[]> studentList;
 
 
-    public RecyclerViewAdapter_Dept_Admin_Students(Context context) {
+    public RecyclerViewAdapter_Dept_Admin_Students(Activity_Dept_Admin_Students context, ArrayList<String[]> studentList) {
         try{
             this.context = context;
+            this.studentList = studentList;
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Students class' constructor method.");
+        }
+    }
+
+    public void setStudentList(ArrayList<String[]> studentList){
+        try{
+            this.studentList = studentList;
+            notifyDataSetChanged();
+        }
+        catch(Exception e){
+            Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Students class' setStudentList method.");
         }
     }
 
@@ -44,10 +58,10 @@ public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapte
     public void onBindViewHolder(ViewHolder_DASt viewHolder, int position) {
         try{
             final ViewHolder_Dept_Admin_Students holder = (ViewHolder_Dept_Admin_Students) viewHolder;
-            holder.textViewId.setText("30001");
-            holder.textViewName.setText("Ahmet Mehmet");
-            holder.textViewSurname.setText("KAYIŞOĞLU");
-            holder.textViewDeptName.setText("IE");
+            holder.textViewId.setText(studentList.get(position)[0]);
+            holder.textViewName.setText(studentList.get(position)[1]);
+            holder.textViewSurname.setText(studentList.get(position)[2]);
+            holder.textViewDeptName.setText(studentList.get(position)[3]);
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Students class' onBindViewHolder method.");
@@ -57,7 +71,7 @@ public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapte
     @Override
     public int getItemCount() {
         try{
-            return 10;
+            return studentList.size();
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Students class' getItemCount method.");
@@ -83,7 +97,6 @@ class ViewHolder_DASt extends RecyclerView.ViewHolder {
 }
 
 class ViewHolder_Dept_Admin_Students extends ViewHolder_DASt {
-
     public TextView textViewId;
     public TextView textViewName;
     public TextView textViewSurname;
@@ -100,9 +113,5 @@ class ViewHolder_Dept_Admin_Students extends ViewHolder_DASt {
         catch(Exception e){
             Log.d("Exception", "Exception on ViewHolder_Dept_Admin_Students class' constructor method.");
         }
-
     }
 }
-
-
-
