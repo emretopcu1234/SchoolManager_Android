@@ -1,20 +1,31 @@
 package com.emretopcu.schoolmanager.model;
 
+import android.text.format.Time;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.emretopcu.schoolmanager.model.pojo.Semester;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Main_Admin;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Model_Main_Admin {
@@ -24,6 +35,11 @@ public class Model_Main_Admin {
 
     private FirebaseFirestore dbRef;
     private CollectionReference semestersRef;
+    private CollectionReference semesterDepartmentsRef;
+    private CollectionReference semesterDeptAdminsRef;
+    private CollectionReference semesterLecturersRef;
+    private CollectionReference semesterStudentsRef;
+
     private CollectionReference semesterConditionsRef;
     private CollectionReference departmentsRef;
     private CollectionReference deptAdminsRef;
@@ -39,6 +55,11 @@ public class Model_Main_Admin {
         try{
             dbRef = FirebaseFirestore.getInstance();
             semestersRef = dbRef.collection("semesters");
+            semesterDepartmentsRef = dbRef.collection("semesterDepartments");
+            semesterDeptAdminsRef = dbRef.collection("semesterDeptAdmins");
+            semesterLecturersRef = dbRef.collection("semesterLecturers");
+            semesterStudentsRef = dbRef.collection("semesterStudents");
+
             semesterConditionsRef = dbRef.collection("semesterConditions");
             departmentsRef = dbRef.collection("departments");
             deptAdminsRef = dbRef.collection("deptAdmins");
@@ -49,6 +70,141 @@ public class Model_Main_Admin {
             lecturersInfo = new HashMap<>();
             studentsInfo = new HashMap<>();
             storeInitialData();
+
+
+
+//            dbRef.collection("courseCollection").document("LA").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    TempPOJO city = task.getResult().toObject(TempPOJO.class);
+//
+//                    city.setField2(25);
+//                    Map<String,Object> element1 = (Map<String, Object>) city.getInnerField().get(0);
+//                    List<String> list1 = (List<String>) element1.get("obj1");
+//                    list1.add("hacer1");
+//                    element1.put("obj1",list1);
+//                    city.getInnerField().set(0,element1);
+//                    dbRef.collection("courseCollection").document("LA").set(city).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Log.d("Exception","oldu muu");
+//                        }
+//                    });
+//                }
+//            });
+
+
+//            List<String> inner1 = new ArrayList<>();
+//            inner1.add("ahmet1");
+//            inner1.add("mehmet1");
+//            inner1.add("emre1");
+//
+//            List<String> inner2 = new ArrayList<>();
+//            inner2.add("ahmet2");
+//            inner2.add("mehmet2");
+//            inner2.add("emre2");
+//            inner2.add("seren2");
+//
+//            List<String> inner3 = new ArrayList<>();
+//            inner3.add("ahmet3");
+//            inner3.add("mehmet");
+//
+//            Map<String,Object> object1 = new HashMap<>();
+//            Map<String,Object> object2 = new HashMap<>();
+//            Map<String,Object> object3 = new HashMap<>();
+//
+//            object1.put("obj1",inner1);
+//            object2.put("obj2",inner1);
+//            object3.put("obj3",inner1);
+//
+//            List<Object> outer = new ArrayList<>();
+//            outer.add(object1);
+//            outer.add(object2);
+//            outer.add(object3);
+
+
+//            TempPOJO city = new TempPOJO("Los Angeles", 15, "USA", Arrays.asList("west_coast", "sorcal"), outer);
+//            dbRef.collection("courseCollection").document("LA").set(city);
+
+//            dbRef.collection("courseCollection").document("LA").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    Log.d("Exception","aaasdasdada");
+//                    TempPOJO city = documentSnapshot.toObject(TempPOJO.class);
+//                    Log.d("Exception","fields: " + city.getField1());
+//                    Log.d("Exception","fields: " + city.getField2());
+//                    Log.d("Exception","fields: " + city.getField3());
+//                    Log.d("Exception","fields: " + city.getField4().size());
+//                    Log.d("Exception","fields: " + city.getField4().get(1));
+//                    Log.d("Exception","inner fields: " + city.getInnerField().size());
+//                    Map<String,Object> element1 = (Map<String, Object>) city.getInnerField().get(0);
+//                    List<String> list1 = (List<String>) element1.get("obj1");
+//                    Log.d("Exception","inner fields list1: " + list1.get(1));
+//
+//                }
+//            });
+
+
+
+//            List<String> studentgradesstudents1 = new ArrayList<>();
+//            studentgradesstudents1.add("30001");
+//            studentgradesstudents1.add("30002");
+//            studentgradesstudents1.add("30003");
+//
+//            List<String> studentgradesresults1 = new ArrayList<>();
+//            studentgradesresults1.add("85");
+//            studentgradesresults1.add("70");
+//            studentgradesresults1.add("95");
+//
+//            Map<String,Object> object1 = new HashMap<>();
+//            object1.put("examname","exam1");
+//            object1.put("examweight","15");
+//            object1.put("studentgradesstudents",studentgradesstudents1);
+//            object1.put("studentgradesresults",studentgradesresults1);
+//
+//            List<String> studentgradesstudents2 = new ArrayList<>();
+//            studentgradesstudents2.add("30011");
+//            studentgradesstudents2.add("30022");
+//            studentgradesstudents2.add("30003");
+//
+//            List<String> studentgradesresults2 = new ArrayList<>();
+//            studentgradesresults2.add("55");
+//            studentgradesresults2.add("70");
+//            studentgradesresults2.add("60");
+//
+//            Map<String,Object> object2 = new HashMap<>();
+//            object2.put("examname","exam2");
+//            object2.put("examweight","25");
+//            object2.put("studentgradesstudents",studentgradesstudents2);
+//            object2.put("studentgradesresults",studentgradesresults2);
+//
+//
+//            List<Object> examlist = new ArrayList<>();
+//            examlist.add(object1);
+//            examlist.add(object2);
+//
+//            TempPOJO2 exams = new TempPOJO2(examlist);
+//            dbRef.collection("courseCollection").document("exams").set(exams);
+
+
+//            dbRef.collection("courseCollection").document("exams").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    Log.d("Exception","aaasdasdada");
+//                    TempPOJO2 exams = documentSnapshot.toObject(TempPOJO2.class);
+//                    HashMap<String,Object> object2 = (HashMap<String, Object>) exams.getList().get(1);
+//                    Log.d("Exception","examweight: " + object2.get("examweight"));
+//                    Log.d("Exception","examname: " + object2.get("examname"));
+//                    List<String> studentids = (List<String>) object2.get("studentgradesstudents");
+//                    List<String> studentgrades = (List<String>) object2.get("studentgradesresults");
+//                    Log.d("Exception","studentid 0: " + studentids.get(0));
+//                    Log.d("Exception","studentid 1: " + studentids.get(1));
+//                    Log.d("Exception","studentgrade 0: " + studentgrades.get(0));
+//                    Log.d("Exception","studentgrade 1: " + studentgrades.get(1));
+//                }
+//            });
+
+
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' constructor method.");
@@ -255,8 +411,7 @@ public class Model_Main_Admin {
     public void getDepartmentList(String unprocessedSemester){
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
-            departments.get().addOnCompleteListener(task -> {
+            semesterDepartmentsRef.whereEqualTo("semesterId",semester).get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -264,14 +419,33 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> departmentList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        departmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+                        departmentList.add(new String[]{document.getString("deptName"),document.getString("deptId").toUpperCase()});
                     }
                     vmMainAdmin.onGetDepartmentListResulted(departmentList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.get method.");
                 }
             });
+
+
+//            CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
+//            departments.get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> departmentList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        departmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+//                    }
+//                    vmMainAdmin.onGetDepartmentListResulted(departmentList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getDepartmentList method.");
@@ -281,8 +455,7 @@ public class Model_Main_Admin {
     public void getDeptAdminList(String unprocessedSemester){
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
-            deptAdmins.get().addOnCompleteListener(task -> {
+            semesterDeptAdminsRef.whereEqualTo("semesterId",semester).get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -290,15 +463,35 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> deptAdminList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        deptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
-                                deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        String deptAdminId = document.get("deptAdminId").toString();
+                        deptAdminList.add(new String[]{deptAdminId,deptAdminsInfo.get(deptAdminId)[0],
+                                deptAdminsInfo.get(deptAdminId)[1],document.getString("deptId").toUpperCase()});
                     }
                     vmMainAdmin.onGetDeptAdminListResulted(deptAdminList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.get method.");
                 }
             });
+
+//            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
+//            deptAdmins.get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> deptAdminList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        deptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
+//                                deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                    }
+//                    vmMainAdmin.onGetDeptAdminListResulted(deptAdminList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getDeptAdminList method.");
@@ -308,8 +501,7 @@ public class Model_Main_Admin {
     public void getLecturerList(String unprocessedSemester){
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
-            lecturers.get().addOnCompleteListener(task -> {
+            semesterLecturersRef.whereEqualTo("semesterId",semester).get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -317,15 +509,36 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> lecturerList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        lecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
-                                lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        String lecturerId = document.get("lecturerId").toString();
+                        lecturerList.add(new String[]{lecturerId,lecturersInfo.get(lecturerId)[0],
+                                lecturersInfo.get(lecturerId)[1],document.getString("deptId").toUpperCase()});
                     }
                     vmMainAdmin.onGetLecturerListResulted(lecturerList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.get method.");
                 }
             });
+
+
+//            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
+//            lecturers.get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> lecturerList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        lecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
+//                                lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                    }
+//                    vmMainAdmin.onGetLecturerListResulted(lecturerList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getLecturerList method.");
@@ -335,8 +548,7 @@ public class Model_Main_Admin {
     public void getStudentList(String unprocessedSemester){
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
-            students.get().addOnCompleteListener(task -> {
+            semesterStudentsRef.whereEqualTo("semesterId",semester).get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -344,15 +556,36 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> studentList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        studentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
-                                studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                        String studentId = document.get("studentId").toString();
+                        studentList.add(new String[]{studentId,studentsInfo.get(studentId)[0],
+                                studentsInfo.get(studentId)[1],document.getString("deptId").toUpperCase()});
                     }
                     vmMainAdmin.onGetStudentListResulted(studentList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' students.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.get method.");
                 }
             });
+
+
+//            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
+//            students.get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> studentList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        studentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
+//                                studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                    }
+//                    vmMainAdmin.onGetStudentListResulted(studentList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' students.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getStudentList method.");
@@ -363,9 +596,8 @@ public class Model_Main_Admin {
         try {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
             String deptNameFilter = Common_Services.convertUnprocessedName(unprocessedDeptNameFilter);
-            CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
-            departments.whereGreaterThanOrEqualTo("name", deptNameFilter)
-                    .whereLessThanOrEqualTo("name", deptNameFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+            semesterDepartmentsRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("deptName", deptNameFilter)
+                    .whereLessThanOrEqualTo("deptName", deptNameFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -373,14 +605,34 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> filteredDepartmentList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        filteredDepartmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+                        filteredDepartmentList.add(new String[]{document.getString("deptName"),document.getString("deptId").toUpperCase()});
                     }
                     vmMainAdmin.onGetDepartmentListResulted(filteredDepartmentList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.FILTER.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.get method.");
                 }
             });
+
+
+//            CollectionReference departments = semesterConditionsRef.document(semester).collection("departments");
+//            departments.whereGreaterThanOrEqualTo("name", deptNameFilter)
+//                    .whereLessThanOrEqualTo("name", deptNameFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> filteredDepartmentList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        filteredDepartmentList.add(new String[]{document.getString("name"),document.getId().toUpperCase()});
+//                    }
+//                    vmMainAdmin.onGetDepartmentListResulted(filteredDepartmentList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' departments.FILTER.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredDepartmentList method.");
@@ -396,9 +648,8 @@ public class Model_Main_Admin {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
             String nameFilter = Common_Services.convertUnprocessedName(unprocessedNameFilter);
             String surnameFilter = Common_Services.convertUnprocessedName(unprocessedSurnameFilter);
-            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
-            deptAdmins.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
-                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+            semesterDeptAdminsRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("deptAdminId",idFilter)
+                    .whereLessThanOrEqualTo("deptAdminId", idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -406,37 +657,81 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> filteredDeptAdminList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        String deptAdminId = document.get("deptAdminId").toString();
                         boolean isExist = true;
                         if(deptFilter.size() > 0){
                             isExist = false;
                             for(int i=0;i<deptFilter.size();i++){
-                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
                                     isExist = true;
                                     break;
                                 }
                             }
                         }
                         if(nameFilter.length() > 0){
-                            if(!deptAdminsInfo.get(document.getId())[0].startsWith(nameFilter)){
+                            if(!deptAdminsInfo.get(deptAdminId)[0].startsWith(nameFilter)){
                                 isExist = false;
                             }
                         }
                         if(surnameFilter.length() > 0){
-                            if(!deptAdminsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                            if(!deptAdminsInfo.get(deptAdminId)[1].startsWith(surnameFilter)){
                                 isExist = false;
                             }
                         }
                         if(isExist){
-                            filteredDeptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
-                                    deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                            filteredDeptAdminList.add(new String[]{deptAdminId,deptAdminsInfo.get(deptAdminId)[0],
+                                    deptAdminsInfo.get(deptAdminId)[1],document.getString("deptId").toUpperCase()});
                         }
                     }
                     vmMainAdmin.onGetDeptAdminListResulted(filteredDeptAdminList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.FILTER.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.get method.");
                 }
             });
+
+
+//            CollectionReference deptAdmins = semesterConditionsRef.document(semester).collection("deptAdmins");
+//            deptAdmins.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+//                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> filteredDeptAdminList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        boolean isExist = true;
+//                        if(deptFilter.size() > 0){
+//                            isExist = false;
+//                            for(int i=0;i<deptFilter.size();i++){
+//                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
+//                                    isExist = true;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        if(nameFilter.length() > 0){
+//                            if(!deptAdminsInfo.get(document.getId())[0].startsWith(nameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(surnameFilter.length() > 0){
+//                            if(!deptAdminsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(isExist){
+//                            filteredDeptAdminList.add(new String[]{document.getId(),deptAdminsInfo.get(document.getId())[0],
+//                                    deptAdminsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                        }
+//                    }
+//                    vmMainAdmin.onGetDeptAdminListResulted(filteredDeptAdminList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' deptAdmins.FILTER.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredDeptAdminList method.");
@@ -452,9 +747,8 @@ public class Model_Main_Admin {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
             String nameFilter = Common_Services.convertUnprocessedName(unprocessedNameFilter);
             String surnameFilter = Common_Services.convertUnprocessedName(unprocessedSurnameFilter);
-            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
-            lecturers.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
-                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+            semesterLecturersRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("lecturerId",idFilter)
+                    .whereLessThanOrEqualTo("lecturerId", idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -462,37 +756,82 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> filteredLecturerList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        String lecturerId = document.get("lecturerId").toString();
                         boolean isExist = true;
                         if(deptFilter.size() > 0){
                             isExist = false;
                             for(int i=0;i<deptFilter.size();i++){
-                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
                                     isExist = true;
                                     break;
                                 }
                             }
                         }
                         if(nameFilter.length() > 0){
-                            if(!lecturersInfo.get(document.getId())[0].startsWith(nameFilter)){
+                            if(!lecturersInfo.get(lecturerId)[0].startsWith(nameFilter)){
                                 isExist = false;
                             }
                         }
                         if(surnameFilter.length() > 0){
-                            if(!lecturersInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                            if(!lecturersInfo.get(lecturerId)[1].startsWith(surnameFilter)){
                                 isExist = false;
                             }
                         }
                         if(isExist){
-                            filteredLecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
-                                    lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                            filteredLecturerList.add(new String[]{lecturerId,lecturersInfo.get(lecturerId)[0],
+                                    lecturersInfo.get(lecturerId)[1],document.getString("deptId").toUpperCase()});
                         }
                     }
                     vmMainAdmin.onGetLecturerListResulted(filteredLecturerList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.FILTER.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.get method.");
                 }
             });
+
+
+
+//            CollectionReference lecturers = semesterConditionsRef.document(semester).collection("lecturers");
+//            lecturers.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+//                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> filteredLecturerList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        boolean isExist = true;
+//                        if(deptFilter.size() > 0){
+//                            isExist = false;
+//                            for(int i=0;i<deptFilter.size();i++){
+//                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
+//                                    isExist = true;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        if(nameFilter.length() > 0){
+//                            if(!lecturersInfo.get(document.getId())[0].startsWith(nameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(surnameFilter.length() > 0){
+//                            if(!lecturersInfo.get(document.getId())[1].startsWith(surnameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(isExist){
+//                            filteredLecturerList.add(new String[]{document.getId(),lecturersInfo.get(document.getId())[0],
+//                                    lecturersInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                        }
+//                    }
+//                    vmMainAdmin.onGetLecturerListResulted(filteredLecturerList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' lecturers.FILTER.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredLecturerList method.");
@@ -508,9 +847,8 @@ public class Model_Main_Admin {
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
             String nameFilter = Common_Services.convertUnprocessedName(unprocessedNameFilter);
             String surnameFilter = Common_Services.convertUnprocessedName(unprocessedSurnameFilter);
-            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
-            students.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
-                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+            semesterStudentsRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("studentId",idFilter)
+                    .whereLessThanOrEqualTo("studentId", idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
@@ -518,49 +856,94 @@ public class Model_Main_Admin {
                     }
                     ArrayList<String[]> filteredStudentList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        String studentId = document.get("studentId").toString();
                         boolean isExist = true;
                         if(deptFilter.size() > 0){
                             isExist = false;
                             for(int i=0;i<deptFilter.size();i++){
-                                if(departmentsInfo.get(document.getString("deptId")).equals(deptFilter.get(i))){
+                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
                                     isExist = true;
                                     break;
                                 }
                             }
                         }
                         if(nameFilter.length() > 0){
-                            if(!studentsInfo.get(document.getId())[0].startsWith(nameFilter)){
+                            if(!studentsInfo.get(studentId)[0].startsWith(nameFilter)){
                                 isExist = false;
                             }
                         }
                         if(surnameFilter.length() > 0){
-                            if(!studentsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+                            if(!studentsInfo.get(studentId)[1].startsWith(surnameFilter)){
                                 isExist = false;
                             }
                         }
                         if(isExist){
-                            filteredStudentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
-                                    studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+                            filteredStudentList.add(new String[]{studentId,studentsInfo.get(studentId)[0],
+                                    studentsInfo.get(studentId)[1],document.getString("deptId").toUpperCase()});
                         }
                     }
                     vmMainAdmin.onGetStudentListResulted(filteredStudentList);
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' students.FILTER.get().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.get method.");
                 }
             });
+
+
+
+//            CollectionReference students = semesterConditionsRef.document(semester).collection("students");
+//            students.whereGreaterThanOrEqualTo(FieldPath.documentId(),idFilter)
+//                    .whereLessThanOrEqualTo(FieldPath.documentId(), idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+//                try{
+//                    if(!task.isSuccessful()){
+//                        vmMainAdmin.dataLoadError();
+//                        return;
+//                    }
+//                    ArrayList<String[]> filteredStudentList = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        boolean isExist = true;
+//                        if(deptFilter.size() > 0){
+//                            isExist = false;
+//                            for(int i=0;i<deptFilter.size();i++){
+//                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
+//                                    isExist = true;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        if(nameFilter.length() > 0){
+//                            if(!studentsInfo.get(document.getId())[0].startsWith(nameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(surnameFilter.length() > 0){
+//                            if(!studentsInfo.get(document.getId())[1].startsWith(surnameFilter)){
+//                                isExist = false;
+//                            }
+//                        }
+//                        if(isExist){
+//                            filteredStudentList.add(new String[]{document.getId(),studentsInfo.get(document.getId())[0],
+//                                    studentsInfo.get(document.getId())[1],document.getString("deptId").toUpperCase()});
+//                        }
+//                    }
+//                    vmMainAdmin.onGetStudentListResulted(filteredStudentList);
+//                }
+//                catch (Exception e){
+//                    Log.d("Exception", "Exception on Model_Main_Admin class' students.FILTER.get().addOnCompleteListener method.");
+//                }
+//            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' getFilteredStudentList method.");
         }
     }
-    
+
     public void addDepartment(String unprocessedDeptName, String unprocessedDeptId, String unprocessedSemester){
         try{
             String deptName = Common_Services.convertUnprocessedName(unprocessedDeptName);
             String deptId = unprocessedDeptId.toLowerCase();
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            for (String key : departmentsInfo.keySet() ) {
+            for (String key : departmentsInfo.keySet()) {
                 if(deptId.toUpperCase().equals(key)){
                     vmMainAdmin.onAddDepartmentResultedDuplicatedId();
                     return;
@@ -601,14 +984,16 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchAddDepartmentToSemesterConditions = dbRef.batch();
+                    WriteBatch batchAddDepartment = dbRef.batch();
                     Map<String, Object> departmentData = new HashMap<>();
-                    departmentData.put("name",deptName);
                     for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("departments").document(deptId);
-                        batchAddDepartmentToSemesterConditions.set(doc,departmentData);
+                        departmentData.put("semesterId",semesterList.get(i));
+                        departmentData.put("deptId",deptId);
+                        departmentData.put("deptName",deptName);
+                        DocumentReference doc = semesterDepartmentsRef.document();
+                        batchAddDepartment.set(doc,departmentData);
                     }
-                    batchAddDepartmentToSemesterConditions.commit();
+                    batchAddDepartment.commit();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -671,14 +1056,16 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchAddDeptAdminToSemesterConditions = dbRef.batch();
+                    WriteBatch batchAddDeptAdmin = dbRef.batch();
                     Map<String, Object> deptAdminData = new HashMap<>();
-                    deptAdminData.put("deptId",deptId);
                     for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("deptAdmins").document(id);
-                        batchAddDeptAdminToSemesterConditions.set(doc,deptAdminData);
+                        deptAdminData.put("semesterId",semesterList.get(i));
+                        deptAdminData.put("deptAdminId",id);
+                        deptAdminData.put("deptId",deptId);
+                        DocumentReference doc = semesterDeptAdminsRef.document();
+                        batchAddDeptAdmin.set(doc,deptAdminData);
                     }
-                    batchAddDeptAdminToSemesterConditions.commit();
+                    batchAddDeptAdmin.commit();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -741,14 +1128,16 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchAddLecturerToSemesterConditions = dbRef.batch();
+                    WriteBatch batchAddLecturer = dbRef.batch();
                     Map<String, Object> lecturerData = new HashMap<>();
-                    lecturerData.put("deptId",deptId);
                     for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("lecturers").document(id);
-                        batchAddLecturerToSemesterConditions.set(doc,lecturerData);
+                        lecturerData.put("semesterId",semesterList.get(i));
+                        lecturerData.put("lecturerId",id);
+                        lecturerData.put("deptId",deptId);
+                        DocumentReference doc = semesterLecturersRef.document();
+                        batchAddLecturer.set(doc,lecturerData);
                     }
-                    batchAddLecturerToSemesterConditions.commit();
+                    batchAddLecturer.commit();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -811,14 +1200,16 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchAddStudentToSemesterConditions = dbRef.batch();
+                    WriteBatch batchAddStudent = dbRef.batch();
                     Map<String, Object> studentData = new HashMap<>();
-                    studentData.put("deptId",deptId);
                     for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("students").document(id);
-                        batchAddStudentToSemesterConditions.set(doc,studentData);
+                        studentData.put("semesterId",semesterList.get(i));
+                        studentData.put("studentId",id);
+                        studentData.put("deptId",deptId);
+                        DocumentReference doc = semesterStudentsRef.document();
+                        batchAddStudent.set(doc,studentData);
                     }
-                    batchAddStudentToSemesterConditions.commit();
+                    batchAddStudent.commit();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -847,41 +1238,65 @@ public class Model_Main_Admin {
                 return;
             }
             String semesterName = Common_Services.specifySemesterName(startDate,endDate);
-            WriteBatch batchAddSemester = dbRef.batch();
-            Map<String, Object> semesterData = new HashMap<>();
-            semesterData.put("startDate",timestampStart);
-            semesterData.put("endDate",timestampEnd);
-            DocumentReference specificSemester = semestersRef.document(semesterName);
-            batchAddSemester.set(specificSemester,semesterData);
-            Map<String, Object> semesterWeeksData = new HashMap<>();
+            List<Object> semesterWeeksData = new ArrayList<>();
             Timestamp timestamp = timestampStart;
+            Timestamp timestampWeekStart;
+            Timestamp timestampWeekEnd;
+            int weekIndex = 0;
             Calendar c = Calendar.getInstance();
-            int weekIndex = 1;
             while(timestamp.compareTo(timestampEnd) < 0){
-                semesterWeeksData.put("startDate",timestamp);
+                Map<String,Object> object = new HashMap<>();
+                timestampWeekStart = timestamp;
                 c.setTimeInMillis(timestamp.getSeconds()*1000);
                 c.add(Calendar.DATE,7);
                 timestamp = new Timestamp(c.getTime());
-                semesterWeeksData.put("endDate",timestamp);
-                DocumentReference specificSemesterWeek = specificSemester.collection("weeks").document("week" + weekIndex);
-                batchAddSemester.set(specificSemesterWeek,semesterWeeksData);
+                timestampWeekEnd = timestamp;
                 weekIndex++;
+                object.put("startDate",timestampWeekStart);
+                object.put("endDate",timestampWeekEnd);
+                object.put("weekNumber",weekIndex);
+                semesterWeeksData.add(object);
             }
-            batchAddSemester.commit().addOnCompleteListener(task -> {
+            Semester semester = new Semester(timestampStart,timestampEnd,semesterWeeksData);
+            semestersRef.orderBy("startDate", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
                 try{
+                    String dummyActiveSemester = "";
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (Common_Services.isSemesterActive(document.getTimestamp("startDate"), document.getTimestamp("endDate"))) {
+                            dummyActiveSemester = document.getId();
+                            break;
+                        }
+                    }
+                    if(dummyActiveSemester.length() == 1){
+                        final String activeSemester = dummyActiveSemester;
+                        semestersRef.document(semesterName).set(semester).addOnCompleteListener(task1 -> {
+                            try{
+                                if(!task1.isSuccessful()){
+                                    vmMainAdmin.dataLoadError();
+                                }
+                                else{
+                                    vmMainAdmin.onAddSemesterResultedSuccessful();
+                                    addDepartmentsForNewSemester(semesterName,activeSemester);
+                                    addDeptAdminsForNewSemester(semesterName,activeSemester);
+                                    addLecturersForNewSemester(semesterName,activeSemester);
+                                    addStudentsForNewSemester(semesterName,activeSemester);
+                                }
+                            }
+                            catch (Exception e){
+                                Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.document(semesterName).set(semester).addOnCompleteListener method.");
+                            }
+                        });
                     }
                     else{
-                        vmMainAdmin.onAddSemesterResultedSuccessful();
-                        addDepartmentsForNewSemester(semesterName);
-                        addDeptAdminsForNewSemester(semesterName);
-                        addLecturersForNewSemester(semesterName);
-                        addStudentsForNewSemester(semesterName);
+                        Log.d("Exception","ACTIVE SEMESTER LENGTH != 1 on Model_Main_Admin class!!!");
                     }
                 }
-                catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' batchAddSemester.commit().addOnCompleteListener method.");
+                catch (Exception e) {
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
                 }
             });
         }
@@ -890,54 +1305,27 @@ public class Model_Main_Admin {
         }
     }
 
-    private void addDepartmentsForNewSemester(String newSemester){
+    private void addDepartmentsForNewSemester(String newSemester, String activeSemester){
         try{
-            semestersRef.orderBy("startDate", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            semesterDepartmentsRef.whereEqualTo("semesterId",activeSemester).get().addOnCompleteListener(task -> {
                 try{
-                    String activeSemester = "";
                     if(!task.isSuccessful()){
-                        Log.d("Exception","Task is not successful on Model_Main_Admin class' addDepartmentsForNewSemester method.");
+                        vmMainAdmin.dataLoadError();
                         return;
                     }
+                    WriteBatch batchAddDepartment = dbRef.batch();
+                    Map<String, Object> departmentData = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (Common_Services.isSemesterActive(document.getTimestamp("startDate"), document.getTimestamp("endDate"))) {
-                            activeSemester = document.getId();
-                            break;
-                        }
+                        departmentData.put("semesterId",newSemester);
+                        departmentData.put("deptId",document.getString("deptId"));
+                        departmentData.put("deptName",document.getString("deptName"));
+                        DocumentReference doc = semesterDepartmentsRef.document();
+                        batchAddDepartment.set(doc,departmentData);
                     }
-                    if(activeSemester.length() != 0){
-                        CollectionReference activeSemesterDepartmentsRef = semesterConditionsRef.document(activeSemester).collection("departments");
-                        activeSemesterDepartmentsRef.get().addOnCompleteListener(task1 -> {
-                            try{
-                                if(!task1.isSuccessful()){
-                                    Log.d("Exception","Task1 is not successful on Model_Main_Admin class' addDepartmentsForNewSemester method.");
-                                    return;
-                                }
-                                ArrayList<String[]> departmentList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task1.getResult()) {
-                                    departmentList.add(new String[]{document.getId(),document.getString("name")});
-                                }
-                                WriteBatch batchAddDepartments = dbRef.batch();
-                                Map<String,Object> deptData = new HashMap<>();
-                                CollectionReference newSemesterDepartmentsRef = semesterConditionsRef.document(newSemester).collection("departments");
-                                for(int i=0;i<departmentList.size();i++){
-                                    DocumentReference entityDeptRef = newSemesterDepartmentsRef.document(departmentList.get(i)[0]);
-                                    deptData.put("name",departmentList.get(i)[1]);
-                                    batchAddDepartments.set(entityDeptRef,deptData);
-                                }
-                                batchAddDepartments.commit();
-                            }
-                            catch (Exception e){
-                                Log.d("Exception", "Exception on Model_Main_Admin class' activeSemesterDepartmentsRef.get().addOnCompleteListener method.");
-                            }
-                        });
-                    }
-                    else{
-                        Log.d("Exception","ACTIVE SEMESTER LENGTH = 0 on Model_Main_Admin class!!!");
-                    }
+                    batchAddDepartment.commit();
                 }
-                catch (Exception e) {
-                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.whereEqualTo.get.addOnCompleteListener method.");
                 }
             });
         }
@@ -946,110 +1334,57 @@ public class Model_Main_Admin {
         }
     }
 
-    private void addDeptAdminsForNewSemester(String newSemester){
+    private void addDeptAdminsForNewSemester(String newSemester, String activeSemester){
         try{
-            semestersRef.orderBy("startDate", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            semesterDeptAdminsRef.whereEqualTo("semesterId",activeSemester).get().addOnCompleteListener(task -> {
                 try{
-                    String activeSemester = "";
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
                         return;
                     }
+                    WriteBatch batchAddDeptAdmin = dbRef.batch();
+                    Map<String, Object> deptAdminData = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (Common_Services.isSemesterActive(document.getTimestamp("startDate"), document.getTimestamp("endDate"))) {
-                            activeSemester = document.getId();
-                            break;
-                        }
+                        deptAdminData.put("semesterId",newSemester);
+                        deptAdminData.put("deptAdminId",document.getString("deptAdminId"));
+                        deptAdminData.put("deptId",document.getString("deptId"));
+                        DocumentReference doc = semesterDeptAdminsRef.document();
+                        batchAddDeptAdmin.set(doc,deptAdminData);
                     }
-                    if(activeSemester.length() != 0){
-                        CollectionReference activeSemesterDeptAdminsRef = semesterConditionsRef.document(activeSemester).collection("deptAdmins");
-                        activeSemesterDeptAdminsRef.get().addOnCompleteListener(task1 -> {
-                            try{
-                                if(!task1.isSuccessful()){
-                                    Log.d("Exception","Task1 is not successful on Model_Main_Admin class' addDeptAdminsForNewSemester method.");
-                                    return;
-                                }
-                                ArrayList<String[]> deptAdminList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task1.getResult()) {
-                                    deptAdminList.add(new String[]{document.getId(),document.getString("deptId")});
-                                }
-                                WriteBatch batchAddDeptAdmins = dbRef.batch();
-                                Map<String,Object> deptAdminData = new HashMap<>();
-                                CollectionReference newSemesterDeptAdminsRef = semesterConditionsRef.document(newSemester).collection("deptAdmins");
-                                for(int i=0;i<deptAdminList.size();i++){
-                                    DocumentReference entityDeptAdminRef = newSemesterDeptAdminsRef.document(deptAdminList.get(i)[0]);
-                                    deptAdminData.put("deptId",deptAdminList.get(i)[1]);
-                                    batchAddDeptAdmins.set(entityDeptAdminRef,deptAdminData);
-                                }
-                                batchAddDeptAdmins.commit();
-                            }
-                            catch (Exception e){
-                                Log.d("Exception", "Exception on Model_Main_Admin class' activeSemesterDeptAdminsRef.get().addOnCompleteListener method.");
-                            }
-                        });
-                    }
-                    else{
-                        Log.d("Exception","ACTIVE SEMESTER LENGTH = 0 on Model_Main_Admin class!!!");
-                    }
+                    batchAddDeptAdmin.commit();
                 }
-                catch (Exception e) {
-                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.whereEqualTo.get.addOnCompleteListener method.");
                 }
             });
+
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' addDeptAdminsForNewSemester method.");
         }
     }
 
-    private void addLecturersForNewSemester(String newSemester){
+    private void addLecturersForNewSemester(String newSemester, String activeSemester){
         try{
-            semestersRef.orderBy("startDate", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            semesterLecturersRef.whereEqualTo("semesterId",activeSemester).get().addOnCompleteListener(task -> {
                 try{
-                    String activeSemester = "";
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
                         return;
                     }
+                    WriteBatch batchAddLecturer = dbRef.batch();
+                    Map<String, Object> lecturerData = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (Common_Services.isSemesterActive(document.getTimestamp("startDate"), document.getTimestamp("endDate"))) {
-                            activeSemester = document.getId();
-                            break;
-                        }
+                        lecturerData.put("semesterId",newSemester);
+                        lecturerData.put("lecturerId",document.getString("lecturerId"));
+                        lecturerData.put("deptId",document.getString("deptId"));
+                        DocumentReference doc = semesterLecturersRef.document();
+                        batchAddLecturer.set(doc,lecturerData);
                     }
-                    if(activeSemester.length() != 0){
-                        CollectionReference activeSemesterLecturersRef = semesterConditionsRef.document(activeSemester).collection("lecturers");
-                        activeSemesterLecturersRef.get().addOnCompleteListener(task1 -> {
-                            try{
-                                if(!task1.isSuccessful()){
-                                    Log.d("Exception","Task1 is not successful on Model_Main_Admin class' addLecturersForNewSemester method.");
-                                    return;
-                                }
-                                ArrayList<String[]> lecturerList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task1.getResult()) {
-                                    lecturerList.add(new String[]{document.getId(),document.getString("deptId")});
-                                }
-                                WriteBatch batchAddLecturers = dbRef.batch();
-                                Map<String,Object> lecturerData = new HashMap<>();
-                                CollectionReference newSemesterLecturersRef = semesterConditionsRef.document(newSemester).collection("lecturers");
-                                for(int i=0;i<lecturerList.size();i++){
-                                    DocumentReference entityLecturerRef = newSemesterLecturersRef.document(lecturerList.get(i)[0]);
-                                    lecturerData.put("deptId",lecturerList.get(i)[1]);
-                                    batchAddLecturers.set(entityLecturerRef,lecturerData);
-                                }
-                                batchAddLecturers.commit();
-                            }
-                            catch (Exception e){
-                                Log.d("Exception", "Exception on Model_Main_Admin class' activeSemesterLecturersRef.get().addOnCompleteListener method.");
-                            }
-                        });
-                    }
-                    else{
-                        Log.d("Exception","ACTIVE SEMESTER LENGTH = 0 on Model_Main_Admin class!!!");
-                    }
+                    batchAddLecturer.commit();
                 }
-                catch (Exception e) {
-                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.whereEqualTo.get.addOnCompleteListener method.");
                 }
             });
         }
@@ -1058,54 +1393,27 @@ public class Model_Main_Admin {
         }
     }
 
-    private void addStudentsForNewSemester(String newSemester){
+    private void addStudentsForNewSemester(String newSemester, String activeSemester){
         try{
-            semestersRef.orderBy("startDate", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            semesterStudentsRef.whereEqualTo("semesterId",activeSemester).get().addOnCompleteListener(task -> {
                 try{
-                    String activeSemester = "";
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
                         return;
                     }
+                    WriteBatch batchAddStudent = dbRef.batch();
+                    Map<String, Object> studentData = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (Common_Services.isSemesterActive(document.getTimestamp("startDate"), document.getTimestamp("endDate"))) {
-                            activeSemester = document.getId();
-                            break;
-                        }
+                        studentData.put("semesterId",newSemester);
+                        studentData.put("studentId",document.getString("studentId"));
+                        studentData.put("deptId",document.getString("deptId"));
+                        DocumentReference doc = semesterStudentsRef.document();
+                        batchAddStudent.set(doc,studentData);
                     }
-                    if(activeSemester.length() != 0){
-                        CollectionReference activeSemesterStudentsRef = semesterConditionsRef.document(activeSemester).collection("students");
-                        activeSemesterStudentsRef.get().addOnCompleteListener(task1 -> {
-                            try{
-                                if(!task1.isSuccessful()){
-                                    Log.d("Exception","Task1 is not successful on Model_Main_Admin class' addStudentsForNewSemester method.");
-                                    return;
-                                }
-                                ArrayList<String[]> studentList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task1.getResult()) {
-                                    studentList.add(new String[]{document.getId(),document.getString("deptId")});
-                                }
-                                WriteBatch batchAddStudents = dbRef.batch();
-                                Map<String,Object> studentData = new HashMap<>();
-                                CollectionReference newSemesterStudentsRef = semesterConditionsRef.document(newSemester).collection("students");
-                                for(int i=0;i<studentList.size();i++){
-                                    DocumentReference entityStudentRef = newSemesterStudentsRef.document(studentList.get(i)[0]);
-                                    studentData.put("deptId",studentList.get(i)[1]);
-                                    batchAddStudents.set(entityStudentRef,studentData);
-                                }
-                                batchAddStudents.commit();
-                            }
-                            catch (Exception e){
-                                Log.d("Exception", "Exception on Model_Main_Admin class' activeSemesterStudentsRef.get().addOnCompleteListener method.");
-                            }
-                        });
-                    }
-                    else{
-                        Log.d("Exception","ACTIVE SEMESTER LENGTH = 0 on Model_Main_Admin class!!!");
-                    }
+                    batchAddStudent.commit();
                 }
-                catch (Exception e) {
-                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.whereEqualTo.get.addOnCompleteListener method.");
                 }
             });
         }
@@ -1156,14 +1464,23 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchEditDepartmentToSemesterConditions = dbRef.batch();
-                    Map<String, Object> departmentData = new HashMap<>();
-                    departmentData.put("name",deptName);
-                    for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("departments").document(deptId);
-                        batchEditDepartmentToSemesterConditions.set(doc,departmentData);
-                    }
-                    batchEditDepartmentToSemesterConditions.commit();
+                    semesterDepartmentsRef.whereEqualTo("deptId",deptId).get().addOnCompleteListener(task1 -> {
+                        try{
+                            WriteBatch batchEditDepartmentToSemesterDepartments = dbRef.batch();
+                            Map<String, Object> departmentData = new HashMap<>();
+                            for (QueryDocumentSnapshot document : task1.getResult()) {
+                                if(semesterList.contains(document.getString("semesterId"))){
+                                    departmentData.put("semesterId",document.getString("semesterId"));
+                                    departmentData.put("deptId",deptId);
+                                    departmentData.put("deptName",deptName);
+                                    batchEditDepartmentToSemesterDepartments.set(document.getReference(),departmentData);
+                                }
+                            }
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.where.get.addOnCompleteListener method.");
+                        }
+                    });
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -1220,14 +1537,24 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchEditDeptAdminToSemesterConditions = dbRef.batch();
-                    Map<String, Object> deptAdminData = new HashMap<>();
-                    deptAdminData.put("deptId",deptId);
-                    for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("deptAdmins").document(id);
-                        batchEditDeptAdminToSemesterConditions.set(doc,deptAdminData);
-                    }
-                    batchEditDeptAdminToSemesterConditions.commit();
+                    semesterDeptAdminsRef.whereEqualTo("deptAdminId",id).get().addOnCompleteListener(task1 -> {
+                        try{
+                            WriteBatch batchEditDeptAdmin = dbRef.batch();
+                            Map<String, Object> deptAdminData = new HashMap<>();
+                            for (QueryDocumentSnapshot document : task1.getResult()) {
+                                if(semesterList.contains(document.getString("semesterId"))){
+                                    deptAdminData.put("semesterId",document.getString("semesterId"));
+                                    deptAdminData.put("deptAdminId",id);
+                                    deptAdminData.put("deptId",deptId);
+                                    batchEditDeptAdmin.set(document.getReference(),deptAdminData);
+                                }
+                            }
+                            batchEditDeptAdmin.commit();
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.where.get.addOnCompleteListener method.");
+                        }
+                    });
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -1284,14 +1611,24 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchEditLecturerToSemesterConditions = dbRef.batch();
-                    Map<String, Object> lecturerData = new HashMap<>();
-                    lecturerData.put("deptId",deptId);
-                    for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("lecturers").document(id);
-                        batchEditLecturerToSemesterConditions.set(doc,lecturerData);
-                    }
-                    batchEditLecturerToSemesterConditions.commit();
+                    semesterLecturersRef.whereEqualTo("lecturerId",id).get().addOnCompleteListener(task1 -> {
+                        try{
+                            WriteBatch batchEditLecturer = dbRef.batch();
+                            Map<String, Object> lecturerData = new HashMap<>();
+                            for (QueryDocumentSnapshot document : task1.getResult()) {
+                                if(semesterList.contains(document.getString("semesterId"))){
+                                    lecturerData.put("semesterId",document.getString("semesterId"));
+                                    lecturerData.put("lecturerId",id);
+                                    lecturerData.put("deptId",deptId);
+                                    batchEditLecturer.set(document.getReference(),lecturerData);
+                                }
+                            }
+                            batchEditLecturer.commit();
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.where.get.addOnCompleteListener method.");
+                        }
+                    });
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -1348,14 +1685,24 @@ public class Model_Main_Admin {
                             semesterList.add(key);
                         }
                     }
-                    WriteBatch batchEditStudentToSemesterConditions = dbRef.batch();
-                    Map<String, Object> studentData = new HashMap<>();
-                    studentData.put("deptId",deptId);
-                    for(int i=0;i<semesterList.size();i++){
-                        DocumentReference doc = semesterConditionsRef.document(semesterList.get(i)).collection("students").document(id);
-                        batchEditStudentToSemesterConditions.set(doc,studentData);
-                    }
-                    batchEditStudentToSemesterConditions.commit();
+                    semesterStudentsRef.whereEqualTo("studentId",id).get().addOnCompleteListener(task1 -> {
+                        try{
+                            WriteBatch batchEditStudent = dbRef.batch();
+                            Map<String, Object> studentData = new HashMap<>();
+                            for (QueryDocumentSnapshot document : task1.getResult()) {
+                                if(semesterList.contains(document.getString("semesterId"))){
+                                    studentData.put("semesterId",document.getString("semesterId"));
+                                    studentData.put("studentId",id);
+                                    studentData.put("deptId",deptId);
+                                    batchEditStudent.set(document.getReference(),studentData);
+                                }
+                            }
+                            batchEditStudent.commit();
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.where.get.addOnCompleteListener method.");
+                        }
+                    });
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.get().addOnCompleteListener method.");
@@ -1384,68 +1731,37 @@ public class Model_Main_Admin {
                 return;
             }
             String semesterName = Common_Services.specifySemesterName(startDate,endDate);
-            WriteBatch batchEditSemester = dbRef.batch();
-            Map<String, Object> semesterData = new HashMap<>();
-            semesterData.put("startDate",timestampStart);
-            semesterData.put("endDate",timestampEnd);
-            DocumentReference specificSemester = semestersRef.document(semesterName);
-            specificSemester.collection("weeks").get().addOnCompleteListener(task -> {
+            List<Object> semesterWeeksData = new ArrayList<>();
+            Timestamp timestamp = timestampStart;
+            Timestamp timestampWeekStart;
+            Timestamp timestampWeekEnd;
+            int weekIndex = 0;
+            Calendar c = Calendar.getInstance();
+            while(timestamp.compareTo(timestampEnd) < 0){
+                Map<String,Object> object = new HashMap<>();
+                timestampWeekStart = timestamp;
+                c.setTimeInMillis(timestamp.getSeconds()*1000);
+                c.add(Calendar.DATE,7);
+                timestamp = new Timestamp(c.getTime());
+                timestampWeekEnd = timestamp;
+                weekIndex++;
+                object.put("startDate",timestampWeekStart);
+                object.put("endDate",timestampWeekEnd);
+                object.put("weekNumber",weekIndex);
+                semesterWeeksData.add(object);
+            }
+            Semester semester = new Semester(timestampStart,timestampEnd,semesterWeeksData);
+            semestersRef.document(semesterName).set(semester).addOnCompleteListener(task1 -> {
                 try{
-                    if(!task.isSuccessful()){
+                    if(!task1.isSuccessful()){
                         vmMainAdmin.dataLoadError();
-                        return;
                     }
-                    int totalWeeks = 0;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        totalWeeks++;
+                    else{
+                        vmMainAdmin.onEditSemesterResultedSuccessful();
                     }
-                    WriteBatch batchDeleteSemesterWeeks = dbRef.batch();
-                    for(int i=1;i<=totalWeeks;i++){
-                        batchDeleteSemesterWeeks.delete(specificSemester.collection("weeks").document("week" + i));
-                    }
-                    batchDeleteSemesterWeeks.commit().addOnCompleteListener(task1 -> {
-                        try{
-                            if(!task1.isSuccessful()){
-                                vmMainAdmin.dataLoadError();
-                            }
-                            else{
-                                batchEditSemester.set(specificSemester,semesterData);
-                                Map<String, Object> semesterWeeksData = new HashMap<>();
-                                Timestamp timestamp = timestampStart;
-                                Calendar c = Calendar.getInstance();
-                                int weekIndex = 1;
-                                while(timestamp.compareTo(timestampEnd) < 0){
-                                    semesterWeeksData.put("startDate",timestamp);
-                                    c.setTimeInMillis(timestamp.getSeconds()*1000);
-                                    c.add(Calendar.DATE,7);
-                                    timestamp = new Timestamp(c.getTime());
-                                    semesterWeeksData.put("endDate",timestamp);
-                                    DocumentReference specificSemesterWeek = specificSemester.collection("weeks").document("week" + weekIndex);
-                                    batchEditSemester.set(specificSemesterWeek,semesterWeeksData);
-                                    weekIndex++;
-                                }
-                                batchEditSemester.commit().addOnCompleteListener(task2 -> {
-                                    try{
-                                        if(!task2.isSuccessful()){
-                                            vmMainAdmin.dataLoadError();
-                                        }
-                                        else{
-                                            vmMainAdmin.onEditSemesterResultedSuccessful();
-                                        }
-                                    }
-                                    catch (Exception e){
-                                        Log.d("Exception", "Exception on Model_Main_Admin class' batchEditSemester.commit().addOnCompleteListener method.");
-                                    }
-                                });
-                            }
-                        }
-                        catch (Exception e){
-                            Log.d("Exception", "Exception on Model_Main_Admin class' batchEditSemester.commit().addOnCompleteListener method.");
-                        }
-                    });
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' batchDeleteSemesterWeeks.commit().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.document(semesterName).set(semester).addOnCompleteListener method.");
                 }
             });
         }
@@ -1476,7 +1792,18 @@ public class Model_Main_Admin {
                         WriteBatch batchDeleteDepartments = dbRef.batch();
                         for(int i=0;i<semesterList.size();i++){
                             for(int j=0;j<idList.size();j++){
-                                batchDeleteDepartments.delete(semesterConditionsRef.document(semesterList.get(i)).collection("departments").document(idList.get(j).toLowerCase()));
+                                semesterDepartmentsRef.whereEqualTo("deptId",idList.get(j).toLowerCase()).get().addOnCompleteListener(task1 -> {
+                                    try{
+                                        for (QueryDocumentSnapshot document : task1.getResult()) {
+                                            if(semesterList.contains(document.getString("semesterId"))){
+                                                batchDeleteDepartments.delete(document.getReference());
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.where.get.addOnCompleteListener method.");
+                                    }
+                                });
                             }
                         }
                         batchDeleteDepartments.commit().addOnCompleteListener(task1 -> {
@@ -1526,7 +1853,18 @@ public class Model_Main_Admin {
                         WriteBatch batchDeleteDeptAdmins = dbRef.batch();
                         for(int i=0;i<semesterList.size();i++){
                             for(int j=0;j<idList.size();j++){
-                                batchDeleteDeptAdmins.delete(semesterConditionsRef.document(semesterList.get(i)).collection("deptAdmins").document(idList.get(j)));
+                                semesterDeptAdminsRef.whereEqualTo("deptAdminId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                                    try{
+                                        for (QueryDocumentSnapshot document : task1.getResult()) {
+                                            if(semesterList.contains(document.getString("semesterId"))){
+                                                batchDeleteDeptAdmins.delete(document.getReference());
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.where.get.addOnCompleteListener method.");
+                                    }
+                                });
                             }
                         }
                         batchDeleteDeptAdmins.commit().addOnCompleteListener(task1 -> {
@@ -1576,7 +1914,18 @@ public class Model_Main_Admin {
                         WriteBatch batchDeleteLecturers = dbRef.batch();
                         for(int i=0;i<semesterList.size();i++){
                             for(int j=0;j<idList.size();j++){
-                                batchDeleteLecturers.delete(semesterConditionsRef.document(semesterList.get(i)).collection("lecturers").document(idList.get(j)));
+                                semesterLecturersRef.whereEqualTo("lecturerId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                                    try{
+                                        for (QueryDocumentSnapshot document : task1.getResult()) {
+                                            if(semesterList.contains(document.getString("semesterId"))){
+                                                batchDeleteLecturers.delete(document.getReference());
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.where.get.addOnCompleteListener method.");
+                                    }
+                                });
                             }
                         }
                         batchDeleteLecturers.commit().addOnCompleteListener(task1 -> {
@@ -1626,7 +1975,18 @@ public class Model_Main_Admin {
                         WriteBatch batchDeleteStudents = dbRef.batch();
                         for(int i=0;i<semesterList.size();i++){
                             for(int j=0;j<idList.size();j++){
-                                batchDeleteStudents.delete(semesterConditionsRef.document(semesterList.get(i)).collection("students").document(idList.get(j)));
+                                semesterStudentsRef.whereEqualTo("studentId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                                    try{
+                                        for (QueryDocumentSnapshot document : task1.getResult()) {
+                                            if(semesterList.contains(document.getString("semesterId"))){
+                                                batchDeleteStudents.delete(document.getReference());
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.where.get.addOnCompleteListener method.");
+                                    }
+                                });
                             }
                         }
                         batchDeleteStudents.commit().addOnCompleteListener(task1 -> {
@@ -1657,25 +2017,126 @@ public class Model_Main_Admin {
     public void deleteSemester(String unprocessedSemester){
         try{
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
-            WriteBatch batchDeleteSemester = dbRef.batch();
-            batchDeleteSemester.delete(semestersRef.document(semester));
-            batchDeleteSemester.delete(semesterConditionsRef.document(semester));
-            batchDeleteSemester.commit().addOnCompleteListener(task -> {
+            semestersRef.document(semester).delete().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
                         vmMainAdmin.dataLoadError();
                     }
                     else{
                         vmMainAdmin.onDeleteSemesterResultedSuccessful();
+                        deleteDepartmentsForDeletedSemester(semester);
+                        deleteDeptAdminsForDeletedSemester(semester);
+                        deleteLecturersForDeletedSemester(semester);
+                        deleteStudentsForDeletedSemester(semester);
                     }
                 }
                 catch (Exception e){
-                    Log.d("Exception", "Exception on Model_Main_Admin class' batchDeleteSemester.commit().addOnCompleteListener method.");
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semestersRef.document(semester).delete().addOnCompleteListener method.");
                 }
             });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Main_Admin class' deleteSemester method.");
+        }
+    }
+
+    private void deleteDepartmentsForDeletedSemester(String deletedSemester){
+        try{
+            semesterDepartmentsRef.whereEqualTo("semesterId",deletedSemester).get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                    }
+                    else{
+                        WriteBatch batchDeleteDepartments = dbRef.batch();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            batchDeleteDepartments.delete(document.getReference());
+                        }
+                        batchDeleteDepartments.commit();
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.whereEqualTo.get.addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' deleteDepartmentsForDeletedSemester method.");
+        }
+    }
+
+    private void deleteDeptAdminsForDeletedSemester(String deletedSemester){
+        try{
+            semesterDeptAdminsRef.whereEqualTo("semesterId",deletedSemester).get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                    }
+                    else{
+                        WriteBatch batchDeleteDeptAdmins = dbRef.batch();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            batchDeleteDeptAdmins.delete(document.getReference());
+                        }
+                        batchDeleteDeptAdmins.commit();
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.whereEqualTo.get.addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' deleteDeptAdminsForDeletedSemester method.");
+        }
+    }
+
+    private void deleteLecturersForDeletedSemester(String deletedSemester){
+        try{
+            semesterLecturersRef.whereEqualTo("semesterId",deletedSemester).get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                    }
+                    else{
+                        WriteBatch batchDeleteLecturers = dbRef.batch();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            batchDeleteLecturers.delete(document.getReference());
+                        }
+                        batchDeleteLecturers.commit();
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.whereEqualTo.get.addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' deleteLecturersForDeletedSemester method.");
+        }
+    }
+
+    private void deleteStudentsForDeletedSemester(String deletedSemester){
+        try{
+            semesterStudentsRef.whereEqualTo("semesterId",deletedSemester).get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmMainAdmin.dataLoadError();
+                    }
+                    else{
+                        WriteBatch batchDeleteStudents = dbRef.batch();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            batchDeleteStudents.delete(document.getReference());
+                        }
+                        batchDeleteStudents.commit();
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.whereEqualTo.get.addOnCompleteListener method.");
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Main_Admin class' deleteStudentsForDeletedSemester method.");
         }
     }
 

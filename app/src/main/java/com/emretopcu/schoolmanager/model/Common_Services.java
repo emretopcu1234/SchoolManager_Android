@@ -13,7 +13,7 @@ public class Common_Services {
     private static DateFormat formatterOriginal = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
     private static DateFormat formatterSpecified = new SimpleDateFormat("dd / MM / yyyy");
 
-    public static String convertUnprocessedSemester(String unprocessedSemester){
+    protected static String convertUnprocessedSemester(String unprocessedSemester){
         try{
             String semesterType;
             if(unprocessedSemester.endsWith("Fall")){
@@ -38,7 +38,7 @@ public class Common_Services {
         }
     }
 
-    public static String convertProcessedSemester(String processedSemester){
+    protected static String convertProcessedSemester(String processedSemester){
         try{
             String semesterType;
             if(processedSemester.startsWith("fall")){
@@ -60,7 +60,7 @@ public class Common_Services {
         }
     }
 
-    public static String convertTimestampToDateString(Timestamp timestamp){
+    protected static String convertTimestampToDateString(Timestamp timestamp){
         try{
             return formatterSpecified.format(formatterOriginal.parse(timestamp.toDate().toString()));
         }
@@ -70,7 +70,7 @@ public class Common_Services {
         }
     }
 
-    public static Timestamp convertDateStringToTimestamp(String date){
+    protected static Timestamp convertDateStringToTimestamp(String date){
         try{
             return new Timestamp(formatterSpecified.parse(date));
         }
@@ -80,7 +80,7 @@ public class Common_Services {
         }
     }
 
-    public static boolean isSemesterActive(Timestamp startDate, Timestamp endDate){
+    protected static boolean isSemesterActive(Timestamp startDate, Timestamp endDate){
         try{
             Date todayDate = new Date();
             return(startDate.compareTo(new Timestamp(todayDate)) <= 0
@@ -92,7 +92,7 @@ public class Common_Services {
         }
     }
 
-    public static boolean isSemesterFuture(Timestamp startDate){
+    protected static boolean isSemesterFuture(Timestamp startDate){
         try{
             Date todayDate = new Date();
             return(startDate.compareTo(new Timestamp(todayDate)) >= 0);
@@ -103,7 +103,7 @@ public class Common_Services {
         }
     }
 
-    public static String convertUnprocessedName(String unprocessedName){
+    protected static String convertUnprocessedName(String unprocessedName){
         try{
             if(unprocessedName.length() == 0){
                 return "";
@@ -125,7 +125,7 @@ public class Common_Services {
         }
     }
 
-    public static String specifySemesterName(String startDate, String endDate){
+    protected static String specifySemesterName(String startDate, String endDate){
         try{
             String semesterName;
             int startYear = Integer.parseInt(startDate.substring(startDate.length() - 4));

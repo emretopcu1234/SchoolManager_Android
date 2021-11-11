@@ -29,7 +29,6 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     private MutableLiveData<E_Add_Or_Edit_Course_State> editCourseSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteCoursesSuccessful;
 
-
     public VM_Dept_Admin(){
         try{
             sdDeptAdmin = SD_Dept_Admin.getInstance();
@@ -248,7 +247,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onLoadSemestersResulted(ArrayList<String> semestersList) {
         try{
-
+            sdDeptAdmin.setSemesterList(semestersList);
+            setSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onLoadSemestersResulted method.");
@@ -258,7 +258,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onIsSemesterActiveResulted(boolean semesterActive) {
         try{
-
+            sdDeptAdmin.setSemesterActive(semesterActive);
+            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onIsSemesterActiveResulted method.");
