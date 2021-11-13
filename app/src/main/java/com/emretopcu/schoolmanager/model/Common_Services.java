@@ -134,7 +134,7 @@ public class Common_Services {
                 semesterName = "fall" + startYear + endYear;
             }
             else{
-                semesterName = "spring" + startYear + endYear;
+                semesterName = "spring" + (startYear - 1) + endYear;
             }
             return semesterName;
         }
