@@ -377,6 +377,7 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
             vmLoginProcess.getChangePasswordSuccessful().observe(this, e_change_password_state -> {
                 try{
                     if(e_change_password_state == E_Change_Password_State.SUCCESSFUL){
+                        progressBarChangePassword.setVisibility(View.INVISIBLE);
                         alertDialogChangePassword.dismiss();
                         showToastMessage(R.string.toast_change_password_successful);
                     }

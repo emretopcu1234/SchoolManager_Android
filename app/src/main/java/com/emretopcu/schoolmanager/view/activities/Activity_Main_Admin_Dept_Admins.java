@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -126,16 +128,15 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDeptAdmins;
     private boolean progressBarIndicator_setDepartments;
-    private String idFilter = "";
-    private String nameFilter = "";
-    private String surnameFilter = "";
-    private ArrayList<String> deptFilter = new ArrayList<>();
-    private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
+    private final ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
     private boolean selectIndicator = true;
-    private ArrayList<Boolean> checks = new ArrayList<>();
-    private ArrayList<String> deletedIdList = new ArrayList<>();
+    private final ArrayList<Boolean> checks = new ArrayList<>();
+    private final ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
     private boolean semesterActive;
+
+    private final PersonFilterType personFilter = new PersonFilterType();
+    private final PersonAddOrEditType person = new PersonAddOrEditType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,13 +215,16 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         return;
                     }
                     progressBarDialog.setVisibility(View.VISIBLE);
+                    person.setId(editTextDialogId.getText().toString());
+                    person.setName(editTextDialogName.getText().toString());
+                    person.setSurname(editTextDialogSurname.getText().toString());
+                    person.setDeptName(spinnerDialogDept.getSelectedItem().toString());
+                    person.setSemester(Common_Variables_View.SELECTED_SEMESTER);
                     if(addRequested){
-                        vmMainAdmin.onAddDeptAdminRequested(editTextDialogId.getText().toString(),editTextDialogName.getText().toString(),
-                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString(), Common_Variables_View.SELECTED_SEMESTER);
+                        vmMainAdmin.onAddDeptAdminRequested(person);
                     }
                     else{
-                        vmMainAdmin.onEditDeptAdminRequested(editTextDialogId.getText().toString(),editTextDialogName.getText().toString(),
-                                editTextDialogSurname.getText().toString(),spinnerDialogDept.getSelectedItem().toString(),Common_Variables_View.SELECTED_SEMESTER);
+                        vmMainAdmin.onEditDeptAdminRequested(person);
                     }
                 }
                 catch (Exception e){
@@ -293,8 +297,8 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                     for(int i=0;i<adapterFilter.getChecks().size();i++){
                         previousFilterChecks.add(adapterFilter.getChecks().get(i));
                     }
-                    deptFilter = adapterFilter.getFilteredDepartmentList();
-                    if(deptFilter.size() > 0){
+                    personFilter.setDeptFilter(adapterFilter.getFilteredDepartmentList());
+                    if(personFilter.getDeptFilter().size() > 0){
                         buttonFilterDeptName.setVisibility(View.INVISIBLE);
                         buttonCancelFilterDeptName.setVisibility(View.VISIBLE);
                     }
@@ -302,7 +306,8 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                         buttonFilterDeptName.setVisibility(View.VISIBLE);
                         buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
                     }
-                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                     alertDialogFilter.dismiss();
                 }
                 catch (Exception e){
@@ -489,8 +494,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                     editTextId.setVisibility(View.INVISIBLE);
                     editTextId.clearFocus();
                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                    idFilter = "";
-                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setIdFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchId setOnClickListener method.");
@@ -521,8 +527,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                     editTextName.setVisibility(View.INVISIBLE);
                     editTextName.clearFocus();
                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                    nameFilter = "";
-                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setNameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchName setOnClickListener method.");
@@ -553,8 +560,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                     editTextSurname.setVisibility(View.INVISIBLE);
                     editTextSurname.clearFocus();
                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                    surnameFilter = "";
-                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setSurnameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' buttonCancelSearchSurname setOnClickListener method.");
@@ -607,42 +615,48 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
                 public void afterTextChanged(Editable s) {
                     try{
                         if(s.hashCode() == editTextId.getText().hashCode()){
-                            idFilter = fieldValue;
-                            if(idFilter.length() == 0){
+                            personFilter.setIdFilter(fieldValue);
+                            if(personFilter.getIdFilter().length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
                                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextName.getText().hashCode()){
-                            nameFilter = fieldValue;
-                            if(nameFilter.length() == 0){
+                            personFilter.setNameFilter(fieldValue);
+                            if(personFilter.getNameFilter().length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
                                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextSurname.getText().hashCode()){
-                            surnameFilter = fieldValue;
-                            if(surnameFilter.length() == 0){
+                            personFilter.setSurnameFilter(fieldValue);
+                            if(personFilter.getSurnameFilter().length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
                                     progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                    vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarDeptAdmin.setVisibility(View.VISIBLE);
-                                vmMainAdmin.onFilteredDeptAdminListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmMainAdmin.onFilteredDeptAdminListRequested(personFilter);
                             }
                         }
                     }
@@ -664,6 +678,7 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             vmLoginProcess.getChangePasswordSuccessful().observe(this, e_change_password_state -> {
                 try{
                     if(e_change_password_state == E_Change_Password_State.SUCCESSFUL){
+                        progressBarChangePassword.setVisibility(View.INVISIBLE);
                         alertDialogChangePassword.dismiss();
                         showToastMessage(R.string.toast_change_password_successful);
                     }
@@ -873,10 +888,10 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-            idFilter = "";
-            nameFilter = "";
-            surnameFilter = "";
-            deptFilter.clear();
+            personFilter.setIdFilter("");
+            personFilter.setNameFilter("");
+            personFilter.setSurnameFilter("");
+            personFilter.setDeptFilter(new ArrayList<>());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Main_Admin_Dept_Admins class' resetWidgets method.");

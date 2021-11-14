@@ -5,6 +5,10 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
 import com.emretopcu.schoolmanager.model.Model_Main_Admin;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
@@ -149,84 +153,84 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onFilteredDepartmentListRequested(String selectedSemester, String deptNameFilter){
+    public void onFilteredDepartmentListRequested(DepartmentFilterType departmentFilter){
         try{
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.getFilteredDepartmentList(selectedSemester, deptNameFilter);
+            modelMainAdmin.getFilteredDepartmentList(departmentFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredDepartmentListRequested method.");
         }
     }
 
-    public void onFilteredDeptAdminListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
+    public void onFilteredDeptAdminListRequested(PersonFilterType personFilter){
         try{
             setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.getFilteredDeptAdminList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
+            modelMainAdmin.getFilteredDeptAdminList(personFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredDeptAdminListRequested method.");
         }
     }
 
-    public void onFilteredLecturerListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
+    public void onFilteredLecturerListRequested(PersonFilterType personFilter){
         try{
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.getFilteredLecturerList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
+            modelMainAdmin.getFilteredLecturerList(personFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredLecturerListRequested method.");
         }
     }
 
-    public void onFilteredStudentListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
+    public void onFilteredStudentListRequested(PersonFilterType personFilter){
         try{
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.getFilteredStudentList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
+            modelMainAdmin.getFilteredStudentList(personFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onFilteredStudentListRequested method.");
         }
     }
 
-    public void onAddDepartmentRequested(String deptName, String deptId, String semester){
+    public void onAddDepartmentRequested(DepartmentAddOrEditType department){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = department.getSemester();
             addDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
-            modelMainAdmin.addDepartment(deptName, deptId, semester);
+            modelMainAdmin.addDepartment(department);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminRequested method.");
         }
     }
 
-    public void onAddDeptAdminRequested(String id, String name, String surname, String deptId, String semester){
+    public void onAddDeptAdminRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             addDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.addDeptAdmin(id, name, surname, deptId, semester);
+            modelMainAdmin.addDeptAdmin(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddDeptAdminRequested method.");
         }
     }
 
-    public void onAddLecturerRequested(String id, String name, String surname, String deptId, String semester){
+    public void onAddLecturerRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             addLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.addLecturer(id, name, surname, deptId, semester);
+            modelMainAdmin.addLecturer(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddLecturerRequested method.");
         }
     }
 
-    public void onAddStudentRequested(String id, String name, String surname, String deptId, String semester){
+    public void onAddStudentRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             addStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.addStudent(id, name, surname, deptId, semester);
+            modelMainAdmin.addStudent(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddStudentRequested method.");
@@ -243,44 +247,44 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onEditDepartmentRequested(String deptName, String deptId, String semester){
+    public void onEditDepartmentRequested(DepartmentAddOrEditType department){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = department.getSemester();
             editDepartmentSuccessful.setValue(E_Add_Or_Edit_Department_State.NO_STATEMENT);
-            modelMainAdmin.editDepartment(deptName, deptId, semester);
+            modelMainAdmin.editDepartment(department);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditDeptAdminRequested method.");
         }
     }
 
-    public void onEditDeptAdminRequested(String id, String name, String surname, String deptName, String semester){
+    public void onEditDeptAdminRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             editDeptAdminSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.editDeptAdmin(id, name, surname, deptName, semester);
+            modelMainAdmin.editDeptAdmin(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditDeptAdminRequested method.");
         }
     }
 
-    public void onEditLecturerRequested(String id, String name, String surname, String deptName, String semester){
+    public void onEditLecturerRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             editLecturerSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.editLecturer(id, name, surname, deptName, semester);
+            modelMainAdmin.editLecturer(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditLecturerRequested method.");
         }
     }
 
-    public void onEditStudentRequested(String id, String name, String surname, String deptName, String semester){
+    public void onEditStudentRequested(PersonAddOrEditType person){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = person.getSemester();
             editStudentSuccessful.setValue(E_Add_Or_Edit_Person_State.NO_STATEMENT);
-            modelMainAdmin.editStudent(id, name, surname, deptName, semester);
+            modelMainAdmin.editStudent(person);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditStudentRequested method.");

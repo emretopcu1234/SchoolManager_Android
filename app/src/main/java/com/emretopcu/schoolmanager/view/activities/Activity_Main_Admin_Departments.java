@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -37,6 +39,8 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+
+import javax.sql.CommonDataSource;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
 
@@ -98,10 +102,13 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setDepartments;
     private boolean selectIndicator = true;
-    private ArrayList<Boolean> checks = new ArrayList<>();
-    private ArrayList<String> deletedIdList = new ArrayList<>();
+    private final ArrayList<Boolean> checks = new ArrayList<>();
+    private final ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
     private boolean semesterActive;
+
+    private final DepartmentFilterType departmentFilter = new DepartmentFilterType();
+    private final DepartmentAddOrEditType department = new DepartmentAddOrEditType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,13 +178,14 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonDialogOK.setOnClickListener(v -> {
                 try{
                     progressBarDialog.setVisibility(View.VISIBLE);
+                    department.setDeptName(editTextDialogDeptName.getText().toString());
+                    department.setDeptId(editTextDialogDeptId.getText().toString());
+                    department.setSemester(Common_Variables_View.SELECTED_SEMESTER);
                     if(addRequested){
-                        vmMainAdmin.onAddDepartmentRequested(editTextDialogDeptName.getText().toString(),
-                                editTextDialogDeptId.getText().toString(), Common_Variables_View.SELECTED_SEMESTER);
+                        vmMainAdmin.onAddDepartmentRequested(department);
                     }
                     else{
-                        vmMainAdmin.onEditDepartmentRequested(editTextDialogDeptName.getText().toString(),
-                                editTextDialogDeptId.getText().toString(),Common_Variables_View.SELECTED_SEMESTER);
+                        vmMainAdmin.onEditDepartmentRequested(department);
                     }
                 }
                 catch (Exception e){
@@ -400,8 +408,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     try{
-                        String deptNameFilter = s.toString();
-                        if(deptNameFilter.length() == 0){
+                        departmentFilter.setDeptNameFilter(s.toString());
+                        if(departmentFilter.getDeptNameFilter().length() == 0){
                             if (buttonSearchDeptName.getVisibility() == View.INVISIBLE){
                                 progressBarDepartment.setVisibility(View.VISIBLE);
                                 vmMainAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
@@ -409,7 +417,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         }
                         else{
                             progressBarDepartment.setVisibility(View.VISIBLE);
-                            vmMainAdmin.onFilteredDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER,deptNameFilter);
+                            departmentFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                            vmMainAdmin.onFilteredDepartmentListRequested(departmentFilter);
                         }
                     }
                     catch (Exception e){
@@ -431,6 +440,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             vmLoginProcess.getChangePasswordSuccessful().observe(this, e_change_password_state -> {
                 try{
                     if(e_change_password_state == E_Change_Password_State.SUCCESSFUL){
+                        progressBarChangePassword.setVisibility(View.INVISIBLE);
                         alertDialogChangePassword.dismiss();
                         showToastMessage(R.string.toast_change_password_successful);
                     }
