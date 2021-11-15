@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Lecturers;
 
 import java.util.ArrayList;
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapter<ViewHolder_MAL> {
 
     private Activity_Main_Admin_Lecturers context;
-    private ArrayList<String[]> lecturerList;
+    private ArrayList<PersonType> lecturerList;
     private boolean checkBoxActive;
     private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
 
-    public RecyclerViewAdapter_Main_Admin_Lecturers(Activity_Main_Admin_Lecturers context, ArrayList<String[]> lecturerList) {
+    public RecyclerViewAdapter_Main_Admin_Lecturers(Activity_Main_Admin_Lecturers context, ArrayList<PersonType> lecturerList) {
         try{
             this.context = context;
             this.lecturerList = lecturerList;
@@ -38,7 +39,7 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
         }
     }
 
-    public void setLecturerList(ArrayList<String[]> lecturerList){
+    public void setLecturerList(ArrayList<PersonType> lecturerList){
         try{
             this.lecturerList = lecturerList;
             isChecked.clear();
@@ -189,10 +190,10 @@ public class RecyclerViewAdapter_Main_Admin_Lecturers extends RecyclerView.Adapt
             holder.textViewSurname.setOnLongClickListener(menuListener);
             holder.textViewDeptName.setOnLongClickListener(menuListener);
 
-            holder.textViewId.setText(lecturerList.get(position)[0]);
-            holder.textViewName.setText(lecturerList.get(position)[1]);
-            holder.textViewSurname.setText(lecturerList.get(position)[2]);
-            holder.textViewDeptName.setText(lecturerList.get(position)[3]);
+            holder.textViewId.setText(lecturerList.get(position).getId());
+            holder.textViewName.setText(lecturerList.get(position).getName());
+            holder.textViewSurname.setText(lecturerList.get(position).getSurname());
+            holder.textViewDeptName.setText(lecturerList.get(position).getDeptId());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Lecturers class' onBindViewHolder method.");

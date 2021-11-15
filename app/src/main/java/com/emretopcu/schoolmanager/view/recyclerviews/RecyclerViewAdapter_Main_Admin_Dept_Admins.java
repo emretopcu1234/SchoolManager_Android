@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Dept_Admins;
 
 import java.util.ArrayList;
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_Main_Admin_Dept_Admins extends RecyclerView.Adapter<ViewHolder_MADA> {
 
     private Activity_Main_Admin_Dept_Admins context;
-    private ArrayList<String[]> deptAdminList;
+    private ArrayList<PersonType> deptAdminList;
     private boolean checkBoxActive;
     private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
 
-    public RecyclerViewAdapter_Main_Admin_Dept_Admins(Activity_Main_Admin_Dept_Admins context, ArrayList<String[]> deptAdminList) {
+    public RecyclerViewAdapter_Main_Admin_Dept_Admins(Activity_Main_Admin_Dept_Admins context, ArrayList<PersonType> deptAdminList) {
         try{
             this.context = context;
             this.deptAdminList = deptAdminList;
@@ -38,7 +39,7 @@ public class RecyclerViewAdapter_Main_Admin_Dept_Admins extends RecyclerView.Ada
         }
     }
 
-    public void setDeptAdminList(ArrayList<String[]> deptAdminList){
+    public void setDeptAdminList(ArrayList<PersonType> deptAdminList){
         try{
             this.deptAdminList = deptAdminList;
             isChecked.clear();
@@ -188,10 +189,10 @@ public class RecyclerViewAdapter_Main_Admin_Dept_Admins extends RecyclerView.Ada
             holder.textViewSurname.setOnLongClickListener(menuListener);
             holder.textViewDeptName.setOnLongClickListener(menuListener);
 
-            holder.textViewId.setText(deptAdminList.get(position)[0]);
-            holder.textViewName.setText(deptAdminList.get(position)[1]);
-            holder.textViewSurname.setText(deptAdminList.get(position)[2]);
-            holder.textViewDeptName.setText(deptAdminList.get(position)[3]);
+            holder.textViewId.setText(deptAdminList.get(position).getId());
+            holder.textViewName.setText(deptAdminList.get(position).getName());
+            holder.textViewSurname.setText(deptAdminList.get(position).getSurname());
+            holder.textViewDeptName.setText(deptAdminList.get(position).getDeptId());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Dept_Admins class' onBindViewHolder method.");

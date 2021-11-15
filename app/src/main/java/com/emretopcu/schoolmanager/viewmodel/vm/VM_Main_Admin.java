@@ -6,9 +6,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
 import com.emretopcu.schoolmanager.model.Model_Main_Admin;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
@@ -237,10 +243,10 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onAddSemesterRequested(String startDate, String endDate){
+    public void onAddSemesterRequested(SemesterAddOrEditType semester){
         try{
             addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
-            modelMainAdmin.addSemester(startDate, endDate);
+            modelMainAdmin.addSemester(semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterRequested method.");
@@ -291,54 +297,54 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         }
     }
 
-    public void onEditSemesterRequested(String startDate, String endDate){
+    public void onEditSemesterRequested(SemesterAddOrEditType semester){
         try{
             editSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.NO_STATEMENT);
-            modelMainAdmin.editSemester(startDate, endDate);
+            modelMainAdmin.editSemester(semester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onEditSemesterRequested method.");
         }
     }
 
-    public void onDeleteDepartmentsRequested(String semester, ArrayList<String> idList){
+    public void onDeleteDepartmentsRequested(DepartmentDeleteType departments){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = departments.getSemester();
             deleteDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.deleteDepartments(semester, idList);
+            modelMainAdmin.deleteDepartments(departments);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDepartmentsRequested method.");
         }
     }
 
-    public void onDeleteDeptAdminsRequested(String semester, ArrayList<String> idList){
+    public void onDeleteDeptAdminsRequested(PersonDeleteType people){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = people.getSemester();
             deleteDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.deleteDeptAdmins(semester, idList);
+            modelMainAdmin.deleteDeptAdmins(people);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteDeptAdminsRequested method.");
         }
     }
 
-    public void onDeleteLecturersRequested(String semester, ArrayList<String> idList){
+    public void onDeleteLecturersRequested(PersonDeleteType people){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = people.getSemester();
             deleteLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.deleteLecturers(semester, idList);
+            modelMainAdmin.deleteLecturers(people);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteLecturersRequested method.");
         }
     }
 
-    public void onDeleteStudentsRequested(String semester, ArrayList<String> idList){
+    public void onDeleteStudentsRequested(PersonDeleteType people){
         try{
-            lastProcessedSemester = semester;
+            lastProcessedSemester = people.getSemester();
             deleteStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelMainAdmin.deleteStudents(semester, idList);
+            modelMainAdmin.deleteStudents(people);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteStudentsRequested method.");
@@ -447,7 +453,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return sdMainAdmin.getSemesterList();
     }
 
-    public ArrayList<String[]> getDetailedSemesterList(){
+    public ArrayList<SemesterType> getDetailedSemesterList(){
         return sdMainAdmin.getDetailedSemesterList();
     }
 
@@ -455,19 +461,19 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
         return sdMainAdmin.isSemesterActiveOrFuture();
     }
 
-    public ArrayList<String[]> getDepartmentList(){
+    public ArrayList<DepartmentType> getDepartmentList(){
         return sdMainAdmin.getDepartmentList();
     }
 
-    public ArrayList<String[]> getDeptAdminList(){
+    public ArrayList<PersonType> getDeptAdminList(){
         return sdMainAdmin.getDeptAdminList();
     }
 
-    public ArrayList<String[]> getLecturerList(){
+    public ArrayList<PersonType> getLecturerList(){
         return sdMainAdmin.getLecturerList();
     }
 
-    public ArrayList<String[]> getStudentList(){
+    public ArrayList<PersonType> getStudentList(){
         return sdMainAdmin.getStudentList();
     }
 
@@ -507,7 +513,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onLoadDetailedSemestersResulted(ArrayList<String[]> detailedSemestersList) {
+    public void onLoadDetailedSemestersResulted(ArrayList<SemesterType> detailedSemestersList) {
         try{
             sdMainAdmin.setDetailedSemesterList(detailedSemestersList);
             setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
@@ -529,7 +535,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onGetDepartmentListResulted(ArrayList<String[]> departmentList) {
+    public void onGetDepartmentListResulted(ArrayList<DepartmentType> departmentList) {
         try{
             sdMainAdmin.setDepartmentList(departmentList);
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
@@ -540,7 +546,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onGetDeptAdminListResulted(ArrayList<String[]> deptAdminList) {
+    public void onGetDeptAdminListResulted(ArrayList<PersonType> deptAdminList) {
         try{
             sdMainAdmin.setDeptAdminList(deptAdminList);
             setDeptAdminsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
@@ -551,7 +557,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onGetLecturerListResulted(ArrayList<String[]> lecturerList) {
+    public void onGetLecturerListResulted(ArrayList<PersonType> lecturerList) {
         try{
             sdMainAdmin.setLecturerList(lecturerList);
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
@@ -562,7 +568,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
     }
 
     @Override
-    public void onGetStudentListResulted(ArrayList<String[]> studentList) {
+    public void onGetStudentListResulted(ArrayList<PersonType> studentList) {
         try{
             sdMainAdmin.setStudentList(studentList);
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
@@ -676,6 +682,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
             addSemesterSuccessful.setValue(E_Add_Or_Edit_Semester_State.SUCCESSFUL);
             setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             modelMainAdmin.getDetailedSemesterList();
+            modelMainAdmin.loadSemesters();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onAddSemesterResultedSuccessful method.");
@@ -866,6 +873,7 @@ public class VM_Main_Admin extends ViewModel implements Interface_Main_Admin {
             deleteSemesterSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
             setDetailedSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             modelMainAdmin.getDetailedSemesterList();
+            modelMainAdmin.loadSemesters();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Main_Admin class' onDeleteSemesterResultedSuccessful method.");

@@ -11,16 +11,17 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<ViewHolder_FD> {
 
     private Context context;
-    private ArrayList<String[]> departmentList;
+    private ArrayList<DepartmentType> departmentList;
     private ArrayList<Boolean> isChecked;
 
-    public RecyclerViewAdapter_Filter_Department(Context context, ArrayList<String[]> departmentList) {
+    public RecyclerViewAdapter_Filter_Department(Context context, ArrayList<DepartmentType> departmentList) {
         try{
             this.context = context;
             this.departmentList = departmentList;
@@ -31,7 +32,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
         }
     }
 
-    public void setDepartmentList(ArrayList<String[]> departmentList){
+    public void setDepartmentList(ArrayList<DepartmentType> departmentList){
         try{
             this.departmentList = departmentList;
             isChecked.clear();
@@ -50,7 +51,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             ArrayList<String> filteredDepartmentList = new ArrayList<>();
             for(int i=0;i<isChecked.size();i++){
                 if(isChecked.get(i)){
-                    filteredDepartmentList.add(departmentList.get(i)[0]);
+                    filteredDepartmentList.add(departmentList.get(i).getDeptName());
                 }
             }
             return filteredDepartmentList;
@@ -118,7 +119,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
         try{
             final ViewHolder_Filter_Department holder = (ViewHolder_Filter_Department) viewHolder;
             holder.checkBox.setChecked(isChecked.get(position));
-            holder.textViewDeptName.setText(departmentList.get(position)[0]);
+            holder.textViewDeptName.setText(departmentList.get(position).getDeptName());
 
             holder.checkBox.setOnClickListener(v -> {
                 try{

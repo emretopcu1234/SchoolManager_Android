@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -93,6 +95,8 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
 
     private boolean addRequested;
     private String deletedSemester;
+
+    private final SemesterAddOrEditType semester = new SemesterAddOrEditType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,11 +228,13 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
             buttonDialogOK.setOnClickListener(v -> {
                 try{
                     progressBarDialog.setVisibility(View.VISIBLE);
+                    semester.setStartDate(editTextDialogStartDate.getText().toString());
+                    semester.setEndDate(editTextDialogEndDate.getText().toString());
                     if(addRequested){
-                        vmMainAdmin.onAddSemesterRequested(editTextDialogStartDate.getText().toString(),editTextDialogEndDate.getText().toString());
+                        vmMainAdmin.onAddSemesterRequested(semester);
                     }
                     else{
-                        vmMainAdmin.onEditSemesterRequested(editTextDialogStartDate.getText().toString(),editTextDialogEndDate.getText().toString());
+                        vmMainAdmin.onEditSemesterRequested(semester);
                     }
                 }
                 catch (Exception e){
@@ -536,10 +542,10 @@ public class Activity_Main_Admin_Semesters extends AppCompatActivity implements 
     public void onEditRequested(int position){
         try{
             addRequested = false;
-            ArrayList<String[]> semesterList = vmMainAdmin.getDetailedSemesterList();
-            editTextDialogSemester.setText(semesterList.get(position)[0]);
-            editTextDialogStartDate.setText(semesterList.get(position)[1]);
-            editTextDialogEndDate.setText(semesterList.get(position)[2]);
+            ArrayList<SemesterType> semesterList = vmMainAdmin.getDetailedSemesterList();
+            editTextDialogSemester.setText(semesterList.get(position).getSemester());
+            editTextDialogStartDate.setText(semesterList.get(position).getStartDate());
+            editTextDialogEndDate.setText(semesterList.get(position).getEndDate());
             editTextDialogStartDate.clearFocus();
             editTextDialogEndDate.clearFocus();
             textViewDialogWarning.setVisibility(View.INVISIBLE);

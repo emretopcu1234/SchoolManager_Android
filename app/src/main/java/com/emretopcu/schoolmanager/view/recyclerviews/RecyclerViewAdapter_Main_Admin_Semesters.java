@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Semesters;
 
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapter<ViewHolder_MASe> {
 
     private Activity_Main_Admin_Semesters context;
-    private ArrayList<String[]> detailedSemesterList;
+    private ArrayList<SemesterType> detailedSemesterList;
 
-    public RecyclerViewAdapter_Main_Admin_Semesters(Activity_Main_Admin_Semesters context, ArrayList<String[]> detailedSemesterList) {
+    public RecyclerViewAdapter_Main_Admin_Semesters(Activity_Main_Admin_Semesters context, ArrayList<SemesterType> detailedSemesterList) {
         try{
             this.context = context;
             this.detailedSemesterList = detailedSemesterList;
@@ -32,7 +33,7 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
         }
     }
 
-    public void setDetailedSemesterList(ArrayList<String[]> detailedSemesterList){
+    public void setDetailedSemesterList(ArrayList<SemesterType> detailedSemesterList){
         try{
             this.detailedSemesterList = detailedSemesterList;
             notifyDataSetChanged();
@@ -60,10 +61,10 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
     public void onBindViewHolder(ViewHolder_MASe viewHolder, int position) {
         try{
             final ViewHolder_Main_Admin_Semesters holder = (ViewHolder_Main_Admin_Semesters) viewHolder;
-            holder.textViewSemester.setText(detailedSemesterList.get(position)[0]);
-            holder.textViewStart.setText(detailedSemesterList.get(position)[1]);
-            holder.textViewEnd.setText(detailedSemesterList.get(position)[2]);
-            if(detailedSemesterList.get(position)[3].equals("PAST")){
+            holder.textViewSemester.setText(detailedSemesterList.get(position).getSemester());
+            holder.textViewStart.setText(detailedSemesterList.get(position).getStartDate());
+            holder.textViewEnd.setText(detailedSemesterList.get(position).getEndDate());
+            if(detailedSemesterList.get(position).getStatus().equals("PAST")){
                 holder.buttonEdit.setVisibility(View.INVISIBLE);
             }
             else{
@@ -77,7 +78,7 @@ public class RecyclerViewAdapter_Main_Admin_Semesters extends RecyclerView.Adapt
                     popup.show();
                     MenuItem edit = popup.getMenu().findItem(R.id.menu_main_admin_edit_semester);
                     MenuItem delete = popup.getMenu().findItem(R.id.menu_main_admin_delete_semester);
-                    if(!detailedSemesterList.get(position)[3].equals("ACTIVE")){
+                    if(!detailedSemesterList.get(position).getStatus().equals("ACTIVE")){
                         delete.setVisible(true);
                     }
                     else{

@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -39,8 +41,6 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Main_Admin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-
-import javax.sql.CommonDataSource;
 
 public class Activity_Main_Admin_Departments extends AppCompatActivity implements Interface_General_Activity {
 
@@ -108,7 +108,8 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     private boolean semesterActive;
 
     private final DepartmentFilterType departmentFilter = new DepartmentFilterType();
-    private final DepartmentAddOrEditType department = new DepartmentAddOrEditType();
+    private final DepartmentAddOrEditType departmentInfo = new DepartmentAddOrEditType();
+    private final DepartmentDeleteType deletedDepartments = new DepartmentDeleteType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,14 +179,14 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonDialogOK.setOnClickListener(v -> {
                 try{
                     progressBarDialog.setVisibility(View.VISIBLE);
-                    department.setDeptName(editTextDialogDeptName.getText().toString());
-                    department.setDeptId(editTextDialogDeptId.getText().toString());
-                    department.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    departmentInfo.setDeptName(editTextDialogDeptName.getText().toString());
+                    departmentInfo.setDeptId(editTextDialogDeptId.getText().toString());
+                    departmentInfo.setSemester(Common_Variables_View.SELECTED_SEMESTER);
                     if(addRequested){
-                        vmMainAdmin.onAddDepartmentRequested(department);
+                        vmMainAdmin.onAddDepartmentRequested(departmentInfo);
                     }
                     else{
-                        vmMainAdmin.onEditDepartmentRequested(department);
+                        vmMainAdmin.onEditDepartmentRequested(departmentInfo);
                     }
                 }
                 catch (Exception e){
@@ -215,7 +216,9 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
             buttonDeleteConfirmationYes.setOnClickListener(v -> {
                 try{
                     progressBarDeleteConfirmation.setVisibility(View.VISIBLE);
-                    vmMainAdmin.onDeleteDepartmentsRequested(Common_Variables_View.SELECTED_SEMESTER, deletedIdList);
+                    deletedDepartments.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    deletedDepartments.setIdList(deletedIdList);
+                    vmMainAdmin.onDeleteDepartmentsRequested(deletedDepartments);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Departments class' buttonDeleteConfirmationYes setOnClickListener method.");
@@ -326,7 +329,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
                         deletedIdList.clear();
                         for(int i=0;i<checks.size();i++){
                             if(checks.get(i)){
-                                deletedIdList.add(vmMainAdmin.getDepartmentList().get(i)[1]);
+                                deletedIdList.add(vmMainAdmin.getDepartmentList().get(i).getDeptId());
                             }
                         }
                         textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_department));
@@ -662,9 +665,9 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     public void onEditRequested(int position){
         try{
             addRequested = false;
-            ArrayList<String[]> departmentList = vmMainAdmin.getDepartmentList();
-            editTextDialogDeptName.setText(departmentList.get(position)[0]);
-            editTextDialogDeptId.setText(departmentList.get(position)[1]);
+            ArrayList<DepartmentType> departmentList = vmMainAdmin.getDepartmentList();
+            editTextDialogDeptName.setText(departmentList.get(position).getDeptName());
+            editTextDialogDeptId.setText(departmentList.get(position).getDeptId());
             editTextDialogDeptId.setEnabled(false);
             editTextDialogDeptName.clearFocus();
             editTextDialogDeptId.clearFocus();
@@ -681,7 +684,7 @@ public class Activity_Main_Admin_Departments extends AppCompatActivity implement
     public void onDeleteRequested(int position){
         try{
             deletedIdList.clear();
-            deletedIdList.add(vmMainAdmin.getDepartmentList().get(position)[1]);
+            deletedIdList.add(vmMainAdmin.getDepartmentList().get(position).getDeptId());
             textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_department));
             alertDialogDeleteConfirmation.show();
         }

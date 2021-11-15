@@ -25,8 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -136,7 +139,8 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     private boolean semesterActive;
 
     private final PersonFilterType personFilter = new PersonFilterType();
-    private final PersonAddOrEditType person = new PersonAddOrEditType();
+    private final PersonAddOrEditType personInfo = new PersonAddOrEditType();
+    private final PersonDeleteType deletedPeople = new PersonDeleteType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,16 +219,16 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         return;
                     }
                     progressBarDialog.setVisibility(View.VISIBLE);
-                    person.setId(editTextDialogId.getText().toString());
-                    person.setName(editTextDialogName.getText().toString());
-                    person.setSurname(editTextDialogSurname.getText().toString());
-                    person.setDeptName(spinnerDialogDept.getSelectedItem().toString());
-                    person.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    personInfo.setId(editTextDialogId.getText().toString());
+                    personInfo.setName(editTextDialogName.getText().toString());
+                    personInfo.setSurname(editTextDialogSurname.getText().toString());
+                    personInfo.setDeptName(spinnerDialogDept.getSelectedItem().toString());
+                    personInfo.setSemester(Common_Variables_View.SELECTED_SEMESTER);
                     if(addRequested){
-                        vmMainAdmin.onAddLecturerRequested(person);
+                        vmMainAdmin.onAddLecturerRequested(personInfo);
                     }
                     else{
-                        vmMainAdmin.onEditLecturerRequested(person);
+                        vmMainAdmin.onEditLecturerRequested(personInfo);
                     }
                 }
                 catch (Exception e){
@@ -254,7 +258,9 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
             buttonDeleteConfirmationYes.setOnClickListener(v -> {
                 try{
                     progressBarDeleteConfirmation.setVisibility(View.VISIBLE);
-                    vmMainAdmin.onDeleteLecturersRequested(Common_Variables_View.SELECTED_SEMESTER, deletedIdList);
+                    deletedPeople.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    deletedPeople.setIdList(deletedIdList);
+                    vmMainAdmin.onDeleteLecturersRequested(deletedPeople);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Main_Admin_Lecturers class' buttonDeleteConfirmationYes setOnClickListener method.");
@@ -410,10 +416,10 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         editTextDialogId.setText(null);
                         editTextDialogName.setText(null);
                         editTextDialogSurname.setText(null);
-                        ArrayList<String[]> departmentList = vmMainAdmin.getDepartmentList();
+                        ArrayList<DepartmentType> departmentList = vmMainAdmin.getDepartmentList();
                         ArrayList<String> spinnerList = new ArrayList<>();
                         for(int i=0;i<departmentList.size();i++){
-                            spinnerList.add(departmentList.get(i)[0]);
+                            spinnerList.add(departmentList.get(i).getDeptName());
                         }
                         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, spinnerList);
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -429,7 +435,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
                         deletedIdList.clear();
                         for(int i=0;i<checks.size();i++){
                             if(checks.get(i)){
-                                deletedIdList.add(vmMainAdmin.getLecturerList().get(i)[0]);
+                                deletedIdList.add(vmMainAdmin.getLecturerList().get(i).getId());
                             }
                         }
                         textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_lecturer));
@@ -930,24 +936,24 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     public void onEditRequested(int position){
         try{
             addRequested = false;
-            ArrayList<String[]> lecturerList = vmMainAdmin.getLecturerList();
+            ArrayList<PersonType> lecturerList = vmMainAdmin.getLecturerList();
             editTextDialogId.setEnabled(false);
-            editTextDialogId.setText(lecturerList.get(position)[0]);
-            editTextDialogName.setText(lecturerList.get(position)[1]);
-            editTextDialogSurname.setText(lecturerList.get(position)[2]);
+            editTextDialogId.setText(lecturerList.get(position).getId());
+            editTextDialogName.setText(lecturerList.get(position).getName());
+            editTextDialogSurname.setText(lecturerList.get(position).getSurname());
 
             HashMap<String,String> departmentIdInfo = vmMainAdmin.getDepartmentIdInfo();
-            ArrayList<String[]> departmentList = vmMainAdmin.getDepartmentList();
+            ArrayList<DepartmentType> departmentList = vmMainAdmin.getDepartmentList();
             ArrayList<String> spinnerList = new ArrayList<>();
             for(int i=0;i<departmentList.size();i++){
-                spinnerList.add(departmentList.get(i)[0]);
+                spinnerList.add(departmentList.get(i).getDeptName());
             }
             ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, spinnerList);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerDialogDept.setAdapter(arrayAdapter);
             String department = "";
             for (String key : departmentIdInfo.keySet() ) {
-                if(lecturerList.get(position)[3].equals(key)){
+                if(lecturerList.get(position).getDeptId().equals(key)){
                     department = departmentIdInfo.get(key);
                     break;
                 }
@@ -973,7 +979,7 @@ public class Activity_Main_Admin_Lecturers extends AppCompatActivity implements 
     public void onDeleteRequested(int position){
         try{
             deletedIdList.clear();
-            deletedIdList.add(vmMainAdmin.getLecturerList().get(position)[0]);
+            deletedIdList.add(vmMainAdmin.getLecturerList().get(position).getId());
             textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_lecturer));
             alertDialogDeleteConfirmation.show();
         }

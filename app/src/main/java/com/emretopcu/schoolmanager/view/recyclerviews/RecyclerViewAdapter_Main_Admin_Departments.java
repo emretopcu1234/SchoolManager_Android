@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Departments;
 
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Adapter<ViewHolder_MAD> {
 
     private Activity_Main_Admin_Departments context;
-    private ArrayList<String[]> departmentList;
+    private ArrayList<DepartmentType> departmentList;
     private boolean checkBoxActive;
     private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
 
-    public RecyclerViewAdapter_Main_Admin_Departments(Activity_Main_Admin_Departments context, ArrayList<String[]> departmentList) {
+    public RecyclerViewAdapter_Main_Admin_Departments(Activity_Main_Admin_Departments context, ArrayList<DepartmentType> departmentList) {
         try{
             this.context = context;
             this.departmentList = departmentList;
@@ -40,7 +41,7 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
         }
     }
 
-    public void setDepartmentList(ArrayList<String[]> departmentList){
+    public void setDepartmentList(ArrayList<DepartmentType> departmentList){
         try{
             this.departmentList = departmentList;
             isChecked.clear();
@@ -185,8 +186,8 @@ public class RecyclerViewAdapter_Main_Admin_Departments extends RecyclerView.Ada
             holder.textViewDeptName.setOnLongClickListener(menuListener);
             holder.textViewDeptId.setOnLongClickListener(menuListener);
 
-            holder.textViewDeptName.setText(departmentList.get(position)[0]);
-            holder.textViewDeptId.setText(departmentList.get(position)[1]);
+            holder.textViewDeptName.setText(departmentList.get(position).getDeptName());
+            holder.textViewDeptId.setText(departmentList.get(position).getDeptId());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Main_Admin_Departments class' onBindViewHolder method.");

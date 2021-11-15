@@ -1,33 +1,30 @@
 package com.emretopcu.schoolmanager.model;
 
-import android.text.format.Time;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
 import com.emretopcu.schoolmanager.model.pojo.Semester;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Main_Admin;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +33,7 @@ import java.util.Map;
 public class Model_Main_Admin {
 
     private static Model_Main_Admin INSTANCE;
+    private Model_Login_Process modelLoginProcess;
     private Interface_Main_Admin vmMainAdmin;
 
     private FirebaseFirestore dbRef;
@@ -45,35 +43,35 @@ public class Model_Main_Admin {
     private CollectionReference semesterLecturersRef;
     private CollectionReference semesterStudentsRef;
 
-    private CollectionReference semesterConditionsRef;
     private CollectionReference departmentsRef;
     private CollectionReference deptAdminsRef;
     private CollectionReference lecturersRef;
     private CollectionReference studentsRef;
 
-    private HashMap<String,String> departmentsInfo;
-    private HashMap<String,String[]> deptAdminsInfo;
-    private HashMap<String,String[]> lecturersInfo;
-    private HashMap<String,String[]> studentsInfo;
+    private final HashMap<String,String> departmentsInfo = new HashMap<>();
+    private final HashMap<String,String[]> deptAdminsInfo = new HashMap<>();
+    private final HashMap<String,String[]> lecturersInfo = new HashMap<>();
+    private final HashMap<String,String[]> studentsInfo = new HashMap<>();
+
+    private final ArrayList<SemesterType> detailedSemesterList = new ArrayList<>();
+    private final ArrayList<DepartmentType> departmentList = new ArrayList<>();
+    private final ArrayList<PersonType> deptAdminList = new ArrayList<>();
+    private final ArrayList<PersonType> lecturerList = new ArrayList<>();
+    private final ArrayList<PersonType> studentList = new ArrayList<>();
 
     private Model_Main_Admin(){
         try{
+            modelLoginProcess = Model_Login_Process.getInstance();
             dbRef = FirebaseFirestore.getInstance();
             semestersRef = dbRef.collection("semesters");
             semesterDepartmentsRef = dbRef.collection("semesterDepartments");
             semesterDeptAdminsRef = dbRef.collection("semesterDeptAdmins");
             semesterLecturersRef = dbRef.collection("semesterLecturers");
             semesterStudentsRef = dbRef.collection("semesterStudents");
-
-            semesterConditionsRef = dbRef.collection("semesterConditions");
             departmentsRef = dbRef.collection("departments");
             deptAdminsRef = dbRef.collection("deptAdmins");
             lecturersRef = dbRef.collection("lecturers");
             studentsRef = dbRef.collection("students");
-            departmentsInfo = new HashMap<>();
-            deptAdminsInfo = new HashMap<>();
-            lecturersInfo = new HashMap<>();
-            studentsInfo = new HashMap<>();
             storeInitialData();
         }
         catch (Exception e){
@@ -210,31 +208,24 @@ public class Model_Main_Admin {
                         startDate.add(document.getTimestamp("startDate"));
                         endDate.add(document.getTimestamp("endDate"));
                     }
-                    ArrayList<String[]> detailedSemesterList = new ArrayList<>();
+                    detailedSemesterList.clear();
                     for(int i=0;i<semesterId.size();i++){
+                        SemesterType semester = new SemesterType();
+                        semester.setSemester(Common_Services.convertProcessedSemester(semesterId.get(i)));
+                        semester.setStartDate(Common_Services.convertTimestampToDateString(startDate.get(i)));
+                        semester.setEndDate(Common_Services.convertTimestampToDateString(endDate.get(i)));
                         if(Common_Services.isSemesterActive(startDate.get(i), endDate.get(i))){
-                            detailedSemesterList.add(new String[]{
-                                    Common_Services.convertProcessedSemester(semesterId.get(i)),
-                                    Common_Services.convertTimestampToDateString(startDate.get(i)),
-                                    Common_Services.convertTimestampToDateString(endDate.get(i)),
-                                    "ACTIVE"});
+                            semester.setStatus("ACTIVE");
                         }
                         else{
                             if(Common_Services.isSemesterFuture(startDate.get(i))){
-                                detailedSemesterList.add(new String[]{
-                                        Common_Services.convertProcessedSemester(semesterId.get(i)),
-                                        Common_Services.convertTimestampToDateString(startDate.get(i)),
-                                        Common_Services.convertTimestampToDateString(endDate.get(i)),
-                                        "FUTURE"});
+                                semester.setStatus("FUTURE");
                             }
                             else{
-                                detailedSemesterList.add(new String[]{
-                                        Common_Services.convertProcessedSemester(semesterId.get(i)),
-                                        Common_Services.convertTimestampToDateString(startDate.get(i)),
-                                        Common_Services.convertTimestampToDateString(endDate.get(i)),
-                                        "PAST"});
+                                semester.setStatus("PAST");
                             }
                         }
+                        detailedSemesterList.add(semester);
                     }
                     vmMainAdmin.onLoadDetailedSemestersResulted(detailedSemesterList);
                 }
@@ -287,9 +278,12 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> departmentList = new ArrayList<>();
+                    departmentList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        departmentList.add(new String[]{document.getString("deptName"),document.getString("deptId").toUpperCase()});
+                        DepartmentType department = new DepartmentType();
+                        department.setDeptName(document.getString("deptName"));
+                        department.setDeptId(document.getString("deptId").toUpperCase());
+                        departmentList.add(department);
                     }
                     vmMainAdmin.onGetDepartmentListResulted(departmentList);
                 }
@@ -312,11 +306,15 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> deptAdminList = new ArrayList<>();
+                    deptAdminList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String deptAdminId = document.get("deptAdminId").toString();
-                        deptAdminList.add(new String[]{deptAdminId,deptAdminsInfo.get(deptAdminId)[0],
-                                deptAdminsInfo.get(deptAdminId)[1],document.getString("deptId").toUpperCase()});
+                        PersonType person = new PersonType();
+                        person.setId(deptAdminId);
+                        person.setName(deptAdminsInfo.get(deptAdminId)[0]);
+                        person.setSurname(deptAdminsInfo.get(deptAdminId)[1]);
+                        person.setDeptId(document.getString("deptId").toUpperCase());
+                        deptAdminList.add(person);
                     }
                     vmMainAdmin.onGetDeptAdminListResulted(deptAdminList);
                 }
@@ -339,11 +337,15 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> lecturerList = new ArrayList<>();
+                    lecturerList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String lecturerId = document.get("lecturerId").toString();
-                        lecturerList.add(new String[]{lecturerId,lecturersInfo.get(lecturerId)[0],
-                                lecturersInfo.get(lecturerId)[1],document.getString("deptId").toUpperCase()});
+                        PersonType person = new PersonType();
+                        person.setId(lecturerId);
+                        person.setName(lecturersInfo.get(lecturerId)[0]);
+                        person.setSurname(lecturersInfo.get(lecturerId)[1]);
+                        person.setDeptId(document.getString("deptId").toUpperCase());
+                        lecturerList.add(person);
                     }
                     vmMainAdmin.onGetLecturerListResulted(lecturerList);
                 }
@@ -366,11 +368,15 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> studentList = new ArrayList<>();
+                    studentList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String studentId = document.get("studentId").toString();
-                        studentList.add(new String[]{studentId,studentsInfo.get(studentId)[0],
-                                studentsInfo.get(studentId)[1],document.getString("deptId").toUpperCase()});
+                        PersonType person = new PersonType();
+                        person.setId(studentId);
+                        person.setName(studentsInfo.get(studentId)[0]);
+                        person.setSurname(studentsInfo.get(studentId)[1]);
+                        person.setDeptId(document.getString("deptId").toUpperCase());
+                        studentList.add(person);
                     }
                     vmMainAdmin.onGetStudentListResulted(studentList);
                 }
@@ -395,11 +401,14 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> filteredDepartmentList = new ArrayList<>();
+                    departmentList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        filteredDepartmentList.add(new String[]{document.getString("deptName"),document.getString("deptId").toUpperCase()});
+                        DepartmentType department = new DepartmentType();
+                        department.setDeptName(document.getString("deptName"));
+                        department.setDeptId(document.getString("deptId").toUpperCase());
+                        departmentList.add(department);
                     }
-                    vmMainAdmin.onGetDepartmentListResulted(filteredDepartmentList);
+                    vmMainAdmin.onGetDepartmentListResulted(departmentList);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semesterDepartmentsRef.get method.");
@@ -428,7 +437,7 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> filteredDeptAdminList = new ArrayList<>();
+                    deptAdminList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String deptAdminId = document.get("deptAdminId").toString();
                         boolean isExist = true;
@@ -452,11 +461,15 @@ public class Model_Main_Admin {
                             }
                         }
                         if(isExist){
-                            filteredDeptAdminList.add(new String[]{deptAdminId,deptAdminsInfo.get(deptAdminId)[0],
-                                    deptAdminsInfo.get(deptAdminId)[1],document.getString("deptId").toUpperCase()});
+                            PersonType person = new PersonType();
+                            person.setId(deptAdminId);
+                            person.setName(deptAdminsInfo.get(deptAdminId)[0]);
+                            person.setSurname(deptAdminsInfo.get(deptAdminId)[1]);
+                            person.setDeptId(document.getString("deptId").toUpperCase());
+                            deptAdminList.add(person);
                         }
                     }
-                    vmMainAdmin.onGetDeptAdminListResulted(filteredDeptAdminList);
+                    vmMainAdmin.onGetDeptAdminListResulted(deptAdminList);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semesterDeptAdminsRef.get method.");
@@ -485,7 +498,7 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> filteredLecturerList = new ArrayList<>();
+                    lecturerList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String lecturerId = document.get("lecturerId").toString();
                         boolean isExist = true;
@@ -509,11 +522,15 @@ public class Model_Main_Admin {
                             }
                         }
                         if(isExist){
-                            filteredLecturerList.add(new String[]{lecturerId,lecturersInfo.get(lecturerId)[0],
-                                    lecturersInfo.get(lecturerId)[1],document.getString("deptId").toUpperCase()});
+                            PersonType person = new PersonType();
+                            person.setId(lecturerId);
+                            person.setName(lecturersInfo.get(lecturerId)[0]);
+                            person.setSurname(lecturersInfo.get(lecturerId)[1]);
+                            person.setDeptId(document.getString("deptId").toUpperCase());
+                            lecturerList.add(person);
                         }
                     }
-                    vmMainAdmin.onGetLecturerListResulted(filteredLecturerList);
+                    vmMainAdmin.onGetLecturerListResulted(lecturerList);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semesterLecturersRef.get method.");
@@ -542,7 +559,7 @@ public class Model_Main_Admin {
                         vmMainAdmin.dataLoadError();
                         return;
                     }
-                    ArrayList<String[]> filteredStudentList = new ArrayList<>();
+                    studentList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String studentId = document.get("studentId").toString();
                         boolean isExist = true;
@@ -566,11 +583,15 @@ public class Model_Main_Admin {
                             }
                         }
                         if(isExist){
-                            filteredStudentList.add(new String[]{studentId,studentsInfo.get(studentId)[0],
-                                    studentsInfo.get(studentId)[1],document.getString("deptId").toUpperCase()});
+                            PersonType person = new PersonType();
+                            person.setId(studentId);
+                            person.setName(studentsInfo.get(studentId)[0]);
+                            person.setSurname(studentsInfo.get(studentId)[1]);
+                            person.setDeptId(document.getString("deptId").toUpperCase());
+                            studentList.add(person);
                         }
                     }
-                    vmMainAdmin.onGetStudentListResulted(filteredStudentList);
+                    vmMainAdmin.onGetStudentListResulted(studentList);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Main_Admin class' semesterStudentsRef.get method.");
@@ -686,6 +707,7 @@ public class Model_Main_Admin {
                     Log.d("Exception", "Exception on Model_Main_Admin class' deptAdminsRef.document(id).set(docData).addOnCompleteListener method.");
                 }
             });
+            modelLoginProcess.createNewUser(id);
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -760,6 +782,7 @@ public class Model_Main_Admin {
                     Log.d("Exception", "Exception on Model_Main_Admin class' lecturersRef.document(id).set(docData).addOnCompleteListener method.");
                 }
             });
+            modelLoginProcess.createNewUser(id);
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -834,6 +857,7 @@ public class Model_Main_Admin {
                     Log.d("Exception", "Exception on Model_Main_Admin class' studentsRef.document(id).set(docData).addOnCompleteListener method.");
                 }
             });
+            modelLoginProcess.createNewUser(id);
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -871,10 +895,10 @@ public class Model_Main_Admin {
         }
     }
 
-    public void addSemester(String startDate, String endDate){
+    public void addSemester(SemesterAddOrEditType semesterInfo){
         try{
-            Timestamp timestampStart = Common_Services.convertDateStringToTimestamp(startDate);
-            Timestamp timestampEnd = Common_Services.convertDateStringToTimestamp(endDate);
+            Timestamp timestampStart = Common_Services.convertDateStringToTimestamp(semesterInfo.getStartDate());
+            Timestamp timestampEnd = Common_Services.convertDateStringToTimestamp(semesterInfo.getEndDate());
             if(timestampStart.compareTo(timestampEnd) >= 0){
                 vmMainAdmin.onAddSemesterResultedReverseOrder();
                 return;
@@ -887,7 +911,7 @@ public class Model_Main_Admin {
                 vmMainAdmin.onAddSemesterResultedHighDateDifference();
                 return;
             }
-            String semesterName = Common_Services.specifySemesterName(startDate,endDate);
+            String semesterName = Common_Services.specifySemesterName(semesterInfo.getStartDate(),semesterInfo.getEndDate());
             List<Object> semesterWeeksData = new ArrayList<>();
             Timestamp timestamp = timestampStart;
             Timestamp timestampWeekStart;
@@ -1371,10 +1395,10 @@ public class Model_Main_Admin {
         }
     }
 
-    public void editSemester(String startDate, String endDate){
+    public void editSemester(SemesterAddOrEditType semesterInfo){
         try{
-            Timestamp timestampStart = Common_Services.convertDateStringToTimestamp(startDate);
-            Timestamp timestampEnd = Common_Services.convertDateStringToTimestamp(endDate);
+            Timestamp timestampStart = Common_Services.convertDateStringToTimestamp(semesterInfo.getStartDate());
+            Timestamp timestampEnd = Common_Services.convertDateStringToTimestamp(semesterInfo.getEndDate());
             if(timestampStart.compareTo(timestampEnd) >= 0){
                 vmMainAdmin.onEditSemesterResultedReverseOrder();
                 return;
@@ -1387,7 +1411,7 @@ public class Model_Main_Admin {
                 vmMainAdmin.onEditSemesterResultedHighDateDifference();
                 return;
             }
-            String semesterName = Common_Services.specifySemesterName(startDate,endDate);
+            String semesterName = Common_Services.specifySemesterName(semesterInfo.getStartDate(),semesterInfo.getEndDate());
             List<Object> semesterWeeksData = new ArrayList<>();
             Timestamp timestamp = timestampStart;
             Timestamp timestampWeekStart;
@@ -1427,9 +1451,9 @@ public class Model_Main_Admin {
         }
     }
 
-    public void deleteDepartments(String unprocessedSemester, ArrayList<String> idList){
+    public void deleteDepartments(DepartmentDeleteType departments){
         try{
-            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String semester = Common_Services.convertUnprocessedSemester(departments.getSemester());
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -1447,8 +1471,8 @@ public class Model_Main_Admin {
                             }
                         }
                         for(int i=0;i<semesterList.size();i++){
-                            for(int j=0;j<idList.size();j++){
-                                semesterDepartmentsRef.whereEqualTo("deptId",idList.get(j).toLowerCase()).get().addOnCompleteListener(task1 -> {
+                            for(int j=0;j<departments.getIdList().size();j++){
+                                semesterDepartmentsRef.whereEqualTo("deptId",departments.getIdList().get(j).toLowerCase()).get().addOnCompleteListener(task1 -> {
                                     try{
                                         WriteBatch batchDeleteDepartments = dbRef.batch();
                                         for (QueryDocumentSnapshot document : task1.getResult()) {
@@ -1488,9 +1512,9 @@ public class Model_Main_Admin {
         }
     }
 
-    public void deleteDeptAdmins(String unprocessedSemester, ArrayList<String> idList){
+    public void deleteDeptAdmins(PersonDeleteType people){
         try{
-            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String semester = Common_Services.convertUnprocessedSemester(people.getSemester());
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -1508,8 +1532,8 @@ public class Model_Main_Admin {
                             }
                         }
                         for(int i=0;i<semesterList.size();i++){
-                            for(int j=0;j<idList.size();j++){
-                                semesterDeptAdminsRef.whereEqualTo("deptAdminId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                            for(int j=0;j<people.getIdList().size();j++){
+                                semesterDeptAdminsRef.whereEqualTo("deptAdminId",people.getIdList().get(j)).get().addOnCompleteListener(task1 -> {
                                     try{
                                         WriteBatch batchDeleteDeptAdmins = dbRef.batch();
                                         for (QueryDocumentSnapshot document : task1.getResult()) {
@@ -1549,9 +1573,9 @@ public class Model_Main_Admin {
         }
     }
 
-    public void deleteLecturers(String unprocessedSemester, ArrayList<String> idList){
+    public void deleteLecturers(PersonDeleteType people){
         try{
-            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String semester = Common_Services.convertUnprocessedSemester(people.getSemester());
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -1569,8 +1593,8 @@ public class Model_Main_Admin {
                             }
                         }
                         for(int i=0;i<semesterList.size();i++){
-                            for(int j=0;j<idList.size();j++){
-                                semesterLecturersRef.whereEqualTo("lecturerId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                            for(int j=0;j<people.getIdList().size();j++){
+                                semesterLecturersRef.whereEqualTo("lecturerId",people.getIdList().get(j)).get().addOnCompleteListener(task1 -> {
                                     try{
                                         WriteBatch batchDeleteLecturers = dbRef.batch();
                                         for (QueryDocumentSnapshot document : task1.getResult()) {
@@ -1610,9 +1634,9 @@ public class Model_Main_Admin {
         }
     }
 
-    public void deleteStudents(String unprocessedSemester, ArrayList<String> idList){
+    public void deleteStudents(PersonDeleteType people){
         try{
-            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String semester = Common_Services.convertUnprocessedSemester(people.getSemester());
             semestersRef.get().addOnCompleteListener(task -> {
                 try{
                     if(!task.isSuccessful()){
@@ -1630,8 +1654,8 @@ public class Model_Main_Admin {
                             }
                         }
                         for(int i=0;i<semesterList.size();i++){
-                            for(int j=0;j<idList.size();j++){
-                                semesterStudentsRef.whereEqualTo("studentId",idList.get(j)).get().addOnCompleteListener(task1 -> {
+                            for(int j=0;j<people.getIdList().size();j++){
+                                semesterStudentsRef.whereEqualTo("studentId",people.getIdList().get(j)).get().addOnCompleteListener(task1 -> {
                                     try{
                                         WriteBatch batchDeleteStudents = dbRef.batch();
                                         for (QueryDocumentSnapshot document : task1.getResult()) {

@@ -1,5 +1,9 @@
 package com.emretopcu.schoolmanager.viewmodel.interfaces;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,13 +12,13 @@ public interface Interface_Main_Admin {
 
     void onDepartmentIdInfo(HashMap<String,String> departmentIdInfo);
     void onLoadSemestersResulted(ArrayList<String> semestersList);
-    void onLoadDetailedSemestersResulted(ArrayList<String[]> detailedSemestersList);
+    void onLoadDetailedSemestersResulted(ArrayList<SemesterType> detailedSemestersList);
     void onIsSemesterActiveOrFutureResulted(boolean semesterActiveOrFuture);
 
-    void onGetDepartmentListResulted(ArrayList<String[]> departmentList);
-    void onGetDeptAdminListResulted(ArrayList<String[]> deptAdminList);
-    void onGetLecturerListResulted(ArrayList<String[]> lecturerList);
-    void onGetStudentListResulted(ArrayList<String[]> studentList);
+    void onGetDepartmentListResulted(ArrayList<DepartmentType> departmentList);
+    void onGetDeptAdminListResulted(ArrayList<PersonType> deptAdminList);
+    void onGetLecturerListResulted(ArrayList<PersonType> lecturerList);
+    void onGetStudentListResulted(ArrayList<PersonType> studentList);
 
     void onAddDepartmentResultedSuccessful();
     void onAddDepartmentResultedDuplicatedId();

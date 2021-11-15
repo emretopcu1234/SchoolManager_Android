@@ -4,6 +4,9 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
@@ -39,12 +42,12 @@ public class SD_Main_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteSemesterSuccessful;
     private ArrayList<String> semesterList;
-    private ArrayList<String[]> detailedSemesterList;
+    private ArrayList<SemesterType> detailedSemesterList;
     private boolean semesterActiveOrFuture;
-    private ArrayList<String[]> departmentList;
-    private ArrayList<String[]> deptAdminList;
-    private ArrayList<String[]> lecturerList;
-    private ArrayList<String[]> studentList;
+    private ArrayList<DepartmentType> departmentList;
+    private ArrayList<PersonType> deptAdminList;
+    private ArrayList<PersonType> lecturerList;
+    private ArrayList<PersonType> studentList;
     private HashMap<String,String> departmentIdInfo;
 
     private SD_Main_Admin(){
@@ -216,11 +219,11 @@ public class SD_Main_Admin {
         this.semesterList = semesterList;
     }
 
-    public ArrayList<String[]> getDetailedSemesterList() {
+    public ArrayList<SemesterType> getDetailedSemesterList() {
         return detailedSemesterList;
     }
 
-    public void setDetailedSemesterList(ArrayList<String[]> detailedSemesterList) {
+    public void setDetailedSemesterList(ArrayList<SemesterType> detailedSemesterList) {
         this.detailedSemesterList = detailedSemesterList;
     }
 
@@ -232,35 +235,35 @@ public class SD_Main_Admin {
         this.semesterActiveOrFuture = semesterActiveOrFuture;
     }
 
-    public ArrayList<String[]> getDepartmentList() {
+    public ArrayList<DepartmentType> getDepartmentList() {
         return departmentList;
     }
 
-    public void setDepartmentList(ArrayList<String[]> departmentList) {
+    public void setDepartmentList(ArrayList<DepartmentType> departmentList) {
         this.departmentList = departmentList;
     }
 
-    public ArrayList<String[]> getDeptAdminList() {
+    public ArrayList<PersonType> getDeptAdminList() {
         return deptAdminList;
     }
 
-    public void setDeptAdminList(ArrayList<String[]> deptAdminList) {
+    public void setDeptAdminList(ArrayList<PersonType> deptAdminList) {
         this.deptAdminList = deptAdminList;
     }
 
-    public ArrayList<String[]> getLecturerList() {
+    public ArrayList<PersonType> getLecturerList() {
         return lecturerList;
     }
 
-    public void setLecturerList(ArrayList<String[]> lecturerList) {
+    public void setLecturerList(ArrayList<PersonType> lecturerList) {
         this.lecturerList = lecturerList;
     }
 
-    public ArrayList<String[]> getStudentList() {
+    public ArrayList<PersonType> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(ArrayList<String[]> studentList) {
+    public void setStudentList(ArrayList<PersonType> studentList) {
         this.studentList = studentList;
     }
 
