@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -102,6 +103,8 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
     private String surnameFilter = "";
     private ArrayList<String> deptFilter = new ArrayList<>();
     private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
+
+    private PersonType deptAdminInfo = new PersonType();
 
 
 
@@ -470,6 +473,17 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             });
 
             vmDeptAdmin = new ViewModelProvider(this).get(VM_Dept_Admin.class);
+            vmDeptAdmin.getPersonInfoSuccessful().observe(this,e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        deptAdminInfo = vmDeptAdmin.getDeptAdminInfo();
+                        fragmentUserAndSemester.setName(deptAdminInfo.getName() + " " + deptAdminInfo.getSurname());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' vmDeptAdmin.getPersonInfoSuccessful().observe method.");
+                }
+            });
             vmDeptAdmin.getSetSemestersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
@@ -535,7 +549,7 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            fragmentUserAndSemester.setName(vmDeptAdmin.getDeptAdminId());
+            vmDeptAdmin.onPersonInfoRequested();
             vmDeptAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){

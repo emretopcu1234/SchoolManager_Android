@@ -1,4 +1,4 @@
-package com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin;
+package com.emretopcu.schoolmanager.commonObjectTypes;
 
 import java.util.ArrayList;
 

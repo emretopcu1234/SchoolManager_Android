@@ -25,11 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonDeleteType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonDeleteType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;

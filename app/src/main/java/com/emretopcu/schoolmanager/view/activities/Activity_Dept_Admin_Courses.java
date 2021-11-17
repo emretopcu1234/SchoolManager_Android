@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;
@@ -111,6 +112,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
     private ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
     private boolean semesterActive;
+    private PersonType deptAdminInfo = new PersonType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -523,6 +525,17 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             });
 
             vmDeptAdmin = new ViewModelProvider(this).get(VM_Dept_Admin.class);
+            vmDeptAdmin.getPersonInfoSuccessful().observe(this,e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        deptAdminInfo = vmDeptAdmin.getDeptAdminInfo();
+                        fragmentUserAndSemester.setName(deptAdminInfo.getName() + " " + deptAdminInfo.getSurname());
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' vmDeptAdmin.getPersonInfoSuccessful().observe method.");
+                }
+            });
             vmDeptAdmin.getSetSemestersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
@@ -534,7 +547,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' vmDeptAdmin.getSetSemestersSuccessful().observe method.");
                 }
             });
-            vmDeptAdmin.getIsSemesterActiveSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+            vmDeptAdmin.getIsSemesterActiveOrFutureSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         progressBarIndicator_isSemesterActive = true;
@@ -664,7 +677,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            fragmentUserAndSemester.setName(vmDeptAdmin.getDeptAdminId());
+            vmDeptAdmin.onPersonInfoRequested();
             vmDeptAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
@@ -734,7 +747,6 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             // TODO o yüzden bu metod düzenlenecek ve yeni bir activity'ye geçiş yapılacak.
             // TODO ama ondan önce şimdilik bu haliyle dene. tüm dept admin kısmının doğru çalıştığını görünce düzenle.
             // TODO ayrıca bu classta daha yukarılardaki todo'ları ve students için gereken checkbox kısmını da daha sonra implement et.
-            // TODO kod düzelince model main admin'e bak. (semesterconditions'taki document'lar silinmiş görünüyor.)
             addRequested = false;
             ArrayList<String[]> courseList = vmDeptAdmin.getCourseList();
             editTextDialogCourseId.setEnabled(false);
@@ -795,7 +807,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
-            vmDeptAdmin.onSemesterActiveRequested(selectedSemester);
+            vmDeptAdmin.onSemesterActiveOrFutureRequested(selectedSemester);
             vmDeptAdmin.onCourseListRequested(selectedSemester);
         }
         catch(Exception e){

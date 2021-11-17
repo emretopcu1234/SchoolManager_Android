@@ -6,8 +6,9 @@ import java.util.HashMap;
 public interface Interface_Dept_Admin {
     void dataLoadError();
 
+    void onDepartmentIdInfo(HashMap<String,String> departmentIdInfo);
     void onLoadSemestersResulted(ArrayList<String> semestersList);
-    void onIsSemesterActiveResulted(boolean semesterActive);
+    void onIsSemesterActiveOrFutureResulted(boolean semesterActiveOrFuture);
 
     void onGetCourseListResulted(ArrayList<String[]> courseList);
     void onGetLecturerListResulted(ArrayList<String[]> lecturerList);

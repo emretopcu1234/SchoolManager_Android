@@ -23,8 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterAddOrEditType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
 import com.emretopcu.schoolmanager.view.fragments.Fragment_User_and_Semester;

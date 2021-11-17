@@ -2,18 +2,16 @@ package com.emretopcu.schoolmanager.model;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentAddOrEditType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentDeleteType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentFilterType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonAddOrEditType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonDeleteType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonFilterType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterAddOrEditType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentDeleteType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonDeleteType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterType;
 import com.emretopcu.schoolmanager.model.pojo.Semester;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Main_Admin;
 import com.google.firebase.Timestamp;
@@ -152,7 +150,7 @@ public class Model_Main_Admin {
             });
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on Model_Main_Admin class' storePeopleData method.");
+            Log.d("Exception", "Exception on Model_Main_Admin class' storeInitialData method.");
         }
     }
 
@@ -161,7 +159,7 @@ public class Model_Main_Admin {
             vmMainAdmin.onDepartmentIdInfo(departmentsInfo);
         }
         catch (Exception e){
-            Log.d("Exception", "Exception on Model_Main_Admin class' getInitialDepartmentInfo method.");
+            Log.d("Exception", "Exception on Model_Main_Admin class' getDepartmentIdInfo method.");
         }
     }
 

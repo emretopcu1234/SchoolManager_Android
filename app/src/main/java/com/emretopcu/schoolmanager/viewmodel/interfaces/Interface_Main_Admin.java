@@ -1,8 +1,8 @@
 package com.emretopcu.schoolmanager.viewmodel.interfaces;
 
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

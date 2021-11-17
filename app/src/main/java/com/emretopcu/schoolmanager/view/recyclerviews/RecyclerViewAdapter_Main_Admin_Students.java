@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Main_Admin_Students;
 
 import java.util.ArrayList;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 
 import java.util.ArrayList;
 

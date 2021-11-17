@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.deptAdmin.E_Add_Or_Edit_Course_State;
 
@@ -14,8 +15,9 @@ public class SD_Dept_Admin {
 
     private static SD_Dept_Admin INSTANCE;
 
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> personInfoSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
-    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveOrFutureSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCoursesSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
@@ -29,14 +31,17 @@ public class SD_Dept_Admin {
     private ArrayList<String[]> lecturerList;
     private ArrayList<String[]> studentList;
     private ArrayList<String[]> departmentList;
-    private String deptAdminId;
+    private HashMap<String,String> departmentIdInfo;
+    private PersonType deptAdminInfo;
 
     private SD_Dept_Admin(){
         try{
+            personInfoSuccessful = new MutableLiveData<>();
+            personInfoSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setSemestersSuccessful = new MutableLiveData<>();
             setSemestersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            isSemesterActiveSuccessful = new MutableLiveData<>();
-            isSemesterActiveSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            isSemesterActiveOrFutureSuccessful = new MutableLiveData<>();
+            isSemesterActiveOrFutureSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setCoursesSuccessful = new MutableLiveData<>();
             setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setLecturersSuccessful = new MutableLiveData<>();
@@ -57,6 +62,8 @@ public class SD_Dept_Admin {
             lecturerList = new ArrayList<>();
             studentList = new ArrayList<>();
             departmentList = new ArrayList<>();
+            departmentIdInfo = new HashMap<>();
+            deptAdminInfo = new PersonType();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on SD_Dept_Admin class' constructor method.");
@@ -76,12 +83,16 @@ public class SD_Dept_Admin {
         }
     }
 
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getPersonInfoSuccessful() {
+        return personInfoSuccessful;
+    }
+
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetSemestersSuccessful() {
         return setSemestersSuccessful;
     }
 
-    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveSuccessful() {
-        return isSemesterActiveSuccessful;
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getIsSemesterActiveOrFutureSuccessful() {
+        return isSemesterActiveOrFutureSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetCoursesSuccessful() {
@@ -160,11 +171,19 @@ public class SD_Dept_Admin {
         this.departmentList = departmentList;
     }
 
-    public String getDeptAdminId() {
-        return deptAdminId;
+    public HashMap<String, String> getDepartmentIdInfo() {
+        return departmentIdInfo;
     }
 
-    public void setDeptAdminId(String deptAdminId) {
-        this.deptAdminId = deptAdminId;
+    public void setDepartmentIdInfo(HashMap<String, String> departmentIdInfo) {
+        this.departmentIdInfo = departmentIdInfo;
+    }
+
+    public PersonType getDeptAdminInfo() {
+        return deptAdminInfo;
+    }
+
+    public void setDeptAdminInfo(PersonType deptAdminInfo) {
+        this.deptAdminInfo = deptAdminInfo;
     }
 }

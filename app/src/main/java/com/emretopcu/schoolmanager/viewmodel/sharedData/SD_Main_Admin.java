@@ -4,9 +4,9 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.DepartmentType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.PersonType;
-import com.emretopcu.schoolmanager.commonObjectTypes.mainAdmin.SemesterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
+import com.emretopcu.schoolmanager.commonObjectTypes.SemesterType;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Department_State;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
