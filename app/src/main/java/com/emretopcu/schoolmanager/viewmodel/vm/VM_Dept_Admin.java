@@ -5,6 +5,10 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.model.Model_Dept_Admin;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
@@ -37,8 +41,6 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
             modelDeptAdmin = Model_Dept_Admin.getInstance();
             modelDeptAdmin.setVmDeptAdmin(this);
             modelDeptAdmin.getDepartmentIdInfo();
-            sdDeptAdmin.setDeptAdminInfo(modelDeptAdmin.getDeptAdminInfo());
-            // bu class ilk cagirildiginda henuz modeldeptadmin databaseden tum dataları cekemedigi icin isim soyisim vb bilgileri null donuyor. duzelt!
             personInfoSuccessful = sdDeptAdmin.getPersonInfoSuccessful();
             setSemestersSuccessful = sdDeptAdmin.getSetSemestersSuccessful();
             isSemesterActiveOrFutureSuccessful = sdDeptAdmin.getIsSemesterActiveOrFutureSuccessful();
@@ -75,10 +77,10 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
     }
 
-    public void onPersonInfoRequested(){
+    public void onPersonInfoRequested(String selectedSemester){
         try{
             personInfoSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            personInfoSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            modelDeptAdmin.getDeptAdminInfo(selectedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onPersonInfoRequested method.");
@@ -125,30 +127,30 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
     }
 
-    public void onFilteredCourseListRequested(String selectedSemester, String idFilter, String nameFilter){
+    public void onFilteredCourseListRequested(CourseFilterType courseFilter){
         try{
             setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelDeptAdmin.getFilteredCourseList(selectedSemester, idFilter, nameFilter);
+            modelDeptAdmin.getFilteredCourseList(courseFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredCourseListRequested method.");
         }
     }
 
-    public void onFilteredLecturerListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter){
+    public void onFilteredLecturerListRequested(PersonFilterType personFilter){
         try{
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelDeptAdmin.getFilteredLecturerList(selectedSemester, idFilter, nameFilter, surnameFilter);
+            modelDeptAdmin.getFilteredLecturerList(personFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredLecturerListRequested method.");
         }
     }
 
-    public void onFilteredStudentListRequested(String selectedSemester, String idFilter, String nameFilter, String surnameFilter, ArrayList<String> deptFilter){
+    public void onFilteredStudentListRequested(PersonFilterType personFilter){
         try{
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelDeptAdmin.getFilteredStudentList(selectedSemester, idFilter, nameFilter, surnameFilter, deptFilter);
+            modelDeptAdmin.getFilteredStudentList(personFilter);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredStudentListRequested method.");
@@ -233,19 +235,19 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         return sdDeptAdmin.isSemesterActive();
     }
 
-    public ArrayList<String[]> getCourseList(){
+    public ArrayList<CourseType> getCourseList(){
         return sdDeptAdmin.getCourseList();
     }
 
-    public ArrayList<String[]> getLecturerList(){
+    public ArrayList<PersonType> getLecturerList(){
         return sdDeptAdmin.getLecturerList();
     }
 
-    public ArrayList<String[]> getStudentList(){
+    public ArrayList<PersonType> getStudentList(){
         return sdDeptAdmin.getStudentList();
     }
 
-    public ArrayList<String[]> getDepartmentList(){
+    public ArrayList<DepartmentType> getDepartmentList(){
         return sdDeptAdmin.getDepartmentList();
     }
 
@@ -296,7 +298,18 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
-    public void onGetCourseListResulted(ArrayList<String[]> courseList) {
+    public void onDeptAdminInfoResulted(PersonType person) {
+        try{
+            sdDeptAdmin.setDeptAdminInfo(person);
+            personInfoSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onDeptAdminInfoResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetCourseListResulted(ArrayList<CourseType> courseList) {
         try{
 
         }
@@ -306,7 +319,7 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
-    public void onGetLecturerListResulted(ArrayList<String[]> lecturerList) {
+    public void onGetLecturerListResulted(ArrayList<PersonType> lecturerList) {
         try{
 
         }
@@ -316,7 +329,7 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
-    public void onGetStudentListResulted(ArrayList<String[]> studentList) {
+    public void onGetStudentListResulted(ArrayList<PersonType> studentList) {
         try{
 
         }
@@ -326,7 +339,7 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
-    public void onGetDepartmentListResulted(ArrayList<String[]> departmentList) {
+    public void onGetDepartmentListResulted(ArrayList<DepartmentType> departmentList) {
         try{
 
         }

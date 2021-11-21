@@ -677,7 +677,6 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            vmDeptAdmin.onPersonInfoRequested();
             vmDeptAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
@@ -807,6 +806,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+            vmDeptAdmin.onPersonInfoRequested(selectedSemester);
             vmDeptAdmin.onSemesterActiveOrFutureRequested(selectedSemester);
             vmDeptAdmin.onCourseListRequested(selectedSemester);
         }

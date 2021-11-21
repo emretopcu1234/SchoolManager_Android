@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
@@ -84,6 +85,8 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
     private String surnameFilter = "";
 
     private PersonType deptAdminInfo = new PersonType();
+    private final PersonFilterType personFilter = new PersonFilterType();
+    // TODO main admin lecturers kısmına bakarak düzenle.
 
 
     @Override
@@ -427,7 +430,6 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            vmDeptAdmin.onPersonInfoRequested();
             vmDeptAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
@@ -505,6 +507,7 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+            vmDeptAdmin.onPersonInfoRequested(selectedSemester);
             vmDeptAdmin.onLecturerListRequested(selectedSemester);
         }
         catch(Exception e){

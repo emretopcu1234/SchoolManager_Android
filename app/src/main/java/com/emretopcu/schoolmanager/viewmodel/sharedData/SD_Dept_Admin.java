@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.deptAdmin.E_Add_Or_Edit_Course_State;
@@ -27,10 +29,10 @@ public class SD_Dept_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteCoursesSuccessful;
     private ArrayList<String> semesterList;
     private boolean semesterActive;
-    private ArrayList<String[]> courseList;
-    private ArrayList<String[]> lecturerList;
-    private ArrayList<String[]> studentList;
-    private ArrayList<String[]> departmentList;
+    private ArrayList<CourseType> courseList;
+    private ArrayList<PersonType> lecturerList;
+    private ArrayList<PersonType> studentList;
+    private ArrayList<DepartmentType> departmentList;
     private HashMap<String,String> departmentIdInfo;
     private PersonType deptAdminInfo;
 
@@ -139,35 +141,35 @@ public class SD_Dept_Admin {
         this.semesterActive = semesterActive;
     }
 
-    public ArrayList<String[]> getCourseList() {
+    public ArrayList<CourseType> getCourseList() {
         return courseList;
     }
 
-    public void setCourseList(ArrayList<String[]> courseList) {
+    public void setCourseList(ArrayList<CourseType> courseList) {
         this.courseList = courseList;
     }
 
-    public ArrayList<String[]> getLecturerList() {
+    public ArrayList<PersonType> getLecturerList() {
         return lecturerList;
     }
 
-    public void setLecturerList(ArrayList<String[]> lecturerList) {
+    public void setLecturerList(ArrayList<PersonType> lecturerList) {
         this.lecturerList = lecturerList;
     }
 
-    public ArrayList<String[]> getStudentList() {
+    public ArrayList<PersonType> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(ArrayList<String[]> studentList) {
+    public void setStudentList(ArrayList<PersonType> studentList) {
         this.studentList = studentList;
     }
 
-    public ArrayList<String[]> getDepartmentList() {
+    public ArrayList<DepartmentType> getDepartmentList() {
         return departmentList;
     }
 
-    public void setDepartmentList(ArrayList<String[]> departmentList) {
+    public void setDepartmentList(ArrayList<DepartmentType> departmentList) {
         this.departmentList = departmentList;
     }
 

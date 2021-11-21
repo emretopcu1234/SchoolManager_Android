@@ -549,7 +549,6 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             if(toastMessage != null){
                 toastMessage.cancel();
             }
-            vmDeptAdmin.onPersonInfoRequested();
             vmDeptAdmin.onLoadSemestersRequested();
         }
         catch (Exception e){
@@ -630,6 +629,7 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             resetWidgets();
             Common_Variables_View.SELECTED_SEMESTER = selectedSemester;
             Common_Variables_View.SEMESTER_SPINNER_POSITION = position;
+            vmDeptAdmin.onPersonInfoRequested(selectedSemester);
             vmDeptAdmin.onStudentListRequested(selectedSemester);
             vmDeptAdmin.onDepartmentListRequested(selectedSemester);
         }
