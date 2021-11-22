@@ -37,6 +37,8 @@ import com.emretopcu.schoolmanager.viewmodel.vm.VM_Dept_Admin;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Login_Process;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements Interface_General_Activity {
 
     private Interface_Fragment_User_and_Semester fragmentUserAndSemester;
@@ -80,14 +82,8 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
     private ProgressBar progressBarLecturer;
     private ProgressBar progressBarChangePassword;
 
-    private String idFilter = "";
-    private String nameFilter = "";
-    private String surnameFilter = "";
-
     private PersonType deptAdminInfo = new PersonType();
     private final PersonFilterType personFilter = new PersonFilterType();
-    // TODO main admin lecturers kısmına bakarak düzenle.
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,8 +202,9 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
                     editTextId.setVisibility(View.INVISIBLE);
                     editTextId.clearFocus();
                     progressBarLecturer.setVisibility(View.VISIBLE);
-                    idFilter = "";
-                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                    personFilter.setIdFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Lecturers class' buttonCancelSearchId setOnClickListener method.");
@@ -238,8 +235,9 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
                     editTextName.setVisibility(View.INVISIBLE);
                     editTextName.clearFocus();
                     progressBarLecturer.setVisibility(View.VISIBLE);
-                    nameFilter = "";
-                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                    personFilter.setNameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Lecturers class' buttonCancelSearchName setOnClickListener method.");
@@ -270,8 +268,9 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
                     editTextSurname.setVisibility(View.INVISIBLE);
                     editTextSurname.clearFocus();
                     progressBarLecturer.setVisibility(View.VISIBLE);
-                    surnameFilter = "";
-                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                    personFilter.setSurnameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Lecturers class' buttonCancelSearchSurname setOnClickListener method.");
@@ -304,42 +303,48 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
                 public void afterTextChanged(Editable s) {
                     try{
                         if(s.hashCode() == editTextId.getText().hashCode()){
-                            idFilter = fieldValue;
-                            if(idFilter.length() == 0){
+                            personFilter.setIdFilter(fieldValue);
+                            if(personFilter.getIdFilter().length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
                                     progressBarLecturer.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarLecturer.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextName.getText().hashCode()){
-                            nameFilter = fieldValue;
-                            if(nameFilter.length() == 0){
+                            personFilter.setNameFilter(fieldValue);
+                            if(personFilter.getNameFilter().length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
                                     progressBarLecturer.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarLecturer.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextSurname.getText().hashCode()){
-                            surnameFilter = fieldValue;
-                            if(surnameFilter.length() == 0){
+                            personFilter.setSurnameFilter(fieldValue);
+                            if(personFilter.getSurnameFilter().length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
                                     progressBarLecturer.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarLecturer.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredLecturerListRequested(personFilter);
                             }
                         }
                     }
@@ -458,9 +463,10 @@ public class Activity_Dept_Admin_Lecturers extends AppCompatActivity implements 
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-            idFilter = "";
-            nameFilter = "";
-            surnameFilter = "";
+            personFilter.setIdFilter("");
+            personFilter.setNameFilter("");
+            personFilter.setSurnameFilter("");
+            personFilter.setDeptFilter(new ArrayList<>());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Lecturers class' resetWidgets method.");

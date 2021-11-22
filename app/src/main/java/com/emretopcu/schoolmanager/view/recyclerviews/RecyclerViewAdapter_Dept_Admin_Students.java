@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Dept_Admin_Students;
 
 import java.util.ArrayList;
@@ -16,10 +17,9 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapter<ViewHolder_DASt> {
 
     private Activity_Dept_Admin_Students context;
-    private ArrayList<String[]> studentList;
+    private ArrayList<PersonType> studentList;
 
-
-    public RecyclerViewAdapter_Dept_Admin_Students(Activity_Dept_Admin_Students context, ArrayList<String[]> studentList) {
+    public RecyclerViewAdapter_Dept_Admin_Students(Activity_Dept_Admin_Students context, ArrayList<PersonType> studentList) {
         try{
             this.context = context;
             this.studentList = studentList;
@@ -29,7 +29,7 @@ public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapte
         }
     }
 
-    public void setStudentList(ArrayList<String[]> studentList){
+    public void setStudentList(ArrayList<PersonType> studentList){
         try{
             this.studentList = studentList;
             notifyDataSetChanged();
@@ -53,15 +53,14 @@ public class RecyclerViewAdapter_Dept_Admin_Students extends RecyclerView.Adapte
         }
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder_DASt viewHolder, int position) {
         try{
             final ViewHolder_Dept_Admin_Students holder = (ViewHolder_Dept_Admin_Students) viewHolder;
-            holder.textViewId.setText(studentList.get(position)[0]);
-            holder.textViewName.setText(studentList.get(position)[1]);
-            holder.textViewSurname.setText(studentList.get(position)[2]);
-            holder.textViewDeptName.setText(studentList.get(position)[3]);
+            holder.textViewId.setText(studentList.get(position).getId());
+            holder.textViewName.setText(studentList.get(position).getName());
+            holder.textViewSurname.setText(studentList.get(position).getSurname());
+            holder.textViewDeptName.setText(studentList.get(position).getDeptId());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Students class' onBindViewHolder method.");

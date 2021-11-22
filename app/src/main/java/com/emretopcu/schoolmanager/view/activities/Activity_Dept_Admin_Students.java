@@ -19,10 +19,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
@@ -71,6 +73,7 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
     private Button buttonDialogChangePasswordCancel;
     private Helper_Dialog_Change_Password helperDialogChangePassword;
 
+    private Switch switchShowAllDept;
     private Button buttonSearchId;
     private Button buttonCancelSearchId;
     private Button buttonSearchName;
@@ -98,18 +101,11 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
 
     private boolean progressBarIndicator_setStudents;
     private boolean progressBarIndicator_setDepartments;
-    private String idFilter = "";
-    private String nameFilter = "";
-    private String surnameFilter = "";
-    private ArrayList<String> deptFilter = new ArrayList<>();
     private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
 
     private PersonType deptAdminInfo = new PersonType();
+    private final PersonFilterType personFilter = new PersonFilterType();
 
-
-
-    // TODO checkbox eklenecek (show all departments ismiyle)
-    // TODO buna göre ya tüm bölümlerdeki öğrenciler ya da sadece ilgili departmentın öğrencileri gelecek
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +152,8 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                     for(int i=0;i<adapterFilter.getChecks().size();i++){
                         previousFilterChecks.add(adapterFilter.getChecks().get(i));
                     }
-                    deptFilter = adapterFilter.getFilteredDepartmentList();
-                    if(deptFilter.size() > 0){
+                    personFilter.setDeptFilter(adapterFilter.getFilteredDepartmentList());
+                    if(personFilter.getDeptFilter().size() > 0){
                         buttonFilterDeptName.setVisibility(View.INVISIBLE);
                         buttonCancelFilterDeptName.setVisibility(View.VISIBLE);
                     }
@@ -165,7 +161,8 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                         buttonFilterDeptName.setVisibility(View.VISIBLE);
                         buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
                     }
-                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                     alertDialogFilter.dismiss();
                 }
                 catch (Exception e){
@@ -258,6 +255,40 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             progressBarChangePassword = viewDialogChangePassword.findViewById(R.id.progressBar);
             helperDialogChangePassword = new Helper_Dialog_Change_Password(this);
 
+            switchShowAllDept = findViewById(R.id.switch_show_all_departments);
+            switchShowAllDept.setOnClickListener(v -> {
+                try{
+                    if(switchShowAllDept.isChecked()){
+                        if(adapterFilter.getFilteredDepartmentList().size() == 0){
+                            buttonFilterDeptName.setVisibility(View.VISIBLE);
+                            buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+                        }
+                        else{
+                            buttonFilterDeptName.setVisibility(View.INVISIBLE);
+                            buttonCancelFilterDeptName.setVisibility(View.VISIBLE);
+                        }
+                        personFilter.setDeptFilter(adapterFilter.getFilteredDepartmentList());
+                    }
+                    else{
+                        buttonFilterDeptName.setVisibility(View.INVISIBLE);
+                        buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+                        ArrayList<String> deptFilter = new ArrayList<>();
+                        for(int i=0;i<vmDeptAdmin.getDepartmentList().size();i++){
+                            if(vmDeptAdmin.getDepartmentList().get(i).getDeptId().toLowerCase().equals(deptAdminInfo.getDeptId())){
+                                deptFilter.add(vmDeptAdmin.getDepartmentList().get(i).getDeptName());
+                                break;
+                            }
+                        }
+                        personFilter.setDeptFilter(deptFilter);
+                    }
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' switchShowAllDept setOnClickListener method.");
+                }
+            });
+
             buttonSearchId = findViewById(R.id.button_search_id);
             buttonSearchId.setOnClickListener(v -> {
                 try{
@@ -282,8 +313,9 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                     editTextId.setVisibility(View.INVISIBLE);
                     editTextId.clearFocus();
                     progressBarStudent.setVisibility(View.VISIBLE);
-                    idFilter = "";
-                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setIdFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' buttonCancelSearchId setOnClickListener method.");
@@ -314,8 +346,9 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                     editTextName.setVisibility(View.INVISIBLE);
                     editTextName.clearFocus();
                     progressBarStudent.setVisibility(View.VISIBLE);
-                    nameFilter = "";
-                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setNameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' buttonCancelSearchName setOnClickListener method.");
@@ -346,8 +379,9 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                     editTextSurname.setVisibility(View.INVISIBLE);
                     editTextSurname.clearFocus();
                     progressBarStudent.setVisibility(View.VISIBLE);
-                    surnameFilter = "";
-                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                    personFilter.setSurnameFilter("");
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' buttonCancelSearchSurname setOnClickListener method.");
@@ -400,42 +434,48 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
                 public void afterTextChanged(Editable s) {
                     try{
                         if(s.hashCode() == editTextId.getText().hashCode()){
-                            idFilter = fieldValue;
-                            if(idFilter.length() == 0){
+                            personFilter.setIdFilter(fieldValue);
+                            if(personFilter.getIdFilter().length() == 0){
                                 if (buttonSearchId.getVisibility() == View.INVISIBLE){
                                     progressBarStudent.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarStudent.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextName.getText().hashCode()){
-                            nameFilter = fieldValue;
-                            if(nameFilter.length() == 0){
+                            personFilter.setNameFilter(fieldValue);
+                            if(personFilter.getNameFilter().length() == 0){
                                 if (buttonSearchName.getVisibility() == View.INVISIBLE){
                                     progressBarStudent.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarStudent.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                             }
                         }
                         else if(s.hashCode() == editTextSurname.getText().hashCode()){
-                            surnameFilter = fieldValue;
-                            if(surnameFilter.length() == 0){
+                            personFilter.setSurnameFilter(fieldValue);
+                            if(personFilter.getSurnameFilter().length() == 0){
                                 if (buttonSearchSurname.getVisibility() == View.INVISIBLE){
                                     progressBarStudent.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                                 }
                             }
                             else{
                                 progressBarStudent.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter,surnameFilter,deptFilter);
+                                personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredStudentListRequested(personFilter);
                             }
                         }
                     }
@@ -559,6 +599,7 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
     private void resetWidgets(){
         try{
             progressBarStudent.setVisibility(View.VISIBLE);
+            switchShowAllDept.setChecked(true);
             buttonSearchId.setVisibility(View.VISIBLE);
             buttonCancelSearchId.setVisibility(View.INVISIBLE);
             buttonSearchName.setVisibility(View.VISIBLE);
@@ -579,10 +620,10 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             editTextSurname.setText(null);
             editTextSurname.setVisibility(View.INVISIBLE);
             editTextSurname.clearFocus();
-            idFilter = "";
-            nameFilter = "";
-            surnameFilter = "";
-            deptFilter.clear();
+            personFilter.setIdFilter("");
+            personFilter.setNameFilter("");
+            personFilter.setSurnameFilter("");
+            personFilter.setDeptFilter(new ArrayList<>());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Students class' resetWidgets method.");

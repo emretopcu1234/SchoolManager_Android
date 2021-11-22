@@ -94,10 +94,8 @@ public class Model_Dept_Admin {
                         Log.d("Exception","Data Load Error on storeInitialData!!!");
                         return;
                     }
-                    else{
-                        deptAdminName = task.getResult().getString("name");
-                        deptAdminSurname = task.getResult().getString("surname");
-                    }
+                    deptAdminName = task.getResult().getString("name");
+                    deptAdminSurname = task.getResult().getString("surname");
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Dept_Admin class' deptAdminsRef.document(deptAdminId).get().addOnCompleteListener method.");
@@ -443,7 +441,52 @@ public class Model_Dept_Admin {
 
     public void getFilteredLecturerList(PersonFilterType personFilter){
         try{
-
+            if(personFilter.getIdFilter().length() == 0){
+                personFilter.setIdFilter("2"); // lecturer ids always start with 2.
+            }
+            String idFilter = personFilter.getIdFilter();
+            String semester = Common_Services.convertUnprocessedSemester(personFilter.getSemester());
+            String nameFilter = Common_Services.convertUnprocessedName(personFilter.getNameFilter());
+            String surnameFilter = Common_Services.convertUnprocessedName(personFilter.getSurnameFilter());
+            semesterLecturersRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("lecturerId",idFilter)
+                    .whereLessThanOrEqualTo("lecturerId", idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmDeptAdmin.dataLoadError();
+                        return;
+                    }
+                    lecturerList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String lecturerId = document.get("lecturerId").toString();
+                        boolean isExist = true;
+                        if(!document.getString("deptId").equals(deptId)){
+                            isExist = false;
+                        }
+                        if(nameFilter.length() > 0){
+                            if(!lecturersInfo.get(lecturerId)[0].startsWith(nameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(surnameFilter.length() > 0){
+                            if(!lecturersInfo.get(lecturerId)[1].startsWith(surnameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(isExist){
+                            PersonType person = new PersonType();
+                            person.setId(lecturerId);
+                            person.setName(lecturersInfo.get(lecturerId)[0]);
+                            person.setSurname(lecturersInfo.get(lecturerId)[1]);
+                            person.setDeptId(document.getString("deptId").toUpperCase());
+                            lecturerList.add(person);
+                        }
+                    }
+                    vmDeptAdmin.onGetLecturerListResulted(lecturerList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Dept_Admin class' semesterLecturersRef.get method.");
+                }
+            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' getFilteredLecturerList method.");
@@ -452,7 +495,59 @@ public class Model_Dept_Admin {
 
     public void getFilteredStudentList(PersonFilterType personFilter){
         try{
-
+            if(personFilter.getIdFilter().length() == 0){
+                personFilter.setIdFilter("3"); // student ids always start with 3.
+            }
+            String idFilter = personFilter.getIdFilter();
+            String semester = Common_Services.convertUnprocessedSemester(personFilter.getSemester());
+            String nameFilter = Common_Services.convertUnprocessedName(personFilter.getNameFilter());
+            String surnameFilter = Common_Services.convertUnprocessedName(personFilter.getSurnameFilter());
+            ArrayList<String> deptFilter = personFilter.getDeptFilter();
+            semesterStudentsRef.whereEqualTo("semesterId",semester).whereGreaterThanOrEqualTo("studentId",idFilter)
+                    .whereLessThanOrEqualTo("studentId", idFilter + '\uf8ff').get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmDeptAdmin.dataLoadError();
+                        return;
+                    }
+                    studentList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String studentId = document.get("studentId").toString();
+                        boolean isExist = true;
+                        if(deptFilter.size() > 0){
+                            isExist = false;
+                            for(int i=0;i<deptFilter.size();i++){
+                                if(departmentsInfo.get(document.getString("deptId").toUpperCase()).equals(deptFilter.get(i))){
+                                    isExist = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(nameFilter.length() > 0){
+                            if(!studentsInfo.get(studentId)[0].startsWith(nameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(surnameFilter.length() > 0){
+                            if(!studentsInfo.get(studentId)[1].startsWith(surnameFilter)){
+                                isExist = false;
+                            }
+                        }
+                        if(isExist){
+                            PersonType person = new PersonType();
+                            person.setId(studentId);
+                            person.setName(studentsInfo.get(studentId)[0]);
+                            person.setSurname(studentsInfo.get(studentId)[1]);
+                            person.setDeptId(document.getString("deptId").toUpperCase());
+                            studentList.add(person);
+                        }
+                    }
+                    vmDeptAdmin.onGetStudentListResulted(studentList);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Dept_Admin class' semesterStudentsRef.get method.");
+                }
+            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' getFilteredStudentList method.");

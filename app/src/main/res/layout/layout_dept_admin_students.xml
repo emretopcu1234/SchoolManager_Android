@@ -140,9 +140,9 @@
         android:textCursorDrawable="@null"
         android:gravity="left"
         app:backgroundTint="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/textView_id"
+        app:layout_constraintTop_toTopOf="@id/textView_id"
+        app:layout_constraintBottom_toBottomOf="@id/textView_id"
         app:layout_constraintStart_toEndOf="@id/button_search_id"
-        android:layout_marginTop ="10dp"
         android:layout_marginLeft="5dp"
         android:visibility="invisible"/>
 

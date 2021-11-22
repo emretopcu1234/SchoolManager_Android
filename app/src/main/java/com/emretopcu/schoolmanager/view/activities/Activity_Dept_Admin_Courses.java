@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.Helper_Dialog_Change_Password;
@@ -103,16 +105,15 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
 
     private boolean progressBarIndicator_isSemesterActive;
     private boolean progressBarIndicator_setCourses;
-    private String idFilter = "";
-    private String nameFilter = "";
-    private ArrayList<String> courseFilter = new ArrayList<>();
     private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
     private boolean selectIndicator = true;
     private ArrayList<Boolean> checks = new ArrayList<>();
     private ArrayList<String> deletedIdList = new ArrayList<>();
     private boolean addRequested;
     private boolean semesterActive;
+
     private PersonType deptAdminInfo = new PersonType();
+    private final CourseFilterType courseFilter = new CourseFilterType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,7 +338,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                         deletedIdList.clear();
                         for(int i=0;i<checks.size();i++){
                             if(checks.get(i)){
-                                deletedIdList.add(vmDeptAdmin.getCourseList().get(i)[0]);
+                                deletedIdList.add(vmDeptAdmin.getCourseList().get(i).getCourseId());
                             }
                         }
                         textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_course));
@@ -402,8 +403,9 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                     editTextCourseId.setVisibility(View.INVISIBLE);
                     editTextCourseId.clearFocus();
                     progressBarCourse.setVisibility(View.VISIBLE);
-                    idFilter = "";
-                    vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                    courseFilter.setIdFilter("");
+                    courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' buttonCancelSearchCourseId setOnClickListener method.");
@@ -434,8 +436,9 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                     editTextCourseName.setVisibility(View.INVISIBLE);
                     editTextCourseName.clearFocus();
                     progressBarCourse.setVisibility(View.VISIBLE);
-                    nameFilter = "";
-                    vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                    courseFilter.setNameFilter("");
+                    courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                 }
                 catch(Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' buttonCancelSearchCourseName setOnClickListener method.");
@@ -466,29 +469,33 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                 public void afterTextChanged(Editable s) {
                     try{
                         if(s.hashCode() == editTextCourseId.getText().hashCode()){
-                            idFilter = fieldValue;
-                            if(idFilter.length() == 0){
+                            courseFilter.setIdFilter(fieldValue);
+                            if(courseFilter.getIdFilter().length() == 0){
                                 if (buttonSearchCourseId.getVisibility() == View.INVISIBLE){
                                     progressBarCourse.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                                    courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                                 }
                             }
                             else{
                                 progressBarCourse.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                                courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                             }
                         }
                         else if(s.hashCode() == editTextCourseName.getText().hashCode()){
-                            nameFilter = fieldValue;
-                            if(nameFilter.length() == 0){
+                            courseFilter.setNameFilter(fieldValue);
+                            if(courseFilter.getNameFilter().length() == 0){
                                 if (buttonSearchCourseName.getVisibility() == View.INVISIBLE){
                                     progressBarCourse.setVisibility(View.VISIBLE);
-                                    vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                                    courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                    vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                                 }
                             }
                             else{
                                 progressBarCourse.setVisibility(View.VISIBLE);
-                                vmDeptAdmin.onFilteredCourseListRequested(Common_Variables_View.SELECTED_SEMESTER,idFilter,nameFilter);
+                                courseFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                                vmDeptAdmin.onFilteredCourseListRequested(courseFilter);
                             }
                         }
                     }
@@ -705,8 +712,8 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             editTextCourseName.setText(null);
             editTextCourseName.setVisibility(View.INVISIBLE);
             editTextCourseName.clearFocus();
-            idFilter = "";
-            nameFilter = "";
+            courseFilter.setIdFilter("");
+            courseFilter.setNameFilter("");
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' resetWidgets method.");
@@ -747,11 +754,11 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             // TODO ama ondan önce şimdilik bu haliyle dene. tüm dept admin kısmının doğru çalıştığını görünce düzenle.
             // TODO ayrıca bu classta daha yukarılardaki todo'ları ve students için gereken checkbox kısmını da daha sonra implement et.
             addRequested = false;
-            ArrayList<String[]> courseList = vmDeptAdmin.getCourseList();
+            ArrayList<CourseType> courseList = vmDeptAdmin.getCourseList();
             editTextDialogCourseId.setEnabled(false);
-            editTextDialogCourseId.setText(courseList.get(position)[0]);
-            editTextDialogCourseName.setText(courseList.get(position)[1]);
-            editTextDialogSections.setText(courseList.get(position)[2]);
+            editTextDialogCourseId.setText(courseList.get(position).getCourseId());
+            editTextDialogCourseName.setText(courseList.get(position).getCourseName());
+            editTextDialogSections.setText(courseList.get(position).getSections());
             editTextDialogCourseId.clearFocus();
             editTextDialogCourseName.clearFocus();
             editTextDialogSections.clearFocus();
@@ -767,7 +774,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
     public void onDeleteRequested(int position){
         try{
             deletedIdList.clear();
-            deletedIdList.add(vmDeptAdmin.getCourseList().get(position)[0]);
+            deletedIdList.add(vmDeptAdmin.getCourseList().get(position).getCourseId());
             textViewDeleteConfirmation.setText(deletedIdList.size() + " " + getResources().getString(R.string.delete_confirmation_course));
             alertDialogDeleteConfirmation.show();
         }

@@ -321,7 +321,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onGetLecturerListResulted(ArrayList<PersonType> lecturerList) {
         try{
-
+            sdDeptAdmin.setLecturerList(lecturerList);
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onGetLecturerListResulted method.");
@@ -331,7 +332,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onGetStudentListResulted(ArrayList<PersonType> studentList) {
         try{
-
+            sdDeptAdmin.setStudentList(studentList);
+            setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onGetStudentListResulted method.");
@@ -341,7 +343,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onGetDepartmentListResulted(ArrayList<DepartmentType> departmentList) {
         try{
-
+            sdDeptAdmin.setDepartmentList(departmentList);
+            setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onGetDepartmentListResulted method.");

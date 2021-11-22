@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.view.activities.Activity_Dept_Admin_Courses;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ import java.util.List;
 public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter<ViewHolder_DAC> {
 
     private Activity_Dept_Admin_Courses context;
-    private ArrayList<String[]> courseList;
+    private ArrayList<CourseType> courseList;
     private boolean checkBoxActive;
     private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
 
 
-    public RecyclerViewAdapter_Dept_Admin_Courses(Activity_Dept_Admin_Courses context, ArrayList<String[]> courseList) {
+    public RecyclerViewAdapter_Dept_Admin_Courses(Activity_Dept_Admin_Courses context, ArrayList<CourseType> courseList) {
         try{
             this.context = context;
             this.courseList = courseList;
@@ -40,7 +41,7 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
         }
     }
 
-    public void setCourseList(ArrayList<String[]> courseList){
+    public void setCourseList(ArrayList<CourseType> courseList){
         try{
             this.courseList = courseList;
             isChecked.clear();
@@ -186,9 +187,9 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
             holder.textViewName.setOnLongClickListener(menuListener);
             holder.textViewSections.setOnLongClickListener(menuListener);
 
-            holder.textViewId.setText(courseList.get(position)[0]);
-            holder.textViewName.setText(courseList.get(position)[1]);
-            holder.textViewSections.setText(courseList.get(position)[2]);
+            holder.textViewId.setText(courseList.get(position).getCourseId());
+            holder.textViewName.setText(courseList.get(position).getCourseName());
+            holder.textViewSections.setText(courseList.get(position).getSections());
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Courses class' onBindViewHolder method.");
