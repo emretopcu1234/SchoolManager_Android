@@ -1,10 +1,10 @@
 package com.emretopcu.schoolmanager.commonObjectTypes;
 
-public class CourseType {
-
-    private String courseId;
-    private String courseName;
-    private String sections;
+public class CourseAddOrEditType {
+    String courseId;
+    String courseName;
+    String sections;
+    String semester;
 
     public String getCourseId() {
         return courseId;
@@ -28,5 +28,13 @@ public class CourseType {
 
     public void setSections(String sections) {
         this.sections = sections;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 }

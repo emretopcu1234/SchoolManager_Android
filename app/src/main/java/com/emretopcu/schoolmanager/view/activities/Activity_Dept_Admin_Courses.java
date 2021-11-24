@@ -165,8 +165,12 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                 @Override
                 public void afterTextChanged(Editable s) {
                     try{
-                        // TODO ilk kısımda 0 yerine minimum bölüm kodu + 3 olacak (IE ise 5, METE ise 7 vb. çünkü IE205, METE220...)
-                        if(editTextDialogCourseId.getText().length() == 0 ||
+                        // IE ise 6, METE ise 8 vb. çünkü IE 205, METE 220...
+                        if(editTextDialogCourseId.getText().length() < vmDeptAdmin.getDeptAdminInfo().getDeptId().length() + 1){
+                            editTextDialogCourseId.setText(vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase() + " ");
+                            editTextDialogCourseId.setSelection(editTextDialogCourseId.getText().length());
+                        }
+                        if(editTextDialogCourseId.getText().length() < vmDeptAdmin.getDeptAdminInfo().getDeptId().length() + 4 ||
                                 editTextDialogCourseName.getText().length() == 0 ||
                                 editTextDialogSections.getText().length() == 0){
                             buttonDialogOK.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
@@ -182,7 +186,6 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                     }
                 }
             };
-            // TODO id için ayrı bir watcher tanımlanacak. (çünkü baştaki bölüm kodu hiç silinememeli)
             editTextDialogCourseId.addTextChangedListener(watcherDialog);
             editTextDialogCourseName.addTextChangedListener(watcherDialog);
             editTextDialogSections.addTextChangedListener(watcherDialog);
@@ -195,8 +198,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                                 editTextDialogSections.getText().toString());
                     }
                     else{
-                        vmDeptAdmin.onEditCourseRequested(editTextDialogCourseId.getText().toString(),editTextDialogCourseName.getText().toString(),
-                                editTextDialogSections.getText().toString());
+                        vmDeptAdmin.onEditCourseRequested(editTextDialogCourseId.getText().toString(),editTextDialogCourseName.getText().toString());
                     }
                 }
                 catch (Exception e){
@@ -324,7 +326,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                     if(selectIndicator){
                         addRequested = true;
                         editTextDialogCourseId.setEnabled(true);
-                        editTextDialogCourseId.setText(null);
+                        editTextDialogCourseId.setText(vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase() + " ");
                         editTextDialogCourseName.setText(null);
                         editTextDialogSections.setText(null);
                         editTextDialogCourseId.clearFocus();
@@ -585,7 +587,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                             progressBarCourse.setVisibility(View.INVISIBLE);
                         }
                         if(adapter == null){
-                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList());
+                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList(), vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase());
                             recyclerViewDeptAdminCourses.setAdapter(adapter);
                         }
                         else{
@@ -605,7 +607,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                         alertDialogCourse.dismiss();
                         showToastMessage(R.string.toast_add_course_successful);
                         if(adapter == null){
-                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList());
+                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList(), vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase());
                             recyclerViewDeptAdminCourses.setAdapter(adapter);
                         }
                         else{
@@ -635,7 +637,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                         alertDialogCourse.dismiss();
                         showToastMessage(R.string.toast_edit_course_successful);
                         if(adapter == null){
-                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList());
+                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList(), vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase());
                             recyclerViewDeptAdminCourses.setAdapter(adapter);
                         }
                         else{
@@ -655,7 +657,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
                         alertDialogDeleteConfirmation.dismiss();
                         showToastMessage(R.string.toast_delete_course_successful);
                         if(adapter == null){
-                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList());
+                            adapter = new RecyclerViewAdapter_Dept_Admin_Courses(this, vmDeptAdmin.getCourseList(), vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase());
                             recyclerViewDeptAdminCourses.setAdapter(adapter);
                         }
                         else{
@@ -749,15 +751,12 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
 
     public void onEditRequested(int position){
         try{
-            // TODO bu classta aslında add requested'a gerek yok, çünkü edit için açılırsa specific course activitysi açılacak zaten.
-            // TODO o yüzden bu metod düzenlenecek ve yeni bir activity'ye geçiş yapılacak.
-            // TODO ama ondan önce şimdilik bu haliyle dene. tüm dept admin kısmının doğru çalıştığını görünce düzenle.
-            // TODO ayrıca bu classta daha yukarılardaki todo'ları ve students için gereken checkbox kısmını da daha sonra implement et.
             addRequested = false;
             ArrayList<CourseType> courseList = vmDeptAdmin.getCourseList();
             editTextDialogCourseId.setEnabled(false);
-            editTextDialogCourseId.setText(courseList.get(position).getCourseId());
+            editTextDialogCourseId.setText(vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase() + " " + courseList.get(position).getCourseId());
             editTextDialogCourseName.setText(courseList.get(position).getCourseName());
+            editTextDialogSections.setEnabled(false);
             editTextDialogSections.setText(courseList.get(position).getSections());
             editTextDialogCourseId.clearFocus();
             editTextDialogCourseName.clearFocus();
@@ -768,6 +767,15 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' onEditRequested method.");
+        }
+    }
+
+    public void onEditSectionsRequested(int position){
+        try{
+            // TODO yeni activity'ye geçiş yapılacak.
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' onEditSectionsRequested method.");
         }
     }
 

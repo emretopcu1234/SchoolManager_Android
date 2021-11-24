@@ -18,6 +18,7 @@
     <string name="menu_main_admin_students">Students</string>
     <string name="menu_main_admin_semesters">Semesters</string>
     <string name="menu_dept_admin_edit_course">Edit course</string>
+    <string name="menu_dept_admin_edit_sections">Edit sections</string>
     <string name="menu_dept_admin_delete_course">Delete course</string>
     <string name="menu_dept_admin_courses">Courses</string>
     <string name="menu_dept_admin_lecturers">Lecturers</string>

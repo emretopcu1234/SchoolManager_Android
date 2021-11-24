@@ -167,10 +167,10 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
     }
 
-    public void onEditCourseRequested(String courseId, String courseName, String sections){
+    public void onEditCourseRequested(String courseId, String courseName){
         try{
             editCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.NO_STATEMENT);
-            modelDeptAdmin.editCourse(courseId, courseName, sections);
+            modelDeptAdmin.editCourse(courseId, courseName);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseRequested method.");
@@ -311,7 +311,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onGetCourseListResulted(ArrayList<CourseType> courseList) {
         try{
-
+            sdDeptAdmin.setCourseList(courseList);
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onGetCourseListResulted method.");

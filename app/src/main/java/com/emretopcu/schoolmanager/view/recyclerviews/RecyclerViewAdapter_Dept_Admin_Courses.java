@@ -26,12 +26,14 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
     private boolean checkBoxActive;
     private boolean popupMenuActive;
     private ArrayList<Boolean> isChecked;
+    private String deptId;
 
 
-    public RecyclerViewAdapter_Dept_Admin_Courses(Activity_Dept_Admin_Courses context, ArrayList<CourseType> courseList) {
+    public RecyclerViewAdapter_Dept_Admin_Courses(Activity_Dept_Admin_Courses context, ArrayList<CourseType> courseList, String deptId) {
         try{
             this.context = context;
             this.courseList = courseList;
+            this.deptId = deptId;
             checkBoxActive = false;
             popupMenuActive = false;
             isChecked = new ArrayList<>();
@@ -132,6 +134,7 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
                         inflater.inflate(R.menu.menu_dept_admin_edit_or_delete_course, popup.getMenu());
                         popup.show();
                         MenuItem edit = popup.getMenu().findItem(R.id.menu_dept_admin_edit_course);
+                        MenuItem editSections = popup.getMenu().findItem(R.id.menu_dept_admin_edit_sections);
                         MenuItem delete = popup.getMenu().findItem(R.id.menu_dept_admin_delete_course);
                         edit.setOnMenuItemClickListener(item -> {
                             try{
@@ -140,6 +143,16 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
                             }
                             catch (Exception e){
                                 Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Courses class' edit setOnMenuItemClickListener method.");
+                                return false;
+                            }
+                        });
+                        editSections.setOnMenuItemClickListener(item -> {
+                            try{
+                                context.onEditSectionsRequested(position);
+                                return true;
+                            }
+                            catch (Exception e){
+                                Log.d("Exception", "Exception on RecyclerViewAdapter_Dept_Admin_Courses class' editSections setOnMenuItemClickListener method.");
                                 return false;
                             }
                         });
@@ -187,7 +200,7 @@ public class RecyclerViewAdapter_Dept_Admin_Courses extends RecyclerView.Adapter
             holder.textViewName.setOnLongClickListener(menuListener);
             holder.textViewSections.setOnLongClickListener(menuListener);
 
-            holder.textViewId.setText(courseList.get(position).getCourseId());
+            holder.textViewId.setText(deptId + " " + courseList.get(position).getCourseId());
             holder.textViewName.setText(courseList.get(position).getCourseName());
             holder.textViewSections.setText(courseList.get(position).getSections());
         }
