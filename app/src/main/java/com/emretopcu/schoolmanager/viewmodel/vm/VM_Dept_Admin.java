@@ -5,6 +5,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
@@ -34,6 +36,8 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     private MutableLiveData<E_Add_Or_Edit_Course_State> addCourseSuccessful;
     private MutableLiveData<E_Add_Or_Edit_Course_State> editCourseSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> deleteCoursesSuccessful;
+
+    private String lastProcessedSemester;
 
     public VM_Dept_Admin(){
         try{
@@ -89,6 +93,7 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
 
     public void onCourseListRequested(String selectedSemester){
         try{
+            lastProcessedSemester = selectedSemester;
             setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             modelDeptAdmin.getCourseList(selectedSemester);
         }
@@ -129,6 +134,7 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
 
     public void onFilteredCourseListRequested(CourseFilterType courseFilter){
         try{
+            lastProcessedSemester = courseFilter.getSemester();
             setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             modelDeptAdmin.getFilteredCourseList(courseFilter);
         }
@@ -157,30 +163,32 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
     }
 
-    public void onAddCourseRequested(String courseId, String courseName, String sections){
+    public void onAddCourseRequested(CourseAddOrEditType course){
         try{
+            lastProcessedSemester = course.getSemester();
             addCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.NO_STATEMENT);
-            modelDeptAdmin.addCourse(courseId, courseName, sections);
+            modelDeptAdmin.addCourse(course);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseRequested method.");
         }
     }
 
-    public void onEditCourseRequested(String courseId, String courseName){
+    public void onEditCourseRequested(CourseAddOrEditType course){
         try{
+            lastProcessedSemester = course.getSemester();
             editCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.NO_STATEMENT);
-            modelDeptAdmin.editCourse(courseId, courseName);
+            modelDeptAdmin.editCourse(course);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseRequested method.");
         }
     }
 
-    public void onDeleteCoursesRequested(ArrayList<String> idList){
+    public void onDeleteCoursesRequested(CourseDeleteType courses){
         try{
             deleteCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
-            modelDeptAdmin.deleteCourses(idList);
+            modelDeptAdmin.deleteCourses(courses);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onDeleteCoursesRequested method.");
@@ -355,7 +363,9 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     @Override
     public void onAddCourseResultedSuccessful() {
         try{
-
+            addCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.SUCCESSFUL);
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getCourseList(lastProcessedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseResultedSuccessful method.");
@@ -363,9 +373,31 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
+    public void onAddCourseResultedDuplicatedCourseId() {
+        try{
+            addCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.UNSUCCESSFUL_DUPLICATED_ID);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseResultedDuplicatedCourseId method.");
+        }
+    }
+
+    @Override
+    public void onAddCourseResultedDuplicatedCourseName() {
+        try{
+            addCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.UNSUCCESSFUL_DUPLICATED_NAME);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onAddCourseResultedDuplicatedCourseName method.");
+        }
+    }
+
+    @Override
     public void onEditCourseResultedSuccessful() {
         try{
-
+            editCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.SUCCESSFUL);
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getCourseList(lastProcessedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseResultedSuccessful method.");
@@ -373,9 +405,21 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     }
 
     @Override
+    public void onEditCourseResultedDuplicatedCourseName() {
+        try{
+            editCourseSuccessful.setValue(E_Add_Or_Edit_Course_State.UNSUCCESSFUL_DUPLICATED_NAME);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onEditCourseResultedDuplicatedCourseName method.");
+        }
+    }
+
+    @Override
     public void onDeleteCoursesResultedSuccessful() {
         try{
-
+            deleteCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+            setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getCourseList(lastProcessedSemester);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onDeleteCoursesResultedSuccessful method.");

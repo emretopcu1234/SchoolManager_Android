@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
@@ -114,6 +116,8 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
 
     private PersonType deptAdminInfo = new PersonType();
     private final CourseFilterType courseFilter = new CourseFilterType();
+    private final CourseAddOrEditType courseInfo = new CourseAddOrEditType();
+    private final CourseDeleteType deletedCourses = new CourseDeleteType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,12 +197,15 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             buttonDialogOK.setOnClickListener(v -> {
                 try{
                     progressBarDialog.setVisibility(View.VISIBLE);
+                    courseInfo.setCourseId(editTextDialogCourseId.getText().toString());
+                    courseInfo.setCourseName(editTextDialogCourseName.getText().toString());
+                    courseInfo.setSections(editTextDialogSections.getText().toString());
+                    courseInfo.setSemester(Common_Variables_View.SELECTED_SEMESTER);
                     if(addRequested){
-                        vmDeptAdmin.onAddCourseRequested(editTextDialogCourseId.getText().toString(),editTextDialogCourseName.getText().toString(),
-                                editTextDialogSections.getText().toString());
+                        vmDeptAdmin.onAddCourseRequested(courseInfo);
                     }
                     else{
-                        vmDeptAdmin.onEditCourseRequested(editTextDialogCourseId.getText().toString(),editTextDialogCourseName.getText().toString());
+                        vmDeptAdmin.onEditCourseRequested(courseInfo);
                     }
                 }
                 catch (Exception e){
@@ -228,7 +235,9 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             buttonDeleteConfirmationYes.setOnClickListener(v -> {
                 try{
                     progressBarDeleteConfirmation.setVisibility(View.VISIBLE);
-                    vmDeptAdmin.onDeleteCoursesRequested(deletedIdList);
+                    deletedCourses.setCourseIdList(deletedIdList);
+                    deletedCourses.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onDeleteCoursesRequested(deletedCourses);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' buttonDeleteConfirmationYes setOnClickListener method.");

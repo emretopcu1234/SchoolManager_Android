@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseAddOrEditType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
@@ -476,7 +477,59 @@ public class Model_Dept_Admin {
 
     public void getFilteredCourseList(CourseFilterType courseFilter){
         try{
-
+            String semester = Common_Services.convertUnprocessedSemester(courseFilter.getSemester());
+            if(courseFilter.getIdFilter().length() == 0){
+                coursesRef.whereEqualTo("semesterId",semester).whereEqualTo("deptId",deptId)
+                        .orderBy("courseId").get().addOnCompleteListener(task -> {
+                    try{
+                        if(!task.isSuccessful()){
+                            vmDeptAdmin.dataLoadError();
+                            return;
+                        }
+                        courseList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if(document.getString("courseName").startsWith(Common_Services.convertUnprocessedName(courseFilter.getNameFilter()))){
+                                CourseType course = new CourseType();
+                                course.setCourseId(document.get("courseId").toString());
+                                course.setCourseName(document.getString("courseName"));
+                                course.setSections(document.get("sections").toString());
+                                courseList.add(course);
+                            }
+                        }
+                        vmDeptAdmin.onGetCourseListResulted(courseList);
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.where.get.addOnCompleteListener method.");
+                    }
+                });
+            }
+            else{
+                coursesRef.whereEqualTo("semesterId",semester).whereEqualTo("deptId",deptId)
+                        .whereGreaterThanOrEqualTo("courseId",courseFilter.getIdFilter())
+                        .whereLessThanOrEqualTo("courseId", courseFilter.getIdFilter() + '\uf8ff')
+                        .orderBy("courseId").get().addOnCompleteListener(task -> {
+                    try{
+                        if(!task.isSuccessful()){
+                            vmDeptAdmin.dataLoadError();
+                            return;
+                        }
+                        courseList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if(document.getString("courseName").startsWith(Common_Services.convertUnprocessedName(courseFilter.getNameFilter()))){
+                                CourseType course = new CourseType();
+                                course.setCourseId(document.get("courseId").toString());
+                                course.setCourseName(document.getString("courseName"));
+                                course.setSections(document.get("sections").toString());
+                                courseList.add(course);
+                            }
+                        }
+                        vmDeptAdmin.onGetCourseListResulted(courseList);
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.where.get.addOnCompleteListener method.");
+                    }
+                });
+            }
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' getFilteredCourseList method.");
@@ -600,7 +653,50 @@ public class Model_Dept_Admin {
 
     public void addCourse(CourseAddOrEditType course){
         try{
+            String courseId = course.getCourseId().substring(deptId.length() + 1);
+            String courseName = Common_Services.convertUnprocessedName(course.getCourseName());
+            String sections = course.getSections();
+            String semester = Common_Services.convertUnprocessedSemester(course.getSemester());
 
+            coursesRef.whereEqualTo("semesterId",semester).whereEqualTo("deptId",deptId).get().addOnCompleteListener(task -> {
+                        try{
+                            if(!task.isSuccessful()){
+                                vmDeptAdmin.dataLoadError();
+                                return;
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if(document.get("courseId").toString().equals(courseId)){
+                                    vmDeptAdmin.onAddCourseResultedDuplicatedCourseId();
+                                    return;
+                                }
+                                if(document.get("courseName").toString().equals(courseName)){
+                                    vmDeptAdmin.onAddCourseResultedDuplicatedCourseName();
+                                    return;
+                                }
+                            }
+                            Map<String, Object> docData = new HashMap<>();
+                            docData.put("courseId",courseId);
+                            docData.put("courseName",courseName);
+                            docData.put("deptId",deptId);
+                            docData.put("sections",sections);
+                            docData.put("semesterId",semester);
+                            coursesRef.document().set(docData).addOnCompleteListener(task1 -> {
+                                try{
+                                    if(!task1.isSuccessful()){
+                                        vmDeptAdmin.dataLoadError();
+                                        return;
+                                    }
+                                    vmDeptAdmin.onAddCourseResultedSuccessful();
+                                }
+                                catch (Exception e){
+                                    Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.document().set(docData).addOnCompleteListener method.");
+                                }
+                            });
+                        }
+                        catch (Exception e){
+                            Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.where.get method.");
+                        }
+                    });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' addCourse method.");
@@ -609,16 +705,61 @@ public class Model_Dept_Admin {
 
     public void editCourse(CourseAddOrEditType course){
         try{
+            String courseId = course.getCourseId().substring(deptId.length() + 1);
+            String courseName = Common_Services.convertUnprocessedName(course.getCourseName());
+            String sections = course.getSections();
+            String semester = Common_Services.convertUnprocessedSemester(course.getSemester());
 
+            coursesRef.whereEqualTo("semesterId",semester).whereEqualTo("deptId",deptId).get().addOnCompleteListener(task -> {
+                try{
+                    if(!task.isSuccessful()){
+                        vmDeptAdmin.dataLoadError();
+                        return;
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (!document.get("courseId").toString().equals(courseId) && document.get("courseName").toString().equals(courseName)) {
+                            vmDeptAdmin.onAddCourseResultedDuplicatedCourseName();
+                            return;
+                        }
+                    }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if(document.get("courseId").toString().equals(courseId)){
+                            String docId = document.getId();
+                            Map<String, Object> docData = new HashMap<>();
+                            docData.put("courseId",courseId);
+                            docData.put("courseName",courseName);
+                            docData.put("deptId",deptId);
+                            docData.put("sections",sections);
+                            docData.put("semesterId",semester);
+                            coursesRef.document(docId).set(docData).addOnCompleteListener(task1 -> {
+                                try{
+                                    if(!task1.isSuccessful()){
+                                        vmDeptAdmin.dataLoadError();
+                                        return;
+                                    }
+                                    vmDeptAdmin.onAddCourseResultedSuccessful();
+                                }
+                                catch (Exception e){
+                                    Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.document(docId).set(docData).addOnCompleteListener method.");
+                                }
+                            });
+                            return;
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.where.get method.");
+                }
+            });
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' editCourse method.");
         }
     }
 
-    public void deleteCourses(ArrayList<String> idList){
+    public void deleteCourses(CourseDeleteType courses){
         try{
-
+            // TODO courselar silinirken ilgili lecturer ve studentların collectionlarından da silinecek. (lecturer course sections collection ve student course sections collection)
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' deleteCourses method.");

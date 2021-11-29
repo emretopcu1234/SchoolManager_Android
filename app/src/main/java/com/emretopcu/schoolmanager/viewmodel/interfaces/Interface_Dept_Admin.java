@@ -21,8 +21,9 @@ public interface Interface_Dept_Admin {
     void onGetDepartmentListResulted(ArrayList<DepartmentType> departmentList);
 
     void onAddCourseResultedSuccessful();
+    void onAddCourseResultedDuplicatedCourseId();
+    void onAddCourseResultedDuplicatedCourseName();
     void onEditCourseResultedSuccessful();
-    // TODO diğer stateler de eklenecek.
-
+    void onEditCourseResultedDuplicatedCourseName();
     void onDeleteCoursesResultedSuccessful();
 }
