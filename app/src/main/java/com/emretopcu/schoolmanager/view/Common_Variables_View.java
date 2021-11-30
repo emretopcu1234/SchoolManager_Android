@@ -7,4 +7,7 @@ public class Common_Variables_View {
     // VARIABLES
     public static int SEMESTER_SPINNER_POSITION = 0;
     public static String SELECTED_SEMESTER = "";
+
+    public static int NUMBER_OF_SECTIONS = 0;
+    public static String COURSE_ID = "";
 }

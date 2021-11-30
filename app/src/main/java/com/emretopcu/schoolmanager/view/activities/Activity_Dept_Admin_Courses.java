@@ -781,7 +781,11 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
 
     public void onEditSectionsRequested(int position){
         try{
-            // TODO yeni activity'ye geçiş yapılacak.
+            // TODO common variables view kısmına gerekli değişkenler atanacak.
+            Common_Variables_View.NUMBER_OF_SECTIONS = Integer.parseInt(vmDeptAdmin.getCourseList().get(position).getSections());
+            Common_Variables_View.COURSE_ID = vmDeptAdmin.getCourseList().get(position).getCourseId();
+            Intent i = new Intent(getApplicationContext(), Activity_Dept_Admin_Specific_Course.class);
+            startActivity(i);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Courses class' onEditSectionsRequested method.");

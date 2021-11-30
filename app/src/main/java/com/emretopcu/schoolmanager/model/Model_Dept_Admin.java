@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.w3c.dom.Entity;
 
@@ -46,6 +47,7 @@ public class Model_Dept_Admin {
     private CollectionReference studentsRef;
 
     private CollectionReference coursesRef;
+    private CollectionReference courseSectionsRef;
 
     private final HashMap<String,String> departmentsInfo = new HashMap<>();
     private final HashMap<String,String[]> lecturersInfo = new HashMap<>();
@@ -74,6 +76,7 @@ public class Model_Dept_Admin {
             lecturersRef = dbRef.collection("lecturers");
             studentsRef = dbRef.collection("students");
             coursesRef = dbRef.collection("courses");
+            courseSectionsRef = dbRef.collection("courseSections");
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' constructor method.");
@@ -674,13 +677,24 @@ public class Model_Dept_Admin {
                                     return;
                                 }
                             }
-                            Map<String, Object> docData = new HashMap<>();
-                            docData.put("courseId",courseId);
-                            docData.put("courseName",courseName);
-                            docData.put("deptId",deptId);
-                            docData.put("sections",sections);
-                            docData.put("semesterId",semester);
-                            coursesRef.document().set(docData).addOnCompleteListener(task1 -> {
+                            WriteBatch batchAddCourse = dbRef.batch();
+                            Map<String, Object> courseData = new HashMap<>();
+                            courseData.put("courseId",courseId);
+                            courseData.put("courseName",courseName);
+                            courseData.put("deptId",deptId);
+                            courseData.put("sections",sections);
+                            courseData.put("semesterId",semester);
+                            DocumentReference docRef = coursesRef.document();
+                            batchAddCourse.set(docRef, courseData);
+
+                            String docName;
+                            for(int i=0;i<Integer.parseInt(sections);i++){
+                                docName = semester + deptId + courseId + "sec" + (i+1);
+                                DocumentReference docRef2 = courseSectionsRef.document(docName);
+                                batchAddCourse.set(docRef2,new HashMap<String, Object>());
+                            }
+
+                            batchAddCourse.commit().addOnCompleteListener(task1 -> {
                                 try{
                                     if(!task1.isSuccessful()){
                                         vmDeptAdmin.dataLoadError();
@@ -689,7 +703,7 @@ public class Model_Dept_Admin {
                                     vmDeptAdmin.onAddCourseResultedSuccessful();
                                 }
                                 catch (Exception e){
-                                    Log.d("Exception", "Exception on Model_Dept_Admin class' coursesRef.document().set(docData).addOnCompleteListener method.");
+                                    Log.d("Exception", "Exception on Model_Dept_Admin class' batchAddCourse.commit().addOnCompleteListener method.");
                                 }
                             });
                         }
@@ -775,3 +789,6 @@ public class Model_Dept_Admin {
         storeInitialData();
     }
 }
+
+/*
+daha sonra eger dept admin courses activitysindeyken edit sectionsa basarsa course sections collectionındaki ilgili document acılacak, gerekli bilgiler (lecturer, student, hour...) eklenecek.*/
