@@ -23,6 +23,7 @@ public class SD_Dept_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCoursesSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
     private MutableLiveData<E_Add_Or_Edit_Course_State> addCourseSuccessful;
     private MutableLiveData<E_Add_Or_Edit_Course_State> editCourseSuccessful;
@@ -32,6 +33,7 @@ public class SD_Dept_Admin {
     private ArrayList<CourseType> courseList;
     private ArrayList<PersonType> lecturerList;
     private ArrayList<PersonType> studentList;
+    private ArrayList<PersonType> deptStudentList;
     private ArrayList<DepartmentType> departmentList;
     private HashMap<String,String> departmentIdInfo;
     private PersonType deptAdminInfo;
@@ -50,6 +52,8 @@ public class SD_Dept_Admin {
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setStudentsSuccessful = new MutableLiveData<>();
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            setDeptStudentsSuccessful = new MutableLiveData<>();
+            setDeptStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDepartmentsSuccessful = new MutableLiveData<>();
             setDepartmentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             addCourseSuccessful = new MutableLiveData<>();
@@ -63,6 +67,7 @@ public class SD_Dept_Admin {
             courseList = new ArrayList<>();
             lecturerList = new ArrayList<>();
             studentList = new ArrayList<>();
+            deptStudentList = new ArrayList<>();
             departmentList = new ArrayList<>();
             departmentIdInfo = new HashMap<>();
             deptAdminInfo = new PersonType();
@@ -107,6 +112,10 @@ public class SD_Dept_Admin {
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetStudentsSuccessful() {
         return setStudentsSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDeptStudentsSuccessful() {
+        return setDeptStudentsSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDepartmentsSuccessful() {
@@ -163,6 +172,14 @@ public class SD_Dept_Admin {
 
     public void setStudentList(ArrayList<PersonType> studentList) {
         this.studentList = studentList;
+    }
+
+    public ArrayList<PersonType> getDeptStudentList() {
+        return deptStudentList;
+    }
+
+    public void setDeptStudentList(ArrayList<PersonType> deptStudentList) {
+        this.deptStudentList = deptStudentList;
     }
 
     public ArrayList<DepartmentType> getDepartmentList() {

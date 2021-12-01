@@ -10,4 +10,5 @@ public class Common_Variables_View {
 
     public static int NUMBER_OF_SECTIONS = 0;
     public static String COURSE_ID = "";
+    public static String COURSE_NAME = "";
 }

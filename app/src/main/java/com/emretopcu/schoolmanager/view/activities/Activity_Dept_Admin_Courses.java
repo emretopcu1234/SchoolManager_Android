@@ -784,6 +784,7 @@ public class Activity_Dept_Admin_Courses extends AppCompatActivity implements In
             // TODO common variables view kısmına gerekli değişkenler atanacak.
             Common_Variables_View.NUMBER_OF_SECTIONS = Integer.parseInt(vmDeptAdmin.getCourseList().get(position).getSections());
             Common_Variables_View.COURSE_ID = vmDeptAdmin.getCourseList().get(position).getCourseId();
+            Common_Variables_View.COURSE_NAME = vmDeptAdmin.getCourseList().get(position).getCourseName();
             Intent i = new Intent(getApplicationContext(), Activity_Dept_Admin_Specific_Course.class);
             startActivity(i);
         }

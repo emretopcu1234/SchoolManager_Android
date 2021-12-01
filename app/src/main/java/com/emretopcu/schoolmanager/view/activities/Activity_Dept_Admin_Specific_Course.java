@@ -20,9 +20,8 @@ import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
-import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Dept_Admin_Lecturers;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Dept_Admin_Specific_Course_Students;
-import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Dept_Admin_Students;
+import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Dept_Admin;
 
@@ -31,12 +30,15 @@ import java.util.ArrayList;
 public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
     private TextView textViewCourseId;
+    private TextView textViewCourseName;
+
     private Spinner spinnerSection;
     private ArrayAdapter arrayAdapterSection;
     private ArrayList<String> spinnerSectionList;
+
     private Spinner spinnerLecturer;
-    private ArrayList<String> spinnerLecturerList;
     private ArrayAdapter arrayAdapterLecturer;
+    private ArrayList<String> spinnerLecturerList;
 
     private TextView textViewCourseHours;
     private Button buttonAddCourseHour;
@@ -61,31 +63,59 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
     private TextView textViewSurname;
     private EditText editTextSurname;
 
-    private Button buttonOk;
-    private Button buttonCancel;
-
     private RecyclerViewAdapter_Dept_Admin_Specific_Course_Students adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
+
+    private Button buttonOk;
+    private Button buttonCancel;
 
     private AlertDialog.Builder builderStudent;
     private View viewDialogStudent;
     private AlertDialog alertDialogStudent;
 
-    private AlertDialog.Builder builderStudentFilter;
-    private View viewDialogStudentFilter;
-    private AlertDialog alertDialogStudentFilter;
+    private Button buttonStudentOk;
+    private Button buttonStudentCancel;
+    private Spinner spinnerStudentDept;
+    private ArrayAdapter arrayAdapterStudentDept;
+    private ArrayList<String> spinnerStudentDeptList;
+    private Spinner spinnerStudentInfo;
+    private ArrayAdapter arrayAdapterStudentInfo;
+    private ArrayList<String> spinnerStudentInfoList;
 
     private AlertDialog.Builder builderHour;
     private View viewDialogHour;
     private AlertDialog alertDialogHour;
+
+    private Button buttonHourOk;
+    private Button buttonHourCancel;
+    private Spinner spinnerHourDay;
+    private ArrayAdapter arrayAdapterHourDay;
+    private ArrayList<String> spinnerHourDayList;
+    private Spinner spinnerStartHour;
+    private ArrayAdapter arrayAdapterStartHour;
+    private ArrayList<String> spinnerStartHourList;
+    private Spinner spinnerEndHour;
+    private ArrayAdapter arrayAdapterEndHour;
+    private ArrayList<String> spinnerEndHourList;
+
+    private AlertDialog.Builder builderStudentFilter;
+    private View viewDialogStudentFilter;
+    private AlertDialog alertDialogStudentFilter;
+
+    private RecyclerViewAdapter_Filter_Department adapterFilter;
+    private RecyclerView recyclerViewFilter;
+    private LinearLayoutManager layoutManagerFilter;
+
+    private Button buttonFilterClear;
+    private Button buttonFilterOk;
+    private Button buttonFilterCancel;
 
     private ProgressBar progressBar;
     private ProgressBar progressBarCourseHour;
     private ProgressBar progressBarStudent;
 
     private VM_Dept_Admin vmDeptAdmin;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +125,8 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             setContentView(R.layout.layout_dept_admin_specific_course);
 
             textViewCourseId = findViewById(R.id.textView_course_code);
+            textViewCourseName = findViewById(R.id.textView_course_name);
+
             spinnerSection = findViewById(R.id.spinner_section);
             spinnerSection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -121,6 +153,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             spinnerSection.setAdapter(arrayAdapterSection);
 
             spinnerLecturer = findViewById(R.id.spinner_lecturer);
+            spinnerLecturerList = new ArrayList<>();
 
             textViewCourseHours = findViewById(R.id.textView_course_hours);
 
@@ -318,12 +351,102 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             alertDialogHour.setCancelable(false);
             alertDialogHour.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+            buttonHourOk = viewDialogHour.findViewById(R.id.button_ok);
+            buttonHourOk.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonHourOk setOnClickListener method.");
+                }
+            });
+            buttonHourCancel = viewDialogHour.findViewById(R.id.button_cancel);
+            buttonHourCancel.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonHourCancel setOnClickListener method.");
+                }
+            });
+
+            spinnerHourDay = viewDialogHour.findViewById(R.id.spinner_day);
+            spinnerHourDayList = new ArrayList<>();
+            spinnerHourDayList.add("Monday");
+            spinnerHourDayList.add("Tuesday");
+            spinnerHourDayList.add("Wednesday");
+            spinnerHourDayList.add("Thursday");
+            spinnerHourDayList.add("Friday");
+            spinnerHourDayList.add("Saturday");
+            arrayAdapterHourDay = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerHourDayList);
+            arrayAdapterHourDay.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerHourDay.setAdapter(arrayAdapterHourDay);
+
+            spinnerStartHour = viewDialogHour.findViewById(R.id.spinner_start_hour);
+            spinnerStartHourList = new ArrayList<>();
+            for(int i=0;i<Common_Variables_View.NUMBER_OF_SECTIONS;i++){
+                spinnerStartHourList.add((i+9) + ":00");
+            }
+            arrayAdapterStartHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerStartHourList);
+            arrayAdapterStartHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerStartHour.setAdapter(arrayAdapterStartHour);
+
+            spinnerEndHour = viewDialogHour.findViewById(R.id.spinner_end_hour);
+            spinnerEndHourList = new ArrayList<>();
+            for(int i=0;i<Common_Variables_View.NUMBER_OF_SECTIONS;i++){
+                spinnerEndHourList.add((i+9) + ":50");
+            }
+            arrayAdapterEndHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerEndHourList);
+            arrayAdapterEndHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerEndHour.setAdapter(arrayAdapterEndHour);
+
             builderStudent = new AlertDialog.Builder(this);
             viewDialogStudent = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_student, null);
             builderStudent.setView(viewDialogStudent);
             alertDialogStudent = builderStudent.create();
             alertDialogStudent.setCancelable(false);
             alertDialogStudent.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            buttonStudentOk = viewDialogStudent.findViewById(R.id.button_ok);
+            buttonStudentOk.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonStudentOk setOnClickListener method.");
+                }
+            });
+            buttonStudentCancel = viewDialogStudent.findViewById(R.id.button_cancel);
+            buttonStudentCancel.setOnClickListener(v -> {
+                try{
+                    // TODO
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonStudentCancel setOnClickListener method.");
+                }
+            });
+
+            spinnerStudentDeptList = new ArrayList<>();
+            spinnerStudentDept = viewDialogStudent.findViewById(R.id.spinner_dept);
+            spinnerStudentDept.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        vmDeptAdmin.onDeptStudentListRequested(Common_Variables_View.SELECTED_SEMESTER,spinnerStudentDept.getSelectedItem().toString());
+                    }
+                    catch(Exception e){
+                        Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' spinnerStudentDept's onItemSelected method.");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // nothing to do
+                }
+            });
+
+            spinnerStudentInfoList = new ArrayList<>();
+            spinnerStudentInfo = viewDialogStudent.findViewById(R.id.spinner_student);
 
             builderStudentFilter = new AlertDialog.Builder(this);
             viewDialogStudentFilter = this.getLayoutInflater().inflate(R.layout.dialog_filter_department, null);
@@ -332,11 +455,70 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             alertDialogStudentFilter.setCancelable(false);
             alertDialogStudentFilter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+            recyclerViewFilter = viewDialogStudentFilter.findViewById(R.id.recyclerView);
+            layoutManagerFilter = new LinearLayoutManager(this);
+            recyclerViewFilter.setLayoutManager(layoutManagerFilter);
+
+            buttonFilterClear = viewDialogStudentFilter.findViewById(R.id.button_clear);
+            buttonFilterOk = viewDialogStudentFilter.findViewById(R.id.button_ok);
+            buttonFilterCancel = viewDialogStudentFilter.findViewById(R.id.button_cancel);
+            buttonFilterClear.setOnClickListener(v -> {
+                try{
+                    adapterFilter.resetChecks();
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonFilterClear setOnClickListener method.");
+                }
+            });
+            buttonFilterOk.setOnClickListener(v -> {
+                try{
+                    previousFilterChecks.clear();
+                    for(int i=0;i<adapterFilter.getChecks().size();i++){
+                        previousFilterChecks.add(adapterFilter.getChecks().get(i));
+                    }
+                    personFilter.setDeptFilter(adapterFilter.getFilteredDepartmentList());
+                    if(personFilter.getDeptFilter().size() > 0){
+                        buttonFilterDeptName.setVisibility(View.INVISIBLE);
+                        buttonCancelFilterDeptName.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        buttonFilterDeptName.setVisibility(View.VISIBLE);
+                        buttonCancelFilterDeptName.setVisibility(View.INVISIBLE);
+                    }
+                    personFilter.setSemester(Common_Variables_View.SELECTED_SEMESTER);
+                    vmDeptAdmin.onFilteredSpecificStudentListRequested(personFilter);
+                    alertDialogStudentFilter.dismiss();
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonFilterOk setOnClickListener method.");
+                }
+            });
+            buttonFilterCancel.setOnClickListener(v -> {
+                try{
+                    adapterFilter.setChecks(previousFilterChecks);
+                    alertDialogStudentFilter.dismiss();
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonFilterCancel setOnClickListener method.");
+                }
+            });
+
+            // TODO gerekli değişkenler oluşturulacak, böylece tüm datalar alındığında progress bar invisible olacak.
             progressBar = findViewById(R.id.progressBar);
             progressBarCourseHour = viewDialogHour.findViewById(R.id.progressBar);
             progressBarStudent = viewDialogStudent.findViewById(R.id.progressBar);
 
             vmDeptAdmin = new ViewModelProvider(this).get(VM_Dept_Admin.class);
+            vmDeptAdmin.getSetCourseSectionSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        // TODO
+                    }
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetCourseSectionSuccessful().observe method.");
+                }
+            });
             vmDeptAdmin.getSetLecturersSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
@@ -353,6 +535,24 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetLecturersSuccessful().observe method.");
                 }
             });
+            vmDeptAdmin.getSetDepartmentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        spinnerStudentDeptList.clear();
+                        for(String key : vmDeptAdmin.getDepartmentInfo().keySet()){
+                            spinnerStudentDeptList.add(vmDeptAdmin.getDepartmentInfo().get(key));
+                        }
+                        if(arrayAdapterStudentDept == null){
+                            arrayAdapterStudentDept = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerStudentDeptList);
+                            arrayAdapterStudentDept.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        }
+                        spinnerStudentDept.setAdapter(arrayAdapterStudentDept);
+                    }
+                }
+                catch (Exception e) {
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetDepartmentsSuccessful().observe method.");
+                }
+            });
             vmDeptAdmin.getSetSpecificStudentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
@@ -363,270 +563,48 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
                         else{
                             adapter.setSpecificStudentList(vmDeptAdmin.getSpecificStudentList());
                         }
+                        // TODO studentların departmentları hashset'e kaydedilecek. recyclerviewadapter filter student'a gönderilecek.
                     }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetSpecificStudentsSuccessful().observe method.");
                 }
             });
-
-
-
-
-
-
-
-
-
-
-
-            ArrayList<String> sections = new ArrayList<>();
-            sections.add("Section 1");
-            sections.add("Section 2");
-            sections.add("Section 3");
-            sections.add("Section 4");
-            // TODO input olarak gelecek.
-
-            spinnerSection = (Spinner) findViewById(R.id.spinner_section);
-            spinnerSection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+            vmDeptAdmin.getSetDeptStudentsSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
+                try{
+                    if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                        spinnerStudentInfoList.clear();
+                        for(int i=0;i<vmDeptAdmin.getDeptStudentList().size();i++){
+                            spinnerStudentInfoList.add(vmDeptAdmin.getDeptStudentList().get(i).getId() + " - "
+                                    + vmDeptAdmin.getDeptStudentList().get(i).getName() + " " + vmDeptAdmin.getDeptStudentList().get(i).getSurname());
+                        }
+                        arrayAdapterStudentInfo = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerStudentInfoList);
+                        arrayAdapterStudentInfo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerStudentInfo.setAdapter(arrayAdapterStudentInfo);
+                    }
                 }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetDeptStudentsSuccessful().observe method.");
                 }
             });
-
-            arrayAdapterSection = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, sections);
-            arrayAdapterSection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerSection.setAdapter(arrayAdapterSection);
-
-            ArrayList<String> lecturers = new ArrayList<>();
-            lecturers.add("Mustafa Kemal TURAN");
-            lecturers.add("Müge Gökçe ADİL");
-            lecturers.add("Ahmet YILDIR");
-            lecturers.add("Seren USER TOPÇU");
-            lecturers.add("Emre TOPÇU");
-            // TODO input olarak gelecek.
-
-            spinnerLecturer = (Spinner) findViewById(R.id.spinner_lecturer);
-            spinnerLecturer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            arrayAdapterLecturer = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, lecturers);
-            arrayAdapterLecturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerLecturer.setAdapter(arrayAdapterLecturer);
-
-
-
-
-            buttonAddDelete = (Button) findViewById(R.id.button_add_delete);
-            buttonAddDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialogStudent.show();
-                }
-            });
-
-            builderStudent = new AlertDialog.Builder(this);
-            viewDialogStudent = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_student, null);
-            builderStudent.setView(viewDialogStudent);
-            alertDialogStudent = builderStudent.create();
-            alertDialogStudent.setCancelable(false);
-            alertDialogStudent.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-            ArrayList<String> semesters = new ArrayList<>();
-            semesters.add("Electrical and Electronics Engineeering");
-            semesters.add("Civil Engineering");
-            semesters.add("Mathematical Engineering");
-            // TODO input olarak gelecek.
-
-            Spinner spinnerDept = (Spinner) viewDialogStudent.findViewById(R.id.spinner_dept);
-            spinnerDept.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            ArrayAdapter arrayAdapterDept = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters);
-            arrayAdapterDept.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerDept.setAdapter(arrayAdapterDept);
-
-
-            ArrayList<String> students = new ArrayList<>();
-            students.add("1938794 - Emre Mehmet DENKGENCER");
-            students.add("2020234 - İnsan İsmi Soyismi");
-            students.add("1846573 - Acaba Soyisim");
-            students.add("1919230 - Adım Işıklı");
-            // TODO input olarak gelecek.
-
-            Spinner spinnerStudent= (Spinner) viewDialogStudent.findViewById(R.id.spinner_student);
-            spinnerStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            ArrayAdapter arrayAdapterStudent = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, students);
-            arrayAdapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerStudent.setAdapter(arrayAdapterStudent);
-
-
-
-
-
-
-
-            buttonAddCourseHour = (Button) findViewById(R.id.button_add_course_hour);
-            buttonAddCourseHour.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialogHour.show();
-                }
-            });
-
-            builderHour = new AlertDialog.Builder(this);
-            viewDialogHour = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_hour, null);
-            builderHour.setView(viewDialogHour);
-            alertDialogHour = builderHour.create();
-            alertDialogHour.setCancelable(false);
-            alertDialogHour.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-            ArrayList<String> semesters1 = new ArrayList<>();
-            semesters1.add("Monday");
-            semesters1.add("Tuesday");
-            semesters1.add("Friday");
-            semesters1.add("Saturday");
-            // TODO input olarak gelecek.
-
-            Spinner spinnerDay = (Spinner) viewDialogHour.findViewById(R.id.spinner_day);
-            spinnerDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            ArrayAdapter arrayAdapterDay = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, semesters1);
-            arrayAdapterDay.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerDay.setAdapter(arrayAdapterDay);
-
-
-            ArrayList<String> startHour = new ArrayList<>();
-            startHour.add("09:00");
-            startHour.add("10:00");
-            startHour.add("11:00");
-            startHour.add("12:00");
-            // TODO input olarak gelecek.
-
-            Spinner spinnerStartHour = (Spinner) viewDialogHour.findViewById(R.id.spinner_start_hour);
-            spinnerStartHour.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            ArrayAdapter arrayAdapterStartHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, startHour);
-            arrayAdapterStartHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerStartHour.setAdapter(arrayAdapterStartHour);
-
-            ArrayList<String> endHour = new ArrayList<>();
-            endHour.add("09:50");
-            endHour.add("10:50");
-            endHour.add("11:50");
-            endHour.add("12:50");
-            // TODO input olarak gelecek.
-
-            Spinner spinnerEndHour = (Spinner) viewDialogHour.findViewById(R.id.spinner_end_hour);
-            spinnerEndHour.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            ArrayAdapter arrayAdapterEndHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_department_and_student, endHour);
-            arrayAdapterEndHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerEndHour.setAdapter(arrayAdapterEndHour);
-
-
-
-
-
-
-
         }
         catch(Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' onCreate method.");
         }
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         try{
-            vmDeptAdmin.getLecturerList();
-            vmDeptAdmin.getSpecificStudentList(Common_Variables_View.SELECTED_SEMESTER, Common_Variables_View.COURSE_ID, spinnerSection.getSelectedItem());
+            textViewCourseId.setText(Common_Variables_View.COURSE_ID);
+            textViewCourseName.setText(Common_Variables_View.COURSE_NAME);
+            vmDeptAdmin.onCourseSectionInfoRequested(Common_Variables_View.SELECTED_SEMESTER, Common_Variables_View.COURSE_ID, spinnerSection.getSelectedItem().toString());
+            vmDeptAdmin.onLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER);
+            vmDeptAdmin.onDepartmentListRequested(Common_Variables_View.SELECTED_SEMESTER);
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' onResume method.");
         }
     }
-
-    private void setSpinnerLecturerList(ArrayList<String> spinnerLecturerList) {
-        try{
-            this.spinnerLecturerList = spinnerLecturerList;
-            arrayAdapterLecturer = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerLecturerList);
-            arrayAdapterLecturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerLecturer.setAdapter(arrayAdapterLecturer);
-        }
-        catch (Exception e){
-            Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' setSpinnerLecturerList method.");
-        }
-    }
 }
-
-
-
