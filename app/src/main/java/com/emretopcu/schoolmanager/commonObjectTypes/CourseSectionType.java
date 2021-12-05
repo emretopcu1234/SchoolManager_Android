@@ -3,18 +3,18 @@ package com.emretopcu.schoolmanager.commonObjectTypes;
 import java.util.ArrayList;
 
 public class CourseSectionType {
-    private String lecturerName;
+    private String lecturerFullName;
     private ArrayList<PersonType> students = new ArrayList<>();
     private ArrayList<String> hourDays = new ArrayList<>();
     private ArrayList<String> startHours = new ArrayList<>();
     private ArrayList<String> endHours = new ArrayList<>();
 
-    public String getLecturerName() {
-        return lecturerName;
+    public String getLecturerFullName() {
+        return lecturerFullName;
     }
 
-    public void setLecturerName(String lecturerName) {
-        this.lecturerName = lecturerName;
+    public void setLecturerFullName(String lecturerFullName) {
+        this.lecturerFullName = lecturerFullName;
     }
 
     public ArrayList<PersonType> getStudents() {

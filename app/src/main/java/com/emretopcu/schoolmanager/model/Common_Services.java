@@ -6,6 +6,7 @@ import com.google.firebase.Timestamp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Common_Services {
@@ -140,6 +141,25 @@ public class Common_Services {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Common_Services class' specifySemesterName method.");
+            return null;
+        }
+    }
+
+    protected static String getActiveSemester(){
+        try{
+            if(Calendar.getInstance().get(Calendar.MONTH) == 0){
+                return "fall" + (Calendar.getInstance().get(Calendar.YEAR)-1) + Calendar.getInstance().get(Calendar.YEAR);
+            }
+            else if(Calendar.getInstance().get(Calendar.MONTH) > 0 && Calendar.getInstance().get(Calendar.MONTH) <= 5){
+                return "spring" + (Calendar.getInstance().get(Calendar.YEAR)-1) + Calendar.getInstance().get(Calendar.YEAR);
+            }
+            else if(Calendar.getInstance().get(Calendar.MONTH) >= 8){
+                return "fall" + Calendar.getInstance().get(Calendar.YEAR) + (Calendar.getInstance().get(Calendar.YEAR)+1);
+            }
+            return null;
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Common_Services class' getActiveSemester method.");
             return null;
         }
     }

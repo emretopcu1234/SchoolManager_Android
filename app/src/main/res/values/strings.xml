@@ -65,7 +65,7 @@
     <string name="dept_admin_courses_id">ID</string>
     <string name="dept_admin_courses_name">Course Name</string>
     <string name="dept_admin_courses_sections">Sections</string>
-    <string name="dept_admin_courses_lecturer">Lecturer</string>
+    <string name="dept_admin_courses_lecturer">Lecturer:</string>
     <string name="dept_admin_courses_add_course_hour">Add Course Hour</string>
     <string name="dept_admin_courses_reset_course_hour">Reset Course Hour</string>
     <string name="dept_admin_show_all_departments">Show all departments</string>

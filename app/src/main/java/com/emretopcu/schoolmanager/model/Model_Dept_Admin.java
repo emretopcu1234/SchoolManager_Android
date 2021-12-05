@@ -7,10 +7,12 @@ import androidx.annotation.NonNull;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseAddOrEditType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseSectionType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
+import com.emretopcu.schoolmanager.model.pojo.CourseSection;
 import com.emretopcu.schoolmanager.viewmodel.interfaces.Interface_Dept_Admin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +29,7 @@ import org.w3c.dom.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Model_Dept_Admin {
@@ -52,6 +55,8 @@ public class Model_Dept_Admin {
     private final HashMap<String,String> departmentsInfo = new HashMap<>();
     private final HashMap<String,String[]> lecturersInfo = new HashMap<>();
     private final HashMap<String,String[]> studentsInfo = new HashMap<>();
+
+    private final HashMap<String,String> studentDeptInfo = new HashMap<>(); // for active semester
 
     private final ArrayList<DepartmentType> departmentList = new ArrayList<>();
     private final ArrayList<CourseType> courseList = new ArrayList<>();
@@ -120,6 +125,7 @@ public class Model_Dept_Admin {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         departmentsInfo.put(document.getId().toUpperCase(),document.getString("name"));
                     }
+                    vmDeptAdmin.onDepartmentIdInfo(departmentsInfo);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Model_Dept_Admin class' departmentsRef.get().addOnCompleteListener method.");
@@ -153,18 +159,23 @@ public class Model_Dept_Admin {
                     Log.d("Exception", "Exception on Model_Dept_Admin class' studentsRef.get().addOnCompleteListener method.");
                 }
             });
+            String activeSemester = Common_Services.getActiveSemester();
+            if(activeSemester != null){
+                semesterStudentsRef.whereEqualTo("semesterId",activeSemester).get().addOnCompleteListener(task -> {
+                    try{
+                        studentDeptInfo.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            studentDeptInfo.put(document.getString("studentId"),document.getString("deptId"));
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Model_Dept_Admin class' semesterStudentsRef.where.get().addOnCompleteListener method.");
+                    }
+                });
+            }
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' storeInitialData method.");
-        }
-    }
-
-    public void getDepartmentIdInfo(){
-        try{
-            vmDeptAdmin.onDepartmentIdInfo(departmentsInfo);
-        }
-        catch (Exception e){
-            Log.d("Exception", "Exception on Model_Dept_Admin class' getDepartmentIdInfo method.");
         }
     }
 
@@ -386,6 +397,59 @@ public class Model_Dept_Admin {
         }
     }
 
+    public void getCourseSectionInfo(String unprocessedSemester, String courseId, String unprocessedSection){
+        try{
+            String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
+            String section = unprocessedSection.substring(7);
+            String docName = semester + deptId + courseId + "sec" + section;
+            courseSectionsRef.document(docName).get().addOnCompleteListener(task -> {
+                try{
+                    DocumentSnapshot document = task.getResult();
+                    CourseSectionType courseSection = new CourseSectionType();
+                    courseSection.setLecturerFullName(lecturersInfo.get(document.getString("lecturerId"))[0] + " "
+                            + lecturersInfo.get(task.getResult().getString("lecturerId"))[1]);
+                    ArrayList<PersonType> students = new ArrayList<>();
+                    List<String> studentIdList = (List<String>) document.get("students");
+                    if(studentIdList != null){
+                        for(int i=0;i<studentIdList.size();i++){
+                            String s = studentIdList.get(i);
+                            PersonType student = new PersonType();
+                            student.setId(s);
+                            student.setName(studentsInfo.get(s)[0]);
+                            student.setSurname(studentsInfo.get(s)[1]);
+                            student.setDeptId(studentDeptInfo.get(s).toUpperCase());
+                            students.add(student);
+                        }
+                    }
+                    courseSection.setStudents(students);
+
+                    ArrayList<String> hourDays = new ArrayList<>();
+                    ArrayList<String> startHours = new ArrayList<>();
+                    ArrayList<String> endHours = new ArrayList<>();
+                    List<Map> hourList = (List<Map>) document.get("hours");
+                    if(hourList != null){
+                        for(int i=0;i<hourList.size();i++){
+                            hourDays.add(hourList.get(i).get("weekday").toString());
+                            startHours.add(hourList.get(i).get("startHour").toString());
+                            endHours.add(hourList.get(i).get("endHour").toString());
+                        }
+                    }
+                    courseSection.setHourDays(hourDays);
+                    courseSection.setStartHours(startHours);
+                    courseSection.setEndHours(endHours);
+                    vmDeptAdmin.onGetCourseSectionInfoResulted(courseSection);
+                }
+                catch (Exception e){
+                    Log.d("Exception", "Exception on Model_Dept_Admin class' courseSectionsRef.document(docName).get method.");
+                    Log.d("Exception",e.toString());
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Dept_Admin class' getCourseSectionInfo method.");
+        }
+    }
+
     public void getLecturerList(String unprocessedSemester){
         try{
             String semester = Common_Services.convertUnprocessedSemester(unprocessedSemester);
@@ -447,6 +511,24 @@ public class Model_Dept_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Model_Dept_Admin class' getStudentList method.");
+        }
+    }
+
+    public void getFilteredSpecificStudentList(PersonFilterType personFilter){
+        try{
+            // TODO
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Dept_Admin class' getSpecificStudentList method.");
+        }
+    }
+
+    public void getDeptStudentList(String unprocessedSemester, String unprocessedDeptName){
+        try{
+            // TODO
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Model_Dept_Admin class' getDeptStudentList method.");
         }
     }
 
@@ -789,6 +871,3 @@ public class Model_Dept_Admin {
         storeInitialData();
     }
 }
-
-/*
-daha sonra eger dept admin courses activitysindeyken edit sectionsa basarsa course sections collectionındaki ilgili document acılacak, gerekli bilgiler (lecturer, student, hour...) eklenecek.*/

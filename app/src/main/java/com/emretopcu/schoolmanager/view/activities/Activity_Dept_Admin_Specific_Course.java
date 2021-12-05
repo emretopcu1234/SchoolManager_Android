@@ -1,6 +1,7 @@
 package com.emretopcu.schoolmanager.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Dept_Admin_Specific_Course_Students;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
@@ -114,6 +116,10 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
     private ProgressBar progressBar;
     private ProgressBar progressBarCourseHour;
     private ProgressBar progressBarStudent;
+
+    private final PersonFilterType personFilter = new PersonFilterType();
+    private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
+    private final ArrayList<Boolean> checks = new ArrayList<>();
 
     private VM_Dept_Admin vmDeptAdmin;
 
@@ -339,10 +345,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
             recyclerView = findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
-
-            adapter = new RecyclerViewAdapter_Dept_Admin_Specific_Course_Students(this);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
 
             builderHour = new AlertDialog.Builder(this);
             viewDialogHour = this.getLayoutInflater().inflate(R.layout.dialog_dept_admin_specific_course_hour, null);
@@ -512,7 +515,36 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             vmDeptAdmin.getSetCourseSectionSuccessful().observe(this, e_successful_unsuccessful_noStatement -> {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
-                        // TODO
+                        if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
+                            if(!spinnerLecturerList.isEmpty()){
+                                for(String s : spinnerLecturerList){
+                                }
+                                int position = spinnerLecturerList.indexOf(vmDeptAdmin.getCourseSectionInfo().getLecturerFullName());
+                                spinnerLecturer.setSelection(position);
+                            }
+                            if(adapter == null){
+                                adapter = new RecyclerViewAdapter_Dept_Admin_Specific_Course_Students(this, vmDeptAdmin.getSpecificStudentList());
+                                recyclerView.setAdapter(adapter);
+                            }
+                            else{
+                                adapter.setSpecificStudentList(vmDeptAdmin.getSpecificStudentList());
+                            }
+                            if(vmDeptAdmin.getCourseSectionInfo().getStartHours().isEmpty()){
+                                textViewCourseHours.setText(null);
+                            }
+                            else{
+                                String text = "";
+                                for(int i=0;i<vmDeptAdmin.getCourseSectionInfo().getStartHours().size()-1;i++){
+                                    text += vmDeptAdmin.getCourseSectionInfo().getHourDays().get(i) + " "
+                                            + vmDeptAdmin.getCourseSectionInfo().getStartHours().get(i) + "-"
+                                            + vmDeptAdmin.getCourseSectionInfo().getEndHours().get(i) + "\n";
+                                }
+                                text += vmDeptAdmin.getCourseSectionInfo().getHourDays().get(vmDeptAdmin.getCourseSectionInfo().getStartHours().size()-1) + " "
+                                        + vmDeptAdmin.getCourseSectionInfo().getStartHours().get(vmDeptAdmin.getCourseSectionInfo().getStartHours().size()-1) + "-"
+                                        + vmDeptAdmin.getCourseSectionInfo().getEndHours().get(vmDeptAdmin.getCourseSectionInfo().getStartHours().size()-1);
+                                textViewCourseHours.setText(text);
+                            }
+                        }
                     }
                 }
                 catch (Exception e){
@@ -530,6 +562,8 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
                         arrayAdapterLecturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerLecturer.setAdapter(arrayAdapterLecturer);
                     }
+                    int position = spinnerLecturerList.indexOf(vmDeptAdmin.getCourseSectionInfo().getLecturerFullName());
+                    spinnerLecturer.setSelection(position);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' vmDeptAdmin.getSetLecturersSuccessful().observe method.");
@@ -597,7 +631,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         try{
-            textViewCourseId.setText(Common_Variables_View.COURSE_ID);
+            textViewCourseId.setText(vmDeptAdmin.getDeptAdminInfo().getDeptId().toUpperCase() + " " + Common_Variables_View.COURSE_ID);
             textViewCourseName.setText(Common_Variables_View.COURSE_NAME);
             vmDeptAdmin.onCourseSectionInfoRequested(Common_Variables_View.SELECTED_SEMESTER, Common_Variables_View.COURSE_ID, spinnerSection.getSelectedItem().toString());
             vmDeptAdmin.onLecturerListRequested(Common_Variables_View.SELECTED_SEMESTER);
@@ -605,6 +639,23 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' onResume method.");
+        }
+    }
+
+    public void onListItemClicked(int position, boolean isChecked){
+        try{
+            checks.set(position,isChecked);
+            if(checks.contains(true)){
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                buttonAddDelete.setEnabled(true);
+            }
+            else{
+                buttonAddDelete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.light_black));
+                buttonAddDelete.setEnabled(false);
+            }
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' onListItemClicked method.");
         }
     }
 }

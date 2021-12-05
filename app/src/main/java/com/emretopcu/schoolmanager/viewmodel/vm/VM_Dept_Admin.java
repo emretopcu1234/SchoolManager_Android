@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModel;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseAddOrEditType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseDeleteType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseSectionType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.model.Model_Dept_Admin;
+import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.enums.deptAdmin.E_Add_Or_Edit_Course_State;
 import com.emretopcu.schoolmanager.viewmodel.enums.mainAdmin.E_Add_Or_Edit_Person_State;
@@ -30,8 +32,10 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveOrFutureSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCoursesSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCourseSectionSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSpecificStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
     private MutableLiveData<E_Add_Or_Edit_Course_State> addCourseSuccessful;
@@ -45,13 +49,14 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
             sdDeptAdmin = SD_Dept_Admin.getInstance();
             modelDeptAdmin = Model_Dept_Admin.getInstance();
             modelDeptAdmin.setVmDeptAdmin(this);
-            modelDeptAdmin.getDepartmentIdInfo();
             personInfoSuccessful = sdDeptAdmin.getPersonInfoSuccessful();
             setSemestersSuccessful = sdDeptAdmin.getSetSemestersSuccessful();
             isSemesterActiveOrFutureSuccessful = sdDeptAdmin.getIsSemesterActiveOrFutureSuccessful();
             setCoursesSuccessful = sdDeptAdmin.getSetCoursesSuccessful();
+            setCourseSectionSuccessful = sdDeptAdmin.getSetCourseSectionSuccessful();
             setLecturersSuccessful = sdDeptAdmin.getSetLecturersSuccessful();
             setStudentsSuccessful = sdDeptAdmin.getSetStudentsSuccessful();
+            setSpecificStudentsSuccessful = sdDeptAdmin.getSetSpecificStudentsSuccessful();
             setDeptStudentsSuccessful = sdDeptAdmin.getSetDeptStudentsSuccessful();
             setDepartmentsSuccessful = sdDeptAdmin.getSetDepartmentsSuccessful();
             addCourseSuccessful = sdDeptAdmin.getAddCourseSuccessful();
@@ -104,6 +109,19 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
     }
 
+    public void onCourseSectionInfoRequested(String selectedSemester, String courseId, String section){
+        try{
+            lastProcessedSemester = selectedSemester;
+            setCourseSectionSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getCourseSectionInfo(selectedSemester, courseId, section);
+            modelDeptAdmin.getLecturerList(selectedSemester);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onCourseSectionInfoRequested method.");
+        }
+    }
+
     public void onLecturerListRequested(String selectedSemester){
         try{
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
@@ -121,6 +139,16 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onLecturerListRequested method.");
+        }
+    }
+
+    public void onFilteredSpecificStudentListRequested(PersonFilterType personFilter){
+        try{
+            setSpecificStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            modelDeptAdmin.getFilteredSpecificStudentList(personFilter);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onFilteredSpecificStudentListRequested method.");
         }
     }
 
@@ -223,12 +251,20 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         return setCoursesSuccessful;
     }
 
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetCourseSectionSuccessful() {
+        return setCourseSectionSuccessful;
+    }
+
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetLecturersSuccessful() {
         return setLecturersSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetStudentsSuccessful() {
         return setStudentsSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetSpecificStudentsSuccessful() {
+        return setSpecificStudentsSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDeptStudentsSuccessful() {
@@ -271,6 +307,10 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         return sdDeptAdmin.getStudentList();
     }
 
+    public ArrayList<PersonType> getSpecificStudentList(){
+        return sdDeptAdmin.getSpecificStudentList();
+    }
+
     public ArrayList<PersonType> getDeptStudentList(){
         return sdDeptAdmin.getDeptStudentList();
     }
@@ -285,6 +325,10 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
 
     public PersonType getDeptAdminInfo(){
         return sdDeptAdmin.getDeptAdminInfo();
+    }
+
+    public CourseSectionType getCourseSectionInfo(){
+        return sdDeptAdmin.getCourseSectionInfo();
     }
 
     @Override
@@ -337,6 +381,40 @@ public class VM_Dept_Admin extends ViewModel implements Interface_Dept_Admin {
         }
         catch (Exception e){
             Log.d("Exception", "Exception on VM_Dept_Admin class' onDeptAdminInfoResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetCourseSectionInfoResulted(CourseSectionType courseSection) {
+        try{
+            sdDeptAdmin.setCourseSectionInfo(courseSection);
+            sdDeptAdmin.setSpecificStudentList(courseSection.getStudents());
+            setCourseSectionSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetCourseSectionInfoResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetSpecificStudentListResulted(ArrayList<PersonType> specificStudentList) {
+        try{
+            sdDeptAdmin.setSpecificStudentList(specificStudentList);
+            setSpecificStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetSpecificStudentListResulted method.");
+        }
+    }
+
+    @Override
+    public void onGetDeptStudentListResulted(ArrayList<PersonType> deptStudentList) {
+        try{
+            sdDeptAdmin.setDeptStudentList(deptStudentList);
+            setDeptStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.SUCCESSFUL);
+        }
+        catch (Exception e){
+            Log.d("Exception", "Exception on VM_Dept_Admin class' onGetDeptStudentListResulted method.");
         }
     }
 

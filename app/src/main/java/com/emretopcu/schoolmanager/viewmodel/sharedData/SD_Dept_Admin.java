@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseSectionType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
@@ -21,8 +22,10 @@ public class SD_Dept_Admin {
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSemestersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> isSemesterActiveOrFutureSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCoursesSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setCourseSectionSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setLecturersSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setStudentsSuccessful;
+    private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setSpecificStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDeptStudentsSuccessful;
     private MutableLiveData<E_Successful_Unsuccessful_NoStatement> setDepartmentsSuccessful;
     private MutableLiveData<E_Add_Or_Edit_Course_State> addCourseSuccessful;
@@ -33,10 +36,12 @@ public class SD_Dept_Admin {
     private ArrayList<CourseType> courseList;
     private ArrayList<PersonType> lecturerList;
     private ArrayList<PersonType> studentList;
+    private ArrayList<PersonType> specificStudentList;
     private ArrayList<PersonType> deptStudentList;
     private ArrayList<DepartmentType> departmentList;
     private HashMap<String,String> departmentIdInfo;
     private PersonType deptAdminInfo;
+    private CourseSectionType courseSectionInfo;
 
     private SD_Dept_Admin(){
         try{
@@ -48,10 +53,14 @@ public class SD_Dept_Admin {
             isSemesterActiveOrFutureSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setCoursesSuccessful = new MutableLiveData<>();
             setCoursesSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            setCourseSectionSuccessful = new MutableLiveData<>();
+            setCourseSectionSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setLecturersSuccessful = new MutableLiveData<>();
             setLecturersSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setStudentsSuccessful = new MutableLiveData<>();
             setStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
+            setSpecificStudentsSuccessful = new MutableLiveData<>();
+            setSpecificStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDeptStudentsSuccessful = new MutableLiveData<>();
             setDeptStudentsSuccessful.setValue(E_Successful_Unsuccessful_NoStatement.NO_STATEMENT);
             setDepartmentsSuccessful = new MutableLiveData<>();
@@ -67,10 +76,12 @@ public class SD_Dept_Admin {
             courseList = new ArrayList<>();
             lecturerList = new ArrayList<>();
             studentList = new ArrayList<>();
+            specificStudentList = new ArrayList<>();
             deptStudentList = new ArrayList<>();
             departmentList = new ArrayList<>();
             departmentIdInfo = new HashMap<>();
             deptAdminInfo = new PersonType();
+            courseSectionInfo = new CourseSectionType();
         }
         catch (Exception e){
             Log.d("Exception", "Exception on SD_Dept_Admin class' constructor method.");
@@ -106,12 +117,20 @@ public class SD_Dept_Admin {
         return setCoursesSuccessful;
     }
 
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetCourseSectionSuccessful() {
+        return setCourseSectionSuccessful;
+    }
+
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetLecturersSuccessful() {
         return setLecturersSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetStudentsSuccessful() {
         return setStudentsSuccessful;
+    }
+
+    public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetSpecificStudentsSuccessful() {
+        return setSpecificStudentsSuccessful;
     }
 
     public MutableLiveData<E_Successful_Unsuccessful_NoStatement> getSetDeptStudentsSuccessful() {
@@ -174,6 +193,14 @@ public class SD_Dept_Admin {
         this.studentList = studentList;
     }
 
+    public ArrayList<PersonType> getSpecificStudentList() {
+        return specificStudentList;
+    }
+
+    public void setSpecificStudentList(ArrayList<PersonType> specificStudentList) {
+        this.specificStudentList = specificStudentList;
+    }
+
     public ArrayList<PersonType> getDeptStudentList() {
         return deptStudentList;
     }
@@ -204,5 +231,13 @@ public class SD_Dept_Admin {
 
     public void setDeptAdminInfo(PersonType deptAdminInfo) {
         this.deptAdminInfo = deptAdminInfo;
+    }
+
+    public CourseSectionType getCourseSectionInfo() {
+        return courseSectionInfo;
+    }
+
+    public void setCourseSectionInfo(CourseSectionType courseSectionInfo) {
+        this.courseSectionInfo = courseSectionInfo;
     }
 }

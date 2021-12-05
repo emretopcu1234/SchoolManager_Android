@@ -1,5 +1,6 @@
 package com.emretopcu.schoolmanager.viewmodel.interfaces;
 
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseSectionType;
 import com.emretopcu.schoolmanager.commonObjectTypes.CourseType;
 import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
@@ -14,6 +15,10 @@ public interface Interface_Dept_Admin {
     void onLoadSemestersResulted(ArrayList<String> semestersList);
     void onIsSemesterActiveOrFutureResulted(boolean semesterActiveOrFuture);
     void onDeptAdminInfoResulted(PersonType person);
+
+    void onGetCourseSectionInfoResulted(CourseSectionType courseSection);
+    void onGetSpecificStudentListResulted(ArrayList<PersonType> specificStudentList);
+    void onGetDeptStudentListResulted(ArrayList<PersonType> deptStudentList);
 
     void onGetCourseListResulted(ArrayList<CourseType> courseList);
     void onGetLecturerListResulted(ArrayList<PersonType> lecturerList);
