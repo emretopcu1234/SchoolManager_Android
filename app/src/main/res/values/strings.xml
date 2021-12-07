@@ -160,6 +160,7 @@
     <string name="warning_add_or_edit_semester_reverse_order">Start date and end date are not consistent.</string>
     <string name="warning_add_or_edit_semester_low_difference">There should be at least 60 days between start date and end date.</string>
     <string name="warning_add_or_edit_semester_high_difference">There should be at most 150 days between start date and end date.</string>
+    <string name="warning_add_course_hour_inconsistency">Start hour and end hour are inconsistent.</string>
     <string name="student_appointment_confirmation">Do you want to make an appointment request?</string>
     <string name="delete_confirmation_department">department(s) will be deleted. Are you sure?</string>
     <string name="delete_confirmation_dept_admin">department admin(s) will be deleted. Are you sure?</string>

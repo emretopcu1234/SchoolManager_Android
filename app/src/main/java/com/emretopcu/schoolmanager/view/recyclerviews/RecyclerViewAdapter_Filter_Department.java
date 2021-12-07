@@ -26,6 +26,9 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             this.context = context;
             this.departmentList = departmentList;
             isChecked = new ArrayList<>();
+            for(int i=0;i<departmentList.size();i++){
+                isChecked.add(false);
+            }
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' constructor method.");
@@ -120,7 +123,6 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
             final ViewHolder_Filter_Department holder = (ViewHolder_Filter_Department) viewHolder;
             holder.checkBox.setChecked(isChecked.get(position));
             holder.textViewDeptName.setText(departmentList.get(position).getDeptName());
-
             holder.checkBox.setOnClickListener(v -> {
                 try{
                     onItemClicked(position);
@@ -141,6 +143,7 @@ public class RecyclerViewAdapter_Filter_Department extends RecyclerView.Adapter<
         }
         catch(Exception e){
             Log.d("Exception", "Exception on RecyclerViewAdapter_Filter_Department class' onBindViewHolder method.");
+            Log.d("Exception",e.toString());
         }
     }
 

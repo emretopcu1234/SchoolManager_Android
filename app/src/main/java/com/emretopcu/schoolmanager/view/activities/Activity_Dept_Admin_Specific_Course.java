@@ -20,14 +20,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.emretopcu.schoolmanager.R;
+import com.emretopcu.schoolmanager.commonObjectTypes.CourseSectionType;
+import com.emretopcu.schoolmanager.commonObjectTypes.DepartmentType;
 import com.emretopcu.schoolmanager.commonObjectTypes.PersonFilterType;
+import com.emretopcu.schoolmanager.commonObjectTypes.PersonType;
 import com.emretopcu.schoolmanager.view.Common_Variables_View;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Dept_Admin_Specific_Course_Students;
 import com.emretopcu.schoolmanager.view.recyclerviews.RecyclerViewAdapter_Filter_Department;
 import com.emretopcu.schoolmanager.viewmodel.enums.E_Successful_Unsuccessful_NoStatement;
 import com.emretopcu.schoolmanager.viewmodel.vm.VM_Dept_Admin;
+import com.google.firebase.components.Dependency;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
@@ -91,6 +96,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
     private Button buttonHourOk;
     private Button buttonHourCancel;
+    private TextView textViewHourWarning;
     private Spinner spinnerHourDay;
     private ArrayAdapter arrayAdapterHourDay;
     private ArrayList<String> spinnerHourDayList;
@@ -118,8 +124,13 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
     private ProgressBar progressBarStudent;
 
     private final PersonFilterType personFilter = new PersonFilterType();
-    private ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
+    private final ArrayList<Boolean> previousFilterChecks = new ArrayList<>();
     private final ArrayList<Boolean> checks = new ArrayList<>();
+
+    private final CourseSectionType courseSection = new CourseSectionType();
+    private final ArrayList<String> studentDeptIds = new ArrayList<>();
+    private final ArrayList<String> studentDeptNames = new ArrayList<>();
+
 
     private VM_Dept_Admin vmDeptAdmin;
 
@@ -158,15 +169,35 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             arrayAdapterSection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerSection.setAdapter(arrayAdapterSection);
 
-            spinnerLecturer = findViewById(R.id.spinner_lecturer);
             spinnerLecturerList = new ArrayList<>();
+            spinnerLecturer = findViewById(R.id.spinner_lecturer);
+            spinnerLecturer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        courseSection.setLecturerFullName(spinnerLecturer.getSelectedItem().toString());
+                    }
+                    catch (Exception e){
+                        Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' spinnerLecturer.setOnItemSelectedListener method.");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // nothing to do
+                }
+            });
 
             textViewCourseHours = findViewById(R.id.textView_course_hours);
 
             buttonAddCourseHour = findViewById(R.id.button_add_course_hour);
             buttonAddCourseHour.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    spinnerHourDay.setSelection(0);
+                    spinnerStartHour.setSelection(0);
+                    spinnerEndHour.setSelection(0);
+                    textViewHourWarning.setVisibility(View.INVISIBLE);
+                    alertDialogHour.show();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonAddCourseHour.setOnClickListener method.");
@@ -175,7 +206,10 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             buttonResetCourseHour = findViewById(R.id.button_reset_course_hour);
             buttonResetCourseHour.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    courseSection.getHourDays().clear();
+                    courseSection.getStartHours().clear();
+                    courseSection.getEndHours().clear();
+                    textViewCourseHours.setText(null);
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonResetCourseHour.setOnClickListener method.");
@@ -354,10 +388,30 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             alertDialogHour.setCancelable(false);
             alertDialogHour.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+            textViewHourWarning = viewDialogHour.findViewById(R.id.textView_warning);
+
             buttonHourOk = viewDialogHour.findViewById(R.id.button_ok);
             buttonHourOk.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    if(spinnerStartHour.getSelectedItemPosition() > spinnerEndHour.getSelectedItemPosition()){
+                        textViewHourWarning.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        courseSection.getHourDays().add(spinnerHourDay.getSelectedItem().toString());
+                        courseSection.getStartHours().add(spinnerStartHour.getSelectedItem().toString());
+                        courseSection.getEndHours().add(spinnerEndHour.getSelectedItem().toString());
+                        String text = "";
+                        for(int i=0;i<courseSection.getStartHours().size()-1;i++){
+                            text += courseSection.getHourDays().get(i) + " "
+                                    + courseSection.getStartHours().get(i) + "-"
+                                    + courseSection.getEndHours().get(i) + "\n";
+                        }
+                        text += courseSection.getHourDays().get(courseSection.getStartHours().size()-1) + " "
+                                + courseSection.getStartHours().get(courseSection.getStartHours().size()-1) + "-"
+                                + courseSection.getEndHours().get(courseSection.getStartHours().size()-1);
+                        textViewCourseHours.setText(text);
+                        alertDialogHour.dismiss();
+                    }
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonHourOk setOnClickListener method.");
@@ -366,7 +420,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             buttonHourCancel = viewDialogHour.findViewById(R.id.button_cancel);
             buttonHourCancel.setOnClickListener(v -> {
                 try{
-                    // TODO
+                    alertDialogHour.dismiss();
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonHourCancel setOnClickListener method.");
@@ -387,7 +441,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
             spinnerStartHour = viewDialogHour.findViewById(R.id.spinner_start_hour);
             spinnerStartHourList = new ArrayList<>();
-            for(int i=0;i<Common_Variables_View.NUMBER_OF_SECTIONS;i++){
+            for(int i=0;i<Common_Variables_View.NUMBER_OF_LECTURE_HOURS_ON_A_DAY;i++){
                 spinnerStartHourList.add((i+9) + ":00");
             }
             arrayAdapterStartHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerStartHourList);
@@ -396,7 +450,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
 
             spinnerEndHour = viewDialogHour.findViewById(R.id.spinner_end_hour);
             spinnerEndHourList = new ArrayList<>();
-            for(int i=0;i<Common_Variables_View.NUMBER_OF_SECTIONS;i++){
+            for(int i=0;i<Common_Variables_View.NUMBER_OF_LECTURE_HOURS_ON_A_DAY;i++){
                 spinnerEndHourList.add((i+9) + ":50");
             }
             arrayAdapterEndHour = new ArrayAdapter(getApplicationContext(),R.layout.spinner_type_dept_admin_specific_course, spinnerEndHourList);
@@ -414,6 +468,7 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             buttonStudentOk.setOnClickListener(v -> {
                 try{
                     // TODO
+                    // öğrenci eklendikten sonra duruma göre filter kısmına öğrencinin deptini eklemeyi unutma (tabi daha önceden eklenmemişse)
                 }
                 catch (Exception e){
                     Log.d("Exception", "Exception on Activity_Dept_Admin_Specific_Course class' buttonStudentOk setOnClickListener method.");
@@ -498,6 +553,9 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
             });
             buttonFilterCancel.setOnClickListener(v -> {
                 try{
+                    if(previousFilterChecks.isEmpty()){
+                        previousFilterChecks.addAll(adapterFilter.getChecks());
+                    }
                     adapterFilter.setChecks(previousFilterChecks);
                     alertDialogStudentFilter.dismiss();
                 }
@@ -516,9 +574,33 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
                 try{
                     if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
                         if(e_successful_unsuccessful_noStatement == E_Successful_Unsuccessful_NoStatement.SUCCESSFUL){
-                            if(!spinnerLecturerList.isEmpty()){
-                                for(String s : spinnerLecturerList){
+                            courseSection.setLecturerFullName(vmDeptAdmin.getCourseSectionInfo().getLecturerFullName());
+                            courseSection.setStudents(vmDeptAdmin.getCourseSectionInfo().getStudents());
+                            courseSection.setHourDays(vmDeptAdmin.getCourseSectionInfo().getHourDays());
+                            courseSection.setStartHours(vmDeptAdmin.getCourseSectionInfo().getStartHours());
+                            courseSection.setEndHours(vmDeptAdmin.getCourseSectionInfo().getEndHours());
+                            studentDeptIds.clear();
+                            studentDeptNames.clear();
+                            ArrayList<DepartmentType> depts = new ArrayList<>();
+                            for(int i=0;i<courseSection.getStudents().size();i++){
+                                if(!studentDeptIds.contains(courseSection.getStudents().get(i).getDeptId())){
+                                    studentDeptIds.add(courseSection.getStudents().get(i).getDeptId());
+                                    studentDeptNames.add(vmDeptAdmin.getDepartmentInfo().get(courseSection.getStudents().get(i).getDeptId()));
+                                    DepartmentType dept = new DepartmentType();
+                                    dept.setDeptId(courseSection.getStudents().get(i).getDeptId());
+                                    dept.setDeptName(vmDeptAdmin.getDepartmentInfo().get(courseSection.getStudents().get(i).getDeptId()));
+                                    depts.add(dept);
                                 }
+                            }
+                            if(adapterFilter == null){
+                                adapterFilter = new RecyclerViewAdapter_Filter_Department(this, depts);
+                                recyclerViewFilter.setAdapter(adapterFilter);
+                            }
+                            else{
+                                adapterFilter.setDepartmentList(depts);
+                            }
+
+                            if(!spinnerLecturerList.isEmpty()){
                                 int position = spinnerLecturerList.indexOf(vmDeptAdmin.getCourseSectionInfo().getLecturerFullName());
                                 spinnerLecturer.setSelection(position);
                             }
@@ -597,7 +679,6 @@ public class Activity_Dept_Admin_Specific_Course extends AppCompatActivity {
                         else{
                             adapter.setSpecificStudentList(vmDeptAdmin.getSpecificStudentList());
                         }
-                        // TODO studentların departmentları hashset'e kaydedilecek. recyclerviewadapter filter student'a gönderilecek.
                     }
                 }
                 catch (Exception e){

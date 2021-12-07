@@ -171,6 +171,9 @@ public class Activity_Dept_Admin_Students extends AppCompatActivity implements I
             });
             buttonFilterCancel.setOnClickListener(v -> {
                 try{
+                    if(previousFilterChecks.isEmpty()){
+                        previousFilterChecks.addAll(adapterFilter.getChecks());
+                    }
                     adapterFilter.setChecks(previousFilterChecks);
                     alertDialogFilter.dismiss();
                 }

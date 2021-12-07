@@ -322,6 +322,9 @@ public class Activity_Main_Admin_Dept_Admins extends AppCompatActivity implement
             });
             buttonFilterCancel.setOnClickListener(v -> {
                 try{
+                    if(previousFilterChecks.isEmpty()){
+                        previousFilterChecks.addAll(adapterFilter.getChecks());
+                    }
                     adapterFilter.setChecks(previousFilterChecks);
                     alertDialogFilter.dismiss();
                 }
